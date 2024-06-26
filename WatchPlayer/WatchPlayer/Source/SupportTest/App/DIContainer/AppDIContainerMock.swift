@@ -8,7 +8,7 @@
 import Foundation
 
 final public class AppDIContainerMock: AppDependencies {
-    
+
     var dataService: DataServiceInterface = {
         let mock = DataServiceMock()
         return mock
@@ -19,16 +19,27 @@ final public class AppDIContainerMock: AppDependencies {
         return mock
     }()
     
-    var makeMainDependenciesCount = 0
-    func makeMainDependencies(
-    ) -> MainDependencies {
-        makeMainDependenciesCount += 1
-        return MainDIContainerMock(
-            depedencies: .init(
+    var makeIntroDependenciesCallCount = 0
+    func makeIntroDependencies(
+    ) -> IntroDepedencies {
+        makeIntroDependenciesCallCount += 1
+        return IntroDIContainerMock(
+            dependencies: .init(
                 translationService: translationService,
                 dataService: dataService
             )
         )
     }
     
+    var makeMainDependenciesCallCount = 0
+    func makeMainDependencies(
+    ) -> MainDependencies {
+        makeMainDependenciesCallCount += 1
+        return MainDIContainerMock(
+            dependencies: .init(
+                translationService: translationService,
+                dataService: dataService
+            )
+        )
+    }
 }

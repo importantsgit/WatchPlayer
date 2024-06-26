@@ -7,8 +7,7 @@
 
 import UIKit
 
-protocol MainRouterManageable {
-    
+protocol MainRouterManageable: BaseCoordinator {
 }
 
 final public class MainCoordinator: MainRouterManageable {
@@ -21,4 +20,5 @@ final public class MainCoordinator: MainRouterManageable {
         self.navigationController = navigationController
     }
     
+    func start() {}
 }

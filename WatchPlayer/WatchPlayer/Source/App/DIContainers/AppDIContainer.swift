@@ -11,8 +11,11 @@ protocol AppDependencies {
     var dataService: DataServiceInterface { get }
     var translationService: TranslationServiceInterface { get }
     
+    func makeIntroDependencies(
+    ) -> IntroDIContainer
+    
     func makeMainDependencies(
-    ) -> MainDependencies
+    ) -> MainDIContainer
 }
 
 final public class AppDIContainer: AppDependencies {
@@ -35,10 +38,20 @@ final public class AppDIContainer: AppDependencies {
         return translationService
     }()
     
+    func makeIntroDependencies(
+    ) -> IntroDIContainer {
+        IntroDIContainer(
+            dependencies: .init(
+                translationService: translationService,
+                dataService: dataService
+            )
+        )
+    }
+    
     func makeMainDependencies(
-    ) -> MainDependencies {
+    ) -> MainDIContainer {
         MainDIContainer(
-            depedencies: .init(
+            dependencies: .init(
                 translationService: translationService,
                 dataService: dataService
             )

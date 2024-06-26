@@ -9,17 +9,17 @@ import Foundation
 
 final public class MainDIContainerMock: MainDependencies {
     
-    struct Depedencies {
+    struct Dependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
     }
     
-    let depedencies: Depedencies
+    let dependencies: Dependencies
     
     init(
-        depedencies: Depedencies
+        dependencies: Dependencies
     ) {
-        self.depedencies = depedencies
+        self.dependencies = dependencies
     }
 }
 
