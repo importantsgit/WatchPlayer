@@ -34,6 +34,9 @@
 		7B97B2B62C2C04F60036F0AE /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2B52C2C04F60036F0AE /* SettingViewController.swift */; };
 		7B97B2B82C2C05000036F0AE /* PlayerListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2B72C2C05000036F0AE /* PlayerListViewController.swift */; };
 		7B97B2BA2C2C050B0036F0AE /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2B92C2C050B0036F0AE /* RecordViewController.swift */; };
+		7B97B2D02C2C14E40036F0AE /* IntroInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2CF2C2C14E40036F0AE /* IntroInteractor.swift */; };
+		7B97B2D22C2C14F00036F0AE /* IntroPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2D12C2C14F00036F0AE /* IntroPresenter.swift */; };
+		7B97B2D42C2C14F70036F0AE /* IntroRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2D32C2C14F70036F0AE /* IntroRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -85,6 +88,9 @@
 		7B97B2B52C2C04F60036F0AE /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		7B97B2B72C2C05000036F0AE /* PlayerListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerListViewController.swift; sourceTree = "<group>"; };
 		7B97B2B92C2C050B0036F0AE /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
+		7B97B2CF2C2C14E40036F0AE /* IntroInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroInteractor.swift; sourceTree = "<group>"; };
+		7B97B2D12C2C14F00036F0AE /* IntroPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroPresenter.swift; sourceTree = "<group>"; };
+		7B97B2D32C2C14F70036F0AE /* IntroRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,8 +180,8 @@
 		7B97B2802C2BF0160036F0AE /* Module */ = {
 			isa = PBXGroup;
 			children = (
-				7B97B2A82C2BFD290036F0AE /* Main */,
 				7B97B2A72C2BFCB50036F0AE /* Intro */,
+				7B97B2A82C2BFD290036F0AE /* Main */,
 			);
 			path = Module;
 			sourceTree = "<group>";
@@ -284,7 +290,10 @@
 		7B97B2A72C2BFCB50036F0AE /* Intro */ = {
 			isa = PBXGroup;
 			children = (
-				7B97B2512C2BE73D0036F0AE /* IntroViewController.swift */,
+				7B97B2C12C2C11140036F0AE /* Router */,
+				7B97B2C02C2C110E0036F0AE /* Interactor */,
+				7B97B2BF2C2C11070036F0AE /* Presenter */,
+				7B97B2BE2C2C10FF0036F0AE /* View */,
 			);
 			path = Intro;
 			sourceTree = "<group>";
@@ -339,6 +348,38 @@
 				7B97B2B12C2C00920036F0AE /* MainDIContainerMock.swift */,
 			);
 			path = DIContainer;
+			sourceTree = "<group>";
+		};
+		7B97B2BE2C2C10FF0036F0AE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7B97B2512C2BE73D0036F0AE /* IntroViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		7B97B2BF2C2C11070036F0AE /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				7B97B2D12C2C14F00036F0AE /* IntroPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
+		7B97B2C02C2C110E0036F0AE /* Interactor */ = {
+			isa = PBXGroup;
+			children = (
+				7B97B2CF2C2C14E40036F0AE /* IntroInteractor.swift */,
+			);
+			path = Interactor;
+			sourceTree = "<group>";
+		};
+		7B97B2C12C2C11140036F0AE /* Router */ = {
+			isa = PBXGroup;
+			children = (
+				7B97B2D32C2C14F70036F0AE /* IntroRouter.swift */,
+			);
+			path = Router;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -475,6 +516,7 @@
 				7B97B28C2C2BF53D0036F0AE /* AppConfiguration.swift in Sources */,
 				7B97B2A02C2BFA240036F0AE /* DataService.swift in Sources */,
 				7B97B2822C2BF1380036F0AE /* RootCoordinator.swift in Sources */,
+				7B97B2D42C2C14F70036F0AE /* IntroRouter.swift in Sources */,
 				7B97B2BA2C2C050B0036F0AE /* RecordViewController.swift in Sources */,
 				7B97B27F2C2BEAF00036F0AE /* AppDIContainer.swift in Sources */,
 				7B97B2A52C2BFABD0036F0AE /* DataServiceMock.swift in Sources */,
@@ -489,10 +531,12 @@
 				7B97B2B22C2C00920036F0AE /* MainDIContainerMock.swift in Sources */,
 				7B97B29E2C2BFA1A0036F0AE /* DataRepository.swift in Sources */,
 				7B97B28E2C2BF5800036F0AE /* TranslationService.swift in Sources */,
+				7B97B2D22C2C14F00036F0AE /* IntroPresenter.swift in Sources */,
 				7B97B2B62C2C04F60036F0AE /* SettingViewController.swift in Sources */,
 				7B97B2B82C2C05000036F0AE /* PlayerListViewController.swift in Sources */,
 				7B97B2502C2BE73D0036F0AE /* SceneDelegate.swift in Sources */,
 				7B97B2A32C2BFAA40036F0AE /* DataRepositoryMock.swift in Sources */,
+				7B97B2D02C2C14E40036F0AE /* IntroInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
