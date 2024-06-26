@@ -1,5 +1,5 @@
 //
-//  IntroProtocol.swift
+//  GuideInteractor.swift
 //  WatchPlayer
 //
 //  Created by 이재훈 on 6/26/24.
@@ -8,11 +8,11 @@
 import Foundation
 
 
-protocol IntroInteractorProtocol {
+protocol GuideInteractorProtocol {
     
 }
 
-final class IntroInteractor: IntroInteractorProtocol {
+final class GuideInteractor: GuideInteractorProtocol {
     
     let dataRepository: DataRepositoryInterface
     

@@ -1,5 +1,5 @@
 //
-//  IntroRouter.swift
+//  GuideRouter.swift
 //  WatchPlayer
 //
 //  Created by 이재훈 on 6/26/24.
@@ -7,12 +7,11 @@
 
 import UIKit
 
-protocol IntroRouterProtocol {
-    static func createIntroMudule(
-    ) -> UIViewController
+protocol GuideRouterProtocol {
+
 }
 
-final class IntroRouter: IntroRouterProtocol {
+final class GuideRouter: GuideRouterProtocol {
     let presentingViewController: UIViewController
     
     init(
@@ -20,10 +19,6 @@ final class IntroRouter: IntroRouterProtocol {
     ) {
         self.presentingViewController = presentingViewController
     }
-    
-    static func createIntroMudule(
-    ) -> UIViewController {
-        return .init()
-    }
+
 }
 
