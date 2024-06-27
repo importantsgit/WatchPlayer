@@ -11,13 +11,18 @@ protocol GuideRouterProtocol {
 
 }
 
+struct GuideRouterActions {
+    
+}
+
 final class GuideRouter: GuideRouterProtocol {
-    let presentingViewController: UIViewController
+    
+    let actions: GuideRouterActions
     
     init(
-        presentingViewController: UIViewController
+        actions: GuideRouterActions
     ) {
-        self.presentingViewController = presentingViewController
+        self.actions = actions
     }
 
 }

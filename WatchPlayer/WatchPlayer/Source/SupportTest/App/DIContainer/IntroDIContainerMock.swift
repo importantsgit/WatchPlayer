@@ -39,7 +39,7 @@ final public class IntroDIContainerMock: IntroDepedencies {
         )
     }
     
-    // PermissionInteractor
+    // MARK: - PermissionModule
     
     var makePermissionInteractorCallCount = 0
     func makePermissionInteractor(
@@ -76,6 +76,48 @@ final public class IntroDIContainerMock: IntroDepedencies {
         makePermissionViewCallCount += 1
         return PermissionViewController(
             presenter: makePermissionPresenter(actions: actions)
+        )
+    }
+    
+    // MARK: - GuideModule
+    
+    var makeGuideRouterCallCount = 0
+    func makeGuideRouter(
+        actions: GuideRouterActions
+    ) -> GuideRouterProtocol {
+        makeGuideRouterCallCount += 1
+        return GuideRouter(
+            actions: actions
+        )
+    }
+    
+    var makeGuideInteractorCallCount = 0
+    func makeGuideInteractor(
+    ) -> GuideInteractorProtocol {
+        makeGuideInteractorCallCount += 1
+        return GuideInteractor(
+            dataRepository: makeDataRepository()
+        )
+    }
+    
+    var makeGuidePresenterCallCount = 0
+    func makeGuidePresenter(
+        actions: GuideRouterActions
+    ) -> GuidePresenterProtocol {
+        makeGuidePresenterCallCount += 1
+        return GuidePersenter(
+            interactor: makeGuideInteractor(),
+            router: makeGuideRouter(actions: actions)
+        )
+    }
+    
+    var makeGuideViewCallCount = 0
+    func makeGuideView(
+        actions: GuideRouterActions
+    ) -> GuideViewController {
+        makeGuideViewCallCount += 1
+        return GuideViewController(
+            presenter: makeGuidePresenter(actions: actions)
         )
     }
 }

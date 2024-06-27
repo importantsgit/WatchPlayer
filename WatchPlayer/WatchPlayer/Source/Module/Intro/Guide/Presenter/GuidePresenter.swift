@@ -17,7 +17,7 @@ protocol GuidePresenterProtocolOutput {
 
 typealias GuidePresenterProtocol = GuidePresenterProtocolInput & GuidePresenterProtocolOutput
 
-final class IntroPersenter: GuidePresenterProtocol {
+final class GuidePersenter: GuidePresenterProtocol {
     
     let interactor: GuideInteractorProtocol
     let router: GuideRouterProtocol

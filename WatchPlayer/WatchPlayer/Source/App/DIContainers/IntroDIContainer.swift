@@ -11,6 +11,10 @@ protocol IntroDepedencies {
     func makePermissionView(
         actions: PermissionRouterActions
     ) -> PermissionViewController
+    
+    func makeGuideView(
+        actions: GuideRouterActions
+    ) -> GuideViewController
 }
 
 final public class IntroDIContainer: IntroDepedencies {
@@ -37,6 +41,8 @@ final public class IntroDIContainer: IntroDepedencies {
         )
     }
     
+    // MARK: - Repository
+    
     func makeTranslationRepository(
     ) -> TranslationRepositoryInterface {
         TranslationRepository(
@@ -51,7 +57,8 @@ final public class IntroDIContainer: IntroDepedencies {
         )
     }
     
-    // PermissionInteractor
+    // MARK: - PermissionModule
+    
     func makePermissionInteractor(
     ) -> PermissionInteractorProtocol {
         PermissionInteractor(
@@ -79,6 +86,40 @@ final public class IntroDIContainer: IntroDepedencies {
     ) -> PermissionViewController {
         PermissionViewController(
             presenter: makePermissionPresenter(actions: actions)
+        )
+    }
+    
+    // MARK: - GuideModule
+    
+    func makeGuideRouter(
+        actions: GuideRouterActions
+    ) -> GuideRouterProtocol {
+        GuideRouter(
+            actions: actions
+        )
+    }
+    
+    func makeGuideInteractor(
+    ) -> GuideInteractorProtocol {
+        GuideInteractor(
+            dataRepository: makeDataRepository()
+        )
+    }
+    
+    func makeGuidePresenter(
+        actions: GuideRouterActions
+    ) -> GuidePresenterProtocol {
+        GuidePersenter(
+            interactor: makeGuideInteractor(),
+            router: makeGuideRouter(actions: actions)
+        )
+    }
+    
+    func makeGuideView(
+        actions: GuideRouterActions
+    ) -> GuideViewController {
+        GuideViewController(
+            presenter: makeGuidePresenter(actions: actions)
         )
     }
 }
