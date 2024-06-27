@@ -8,6 +8,4 @@
 import Foundation
 
 // 중요 정보들
-struct AppConfiguration {
-    
-}
+struct AppConfiguration {}

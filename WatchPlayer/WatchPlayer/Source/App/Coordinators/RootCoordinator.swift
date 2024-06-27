@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol RouterManageable {
+protocol RouterManageable: NodeCoordinator {
     func startIntroFlow()
     func startMainFlow()
 }
 
-final public class RootCoordinator: RouterManageable, NodeCoordinator {
+final public class RootCoordinator: RouterManageable {
     var childCoordinators: [BaseCoordinator] = []
     private var navigationController: UINavigationController
     private let dependencies: AppDependencies
@@ -26,7 +26,15 @@ final public class RootCoordinator: RouterManageable, NodeCoordinator {
     }
     
     func start() {
+        let isShowPermissionView = dependencies.dataService.isShowPermissionView
+        let isShowGuideView = dependencies.dataService.isShowGuideView
         
+        if isShowPermissionView || isShowGuideView {
+            startIntroFlow()
+        }
+        else {
+            startMainFlow()
+        }
     }
 
     
@@ -36,7 +44,6 @@ final public class RootCoordinator: RouterManageable, NodeCoordinator {
         let introCoordinator = introDependencies.makeIntroCoordinator(
             navigationController: navigationController
         )
-        
         introCoordinator.start()
         childCoordinators.append(introCoordinator)
     }
@@ -44,6 +51,11 @@ final public class RootCoordinator: RouterManageable, NodeCoordinator {
     func startMainFlow(
     ) {
         let mainDependencies = dependencies.makeMainDependencies()
-        // childCoordinators.append(introCoordinator)
+        let mainCoordinator =  mainDependencies.makeMainCoordinator(
+            navigationController: navigationController
+        )
+        
+        mainCoordinator.start()
+        childCoordinators.append(mainCoordinator)
     }
 }

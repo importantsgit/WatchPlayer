@@ -24,13 +24,13 @@ final public class IntroCoordinator: IntroRouterManageable {
         self.dependencies = dependencies
     }
     
-    func makePermissionRouterActions(
+    private func makePermissionRouterActions(
     ) -> PermissionRouterActions {
         
         return .init()
     }
     
-    func makeGuideRouterActions(
+    private func makeGuideRouterActions(
     ) -> GuideRouterActions {
         
         return .init()

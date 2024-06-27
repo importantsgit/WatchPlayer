@@ -37,6 +37,10 @@
 		7B97B2D02C2C14E40036F0AE /* GuideInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2CF2C2C14E40036F0AE /* GuideInteractor.swift */; };
 		7B97B2D22C2C14F00036F0AE /* GuidePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2D12C2C14F00036F0AE /* GuidePresenter.swift */; };
 		7B97B2D42C2C14F70036F0AE /* GuideRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2D32C2C14F70036F0AE /* GuideRouter.swift */; };
+		7BAFABA32C2CFD430052F14F /* UserDefaultProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABA22C2CFD430052F14F /* UserDefaultProtocol.swift */; };
+		7BAFABA52C2CFDF40052F14F /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABA42C2CFDF40052F14F /* Const.swift */; };
+		7BAFABA72C2D06830052F14F /* IntroCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABA62C2D06830052F14F /* IntroCoordinatorTests.swift */; };
+		7BAFABAB2C2D149B0052F14F /* PermissionModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABAA2C2D149B0052F14F /* PermissionModuleTests.swift */; };
 		A5A19B672C2C6EBA007C1538 /* PermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B662C2C6EBA007C1538 /* PermissionViewController.swift */; };
 		A5A19B692C2C6ED9007C1538 /* PermissionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B682C2C6ED9007C1538 /* PermissionPresenter.swift */; };
 		A5A19B6B2C2C6EFB007C1538 /* PermissionInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B6A2C2C6EFB007C1538 /* PermissionInteractor.swift */; };
@@ -99,6 +103,10 @@
 		7B97B2CF2C2C14E40036F0AE /* GuideInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuideInteractor.swift; sourceTree = "<group>"; };
 		7B97B2D12C2C14F00036F0AE /* GuidePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuidePresenter.swift; sourceTree = "<group>"; };
 		7B97B2D32C2C14F70036F0AE /* GuideRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuideRouter.swift; sourceTree = "<group>"; };
+		7BAFABA22C2CFD430052F14F /* UserDefaultProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultProtocol.swift; sourceTree = "<group>"; };
+		7BAFABA42C2CFDF40052F14F /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
+		7BAFABA62C2D06830052F14F /* IntroCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinatorTests.swift; sourceTree = "<group>"; };
+		7BAFABAA2C2D149B0052F14F /* PermissionModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionModuleTests.swift; sourceTree = "<group>"; };
 		A5A19B662C2C6EBA007C1538 /* PermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionViewController.swift; sourceTree = "<group>"; };
 		A5A19B682C2C6ED9007C1538 /* PermissionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPresenter.swift; sourceTree = "<group>"; };
 		A5A19B6A2C2C6EFB007C1538 /* PermissionInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionInteractor.swift; sourceTree = "<group>"; };
@@ -167,7 +175,8 @@
 		7B97B2632C2BE73F0036F0AE /* WatchPlayerTests */ = {
 			isa = PBXGroup;
 			children = (
-				7B97B2832C2BF42D0036F0AE /* RootCoordinatorTests.swift */,
+				7BAFABA92C2D147E0052F14F /* Coordinators */,
+				7BAFABA82C2D14710052F14F /* Modules */,
 			);
 			path = WatchPlayerTests;
 			sourceTree = "<group>";
@@ -214,6 +223,7 @@
 		7B97B2862C2BF47D0036F0AE /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				7BAFABA42C2CFDF40052F14F /* Const.swift */,
 				7B97B27D2C2BEA9D0036F0AE /* App */,
 				7B97B2802C2BF0160036F0AE /* Module */,
 				7B97B28A2C2BF5140036F0AE /* Service */,
@@ -280,8 +290,8 @@
 			isa = PBXGroup;
 			children = (
 				7B97B27E2C2BEAF00036F0AE /* AppDIContainer.swift */,
-				7B97B2AD2C2BFE140036F0AE /* MainDIContainer.swift */,
 				A5A19B732C2C721F007C1538 /* IntroDIContainer.swift */,
+				7B97B2AD2C2BFE140036F0AE /* MainDIContainer.swift */,
 			);
 			path = DIContainers;
 			sourceTree = "<group>";
@@ -300,6 +310,7 @@
 			children = (
 				7B97B29D2C2BFA1A0036F0AE /* DataRepository.swift */,
 				7B97B29F2C2BFA240036F0AE /* DataService.swift */,
+				7BAFABA22C2CFD430052F14F /* UserDefaultProtocol.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -400,6 +411,23 @@
 				7B97B2D32C2C14F70036F0AE /* GuideRouter.swift */,
 			);
 			path = Router;
+			sourceTree = "<group>";
+		};
+		7BAFABA82C2D14710052F14F /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				7BAFABAA2C2D149B0052F14F /* PermissionModuleTests.swift */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		7BAFABA92C2D147E0052F14F /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				7B97B2832C2BF42D0036F0AE /* RootCoordinatorTests.swift */,
+				7BAFABA62C2D06830052F14F /* IntroCoordinatorTests.swift */,
+			);
+			path = Coordinators;
 			sourceTree = "<group>";
 		};
 		A5A19B5E2C2C6D3C007C1538 /* Permission */ = {
@@ -599,6 +627,7 @@
 				7B97B2522C2BE73D0036F0AE /* GuideViewController.swift in Sources */,
 				A5A19B672C2C6EBA007C1538 /* PermissionViewController.swift in Sources */,
 				7B97B2B42C2C03E70036F0AE /* MainCoordinator.swift in Sources */,
+				7BAFABA32C2CFD430052F14F /* UserDefaultProtocol.swift in Sources */,
 				7B97B24E2C2BE73D0036F0AE /* AppDelegate.swift in Sources */,
 				7B97B2902C2BF5930036F0AE /* TranslationRepository.swift in Sources */,
 				7B97B2942C2BF6AE0036F0AE /* AppDIContainerMock.swift in Sources */,
@@ -607,6 +636,7 @@
 				7B97B2B22C2C00920036F0AE /* MainDIContainerMock.swift in Sources */,
 				A5A19B742C2C721F007C1538 /* IntroDIContainer.swift in Sources */,
 				7B97B29E2C2BFA1A0036F0AE /* DataRepository.swift in Sources */,
+				7BAFABA52C2CFDF40052F14F /* Const.swift in Sources */,
 				7B97B28E2C2BF5800036F0AE /* TranslationService.swift in Sources */,
 				7B97B2D22C2C14F00036F0AE /* GuidePresenter.swift in Sources */,
 				7B97B2B62C2C04F60036F0AE /* SettingViewController.swift in Sources */,
@@ -625,6 +655,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7B97B2842C2BF42D0036F0AE /* RootCoordinatorTests.swift in Sources */,
+				7BAFABAB2C2D149B0052F14F /* PermissionModuleTests.swift in Sources */,
+				7BAFABA72C2D06830052F14F /* IntroCoordinatorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -849,7 +881,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T7JJUZE2YE;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jh.cudo.watch.WatchPlayerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -871,7 +903,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T7JJUZE2YE;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jh.cudo.watch.WatchPlayerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -891,6 +923,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9Y3C29YBST;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jh.cudo.watch.WatchPlayerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -909,6 +942,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9Y3C29YBST;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jh.cudo.watch.WatchPlayerUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
