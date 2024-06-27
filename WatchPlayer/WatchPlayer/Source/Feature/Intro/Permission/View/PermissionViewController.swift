@@ -9,8 +9,6 @@ import UIKit
 
 final class PermissionViewController: DefaultViewController {
     
-
-    
     let presenter: PermissionPresenterProtocol
     
     init(
@@ -71,14 +69,16 @@ final class PermissionViewController: DefaultViewController {
         }
         
         let cameraStackView = UIStackView()
-        cameraStackView.axis = .horizontal
         
         let cameraImageView = UIImageView()
         cameraImageView.image = .camera
         
         let cameraLabelView = UIView()
         let cameraTitleLabelView = UILabel()
+        cameraTitleLabelView.text = "카메라 권한 설정"
+        
         let cameraDescriptionLabelView = UILabel()
+        cameraDescriptionLabelView.text = "영상을 찍으려면 카메라 권한이 필요해요."
         
         [cameraTitleLabelView, cameraDescriptionLabelView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -91,14 +91,15 @@ final class PermissionViewController: DefaultViewController {
         }
         
         let microphoneStackView = UIStackView()
-        microphoneStackView.axis = .horizontal
         
         let microphoneImageView = UIImageView()
         microphoneImageView.image = .mic
         
         let microphoneLabelView = UIView()
         let microphoneTitleLabelView = UILabel()
+        microphoneTitleLabelView.text = "마이크 권한 설정"
         let microphoneDescriptionLabelView = UILabel()
+        microphoneDescriptionLabelView.text = "영상을 찍으려면 마이크 권한이 필요해요."
         
         [microphoneTitleLabelView, microphoneDescriptionLabelView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -111,14 +112,16 @@ final class PermissionViewController: DefaultViewController {
         }
         
         let galleryStackView = UIStackView()
-        galleryStackView.axis = .horizontal
         
         let galleryImageView = UIImageView()
         galleryImageView.image = .photo
         
         let galleryLabelView = UIView()
         let galleryTitleLabelView = UILabel()
+        galleryTitleLabelView.text = "갤러리 접근 권한 설정"
         let galleryDescriptionLabelView = UILabel()
+        galleryDescriptionLabelView.text = "갤러리에 접근하기 위해 권한이 필요해요."
+        galleryDescriptionLabelView.numberOfLines = 0
         
         [galleryTitleLabelView, galleryDescriptionLabelView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -133,6 +136,10 @@ final class PermissionViewController: DefaultViewController {
         [cameraStackView, microphoneStackView, galleryStackView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             permissionStack.addArrangedSubview($0)
+            $0.axis = .horizontal
+            $0.spacing = 16
+            $0.distribution = .fillProportionally
+            $0.alignment = .center
         }
         
         [cameraImageView, microphoneImageView, galleryImageView].forEach {
@@ -141,7 +148,15 @@ final class PermissionViewController: DefaultViewController {
                 $0.heightAnchor.constraint(equalToConstant: 32),
             ])
         }
+        
+        [cameraTitleLabelView, microphoneTitleLabelView, galleryTitleLabelView].forEach {
+            $0.font = .systemFont(ofSize: 16, weight: .medium)
+        }
 
+        [cameraDescriptionLabelView, microphoneDescriptionLabelView, galleryDescriptionLabelView].forEach {
+            $0.font = .systemFont(ofSize: 14)
+            $0.textColor = .subDescription
+        }
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 64),
             titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32),
@@ -156,14 +171,41 @@ final class PermissionViewController: DefaultViewController {
             allowButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -32),
             allowButton.heightAnchor.constraint(equalToConstant: 48),
             
-            permissionStack.topAnchor.constraint(equalTo: subTitleLabel.bottomAnchor, constant: 48),
-            permissionStack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32),
-            permissionStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 32),
+            permissionStack.topAnchor.constraint(equalTo: subTitleLabel.bottomAnchor, constant: 64),
+            permissionStack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 56),
+            permissionStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -32),
+            
+            cameraTitleLabelView.leftAnchor.constraint(equalTo: cameraLabelView.leftAnchor),
+            cameraTitleLabelView.rightAnchor.constraint(equalTo: cameraLabelView.rightAnchor),
+            cameraTitleLabelView.topAnchor.constraint(equalTo: cameraLabelView.topAnchor),
+            
+            cameraDescriptionLabelView.topAnchor.constraint(equalTo: cameraTitleLabelView.bottomAnchor, constant: 4),
+            cameraDescriptionLabelView.leftAnchor.constraint(equalTo: cameraLabelView.leftAnchor),
+            cameraDescriptionLabelView.rightAnchor.constraint(equalTo: cameraLabelView.rightAnchor),
+            cameraDescriptionLabelView.bottomAnchor.constraint(equalTo: cameraLabelView.bottomAnchor),
+            
+            microphoneTitleLabelView.leftAnchor.constraint(equalTo: microphoneLabelView.leftAnchor),
+            microphoneTitleLabelView.rightAnchor.constraint(equalTo: microphoneLabelView.rightAnchor),
+            microphoneTitleLabelView.topAnchor.constraint(equalTo: microphoneLabelView.topAnchor),
+            
+            microphoneDescriptionLabelView.topAnchor.constraint(equalTo: microphoneTitleLabelView.bottomAnchor, constant: 4),
+            microphoneDescriptionLabelView.leftAnchor.constraint(equalTo: microphoneLabelView.leftAnchor),
+            microphoneDescriptionLabelView.rightAnchor.constraint(equalTo: microphoneLabelView.rightAnchor),
+            microphoneDescriptionLabelView.bottomAnchor.constraint(equalTo: microphoneLabelView.bottomAnchor),
+            
+            galleryTitleLabelView.leftAnchor.constraint(equalTo: galleryLabelView.leftAnchor),
+            galleryTitleLabelView.rightAnchor.constraint(equalTo: galleryLabelView.rightAnchor),
+            galleryTitleLabelView.topAnchor.constraint(equalTo: galleryLabelView.topAnchor),
+            
+            galleryDescriptionLabelView.topAnchor.constraint(equalTo: galleryTitleLabelView.bottomAnchor, constant: 4),
+            galleryDescriptionLabelView.leftAnchor.constraint(equalTo: galleryLabelView.leftAnchor),
+            galleryDescriptionLabelView.rightAnchor.constraint(equalTo: galleryLabelView.rightAnchor),
+            galleryDescriptionLabelView.bottomAnchor.constraint(equalTo: galleryLabelView.bottomAnchor),
             
         ])
     }
     
-    @objc func tapped() {
-        
+    @objc func permissionButtonTapped() {
+        presenter.permissionButtonTapped()
     }
 }

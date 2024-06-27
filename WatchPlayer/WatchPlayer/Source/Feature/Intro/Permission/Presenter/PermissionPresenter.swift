@@ -7,7 +7,9 @@
 
 import Foundation
 
-protocol PermissionPresenterInput {}
+protocol PermissionPresenterInput {
+    func permissionButtonTapped()
+}
 protocol PermissionPresenterOutput {}
 
 typealias PermissionPresenterProtocol = PermissionPresenterInput & PermissionPresenterOutput
@@ -23,5 +25,9 @@ final class PermissionPresenter: PermissionPresenterProtocol {
     ) {
         self.interator = interator
         self.router = router
+    }
+    
+    func permissionButtonTapped() {
+        
     }
 }
