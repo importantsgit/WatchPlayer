@@ -5,10 +5,10 @@
 //  Created by Importants on 6/27/24.
 //
 
-import Foundation
+import UIKit
 
-final public class IntroDIContainerMock: IntroDepedencies {
-
+final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedencies {
+    
     struct Dependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
@@ -22,10 +22,22 @@ final public class IntroDIContainerMock: IntroDepedencies {
         self.dependencies = dependencies
     }
     
+    var makeIntroCoordinatorCallCount = 0
+    func makeIntroCoordinator(
+        navigationController: UINavigationController?
+    ) -> IntroCoordinator {
+        makeIntroCoordinatorCallCount += 1
+        return .init(
+            navigationController: navigationController,
+            dependencies: self
+        )
+    }
+    
     var makeTranslationRepositoryCallCount = 0
     func makeTranslationRepository(
     ) -> TranslationRepositoryInterface {
-        TranslationRepository(
+        makeTranslationRepositoryCallCount += 1
+        return TranslationRepository(
             translationService: dependencies.translationService
         )
     }

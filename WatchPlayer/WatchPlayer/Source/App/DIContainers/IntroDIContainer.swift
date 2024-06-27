@@ -7,6 +7,12 @@
 
 import UIKit
 
+protocol IntroDIContainerProtocol {
+    func makeIntroCoordinator(
+        navigationController: UINavigationController?
+    ) -> IntroCoordinator
+}
+
 protocol IntroDepedencies {
     func makePermissionView(
         actions: PermissionRouterActions
@@ -17,7 +23,7 @@ protocol IntroDepedencies {
     ) -> GuideViewController
 }
 
-final public class IntroDIContainer: IntroDepedencies {
+final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies {
     
     struct Dependencies {
         let translationService: TranslationServiceInterface

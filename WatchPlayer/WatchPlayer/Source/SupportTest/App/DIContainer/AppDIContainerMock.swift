@@ -21,7 +21,7 @@ final public class AppDIContainerMock: AppDependencies {
     
     var makeIntroDependenciesCallCount = 0
     func makeIntroDependencies(
-    ) -> IntroDepedencies {
+    ) -> IntroDIContainerProtocol {
         makeIntroDependenciesCallCount += 1
         return IntroDIContainerMock(
             dependencies: .init(
@@ -33,7 +33,7 @@ final public class AppDIContainerMock: AppDependencies {
     
     var makeMainDependenciesCallCount = 0
     func makeMainDependencies(
-    ) -> MainDependencies {
+    ) -> MainDIContainerProtocol {
         makeMainDependenciesCallCount += 1
         return MainDIContainerMock(
             dependencies: .init(

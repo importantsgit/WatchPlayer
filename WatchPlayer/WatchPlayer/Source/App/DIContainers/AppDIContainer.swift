@@ -12,10 +12,10 @@ protocol AppDependencies {
     var translationService: TranslationServiceInterface { get }
     
     func makeIntroDependencies(
-    ) -> IntroDIContainer
+    ) -> IntroDIContainerProtocol
     
     func makeMainDependencies(
-    ) -> MainDIContainer
+    ) -> MainDIContainerProtocol
 }
 
 final public class AppDIContainer: AppDependencies {
@@ -39,7 +39,7 @@ final public class AppDIContainer: AppDependencies {
     }()
     
     func makeIntroDependencies(
-    ) -> IntroDIContainer {
+    ) -> IntroDIContainerProtocol {
         IntroDIContainer(
             dependencies: .init(
                 translationService: translationService,
@@ -49,7 +49,7 @@ final public class AppDIContainer: AppDependencies {
     }
     
     func makeMainDependencies(
-    ) -> MainDIContainer {
+    ) -> MainDIContainerProtocol {
         MainDIContainer(
             dependencies: .init(
                 translationService: translationService,

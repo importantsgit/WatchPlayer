@@ -5,14 +5,20 @@
 //  Created by 이재훈 on 6/26/24.
 //
 
-import Foundation
+import UIKit
+
+protocol MainDIContainerProtocol {
+    func makeMainCoordinator(
+        navigationController: UINavigationController?
+    ) -> MainCoordinator
+}
 
 protocol MainDependencies {
     
 }
 
-final public class MainDIContainer: MainDependencies {
-    
+final public class MainDIContainer: MainDIContainerProtocol, MainDependencies {
+
     struct Dependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
@@ -25,4 +31,14 @@ final public class MainDIContainer: MainDependencies {
     ) {
         self.dependencies = dependencies
     }
+    
+    func makeMainCoordinator(
+        navigationController: UINavigationController?
+    ) -> MainCoordinator {
+        .init(
+            navigationController: navigationController,
+            dependencies: self
+        )
+    }
+    
 }
