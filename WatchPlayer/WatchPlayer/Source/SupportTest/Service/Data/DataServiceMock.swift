@@ -8,9 +8,19 @@
 import Foundation
 
 final public class DataServiceMock: DataServiceInterface {
+    var isShowPermissionView: Bool = true
+     
+    var isShowGuideView: Bool = true
 
-    init(
-    ) {
+    init() {
+    }
+    
+    func dismissPermissionViewForever() {
+        isShowPermissionView = false
+    }
+    
+    func dismissGuideViewForever() {
+        isShowGuideView = false
     }
 }
 
