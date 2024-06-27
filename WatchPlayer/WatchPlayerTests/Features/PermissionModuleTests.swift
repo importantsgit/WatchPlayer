@@ -9,9 +9,9 @@ import XCTest
 @testable import WatchPlayer
 
 final class PermissionModuleTests: XCTestCase {
-    var interactor: PermissionInteractor!
-    var presenter: PermissionPresenter!
-    var router: PermissionRouter!
+    var interactor: PermissionInteractorMock!
+    var presenter: PermissionPresenterMock!
+    var router: PermissionRouterMock!
     var view: PermissionViewController!
 
     override func setUpWithError() throws {
