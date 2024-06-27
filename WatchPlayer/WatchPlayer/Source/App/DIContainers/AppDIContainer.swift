@@ -37,7 +37,7 @@ final public class AppDIContainer: AppDependencies {
         
         return translationService
     }()
-    
+
     func makeIntroDependencies(
     ) -> IntroDIContainerProtocol {
         IntroDIContainer(

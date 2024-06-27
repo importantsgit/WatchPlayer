@@ -19,3 +19,8 @@ final class PermissionInteractor: PermissionInteractorProtocol {
         self.dataRepository = dataRepository
     }
 }
+
+// UseCase
+// 1. 카메라
+// 2. 마이크
+// 3. 갤러리

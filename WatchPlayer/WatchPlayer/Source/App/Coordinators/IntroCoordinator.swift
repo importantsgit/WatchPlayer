@@ -41,7 +41,10 @@ final public class IntroCoordinator: IntroRouterManageable {
             actions: makePermissionRouterActions()
         )
         
-        navigationController?.setViewControllers([permissionViewController], animated: true)
+        navigationController?.setViewControllers(
+            [permissionViewController],
+            animated: true
+        )
     }
     
     func showGuideView() {
@@ -49,7 +52,10 @@ final public class IntroCoordinator: IntroRouterManageable {
             actions: makeGuideRouterActions()
         )
         
-        navigationController?.pushViewController(guideViewController, animated: true)
+        navigationController?.pushViewController(
+            guideViewController,
+            animated: true
+        )
     }
     
 }

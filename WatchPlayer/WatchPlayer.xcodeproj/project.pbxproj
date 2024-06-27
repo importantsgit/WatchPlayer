@@ -10,7 +10,6 @@
 		7B97B24E2C2BE73D0036F0AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B24D2C2BE73D0036F0AE /* AppDelegate.swift */; };
 		7B97B2502C2BE73D0036F0AE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B24F2C2BE73D0036F0AE /* SceneDelegate.swift */; };
 		7B97B2522C2BE73D0036F0AE /* GuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2512C2BE73D0036F0AE /* GuideViewController.swift */; };
-		7B97B2572C2BE73F0036F0AE /* Color.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B97B2562C2BE73F0036F0AE /* Color.xcassets */; };
 		7B97B25A2C2BE73F0036F0AE /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 7B97B2592C2BE73F0036F0AE /* Base */; };
 		7B97B26F2C2BE73F0036F0AE /* WatchPlayerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B26E2C2BE73F0036F0AE /* WatchPlayerUITests.swift */; };
 		7B97B2712C2BE73F0036F0AE /* WatchPlayerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2702C2BE73F0036F0AE /* WatchPlayerUITestsLaunchTests.swift */; };
@@ -41,6 +40,11 @@
 		7BAFABA52C2CFDF40052F14F /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABA42C2CFDF40052F14F /* Const.swift */; };
 		7BAFABA72C2D06830052F14F /* IntroCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABA62C2D06830052F14F /* IntroCoordinatorTests.swift */; };
 		7BAFABAB2C2D149B0052F14F /* PermissionModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABAA2C2D149B0052F14F /* PermissionModuleTests.swift */; };
+		7BAFABAE2C2D19570052F14F /* AttributedStringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABAD2C2D19570052F14F /* AttributedStringBuilder.swift */; };
+		7BAFABB02C2D1F270052F14F /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABAF2C2D1F270052F14F /* UIColor.swift */; };
+		7BAFABB32C2D20720052F14F /* FillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABB22C2D20720052F14F /* FillButton.swift */; };
+		7BAFABB62C2D221A0052F14F /* DefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABB52C2D221A0052F14F /* DefaultViewController.swift */; };
+		7BAFABB92C2D24940052F14F /* IntroPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABB82C2D24940052F14F /* IntroPreviews.swift */; };
 		A5A19B672C2C6EBA007C1538 /* PermissionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B662C2C6EBA007C1538 /* PermissionViewController.swift */; };
 		A5A19B692C2C6ED9007C1538 /* PermissionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B682C2C6ED9007C1538 /* PermissionPresenter.swift */; };
 		A5A19B6B2C2C6EFB007C1538 /* PermissionInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B6A2C2C6EFB007C1538 /* PermissionInteractor.swift */; };
@@ -73,7 +77,6 @@
 		7B97B24D2C2BE73D0036F0AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B97B24F2C2BE73D0036F0AE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7B97B2512C2BE73D0036F0AE /* GuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideViewController.swift; sourceTree = "<group>"; };
-		7B97B2562C2BE73F0036F0AE /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		7B97B2592C2BE73F0036F0AE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7B97B25B2C2BE73F0036F0AE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7B97B2602C2BE73F0036F0AE /* WatchPlayerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WatchPlayerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -107,6 +110,11 @@
 		7BAFABA42C2CFDF40052F14F /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
 		7BAFABA62C2D06830052F14F /* IntroCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinatorTests.swift; sourceTree = "<group>"; };
 		7BAFABAA2C2D149B0052F14F /* PermissionModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionModuleTests.swift; sourceTree = "<group>"; };
+		7BAFABAD2C2D19570052F14F /* AttributedStringBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStringBuilder.swift; sourceTree = "<group>"; };
+		7BAFABAF2C2D1F270052F14F /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		7BAFABB22C2D20720052F14F /* FillButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillButton.swift; sourceTree = "<group>"; };
+		7BAFABB52C2D221A0052F14F /* DefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultViewController.swift; sourceTree = "<group>"; };
+		7BAFABB82C2D24940052F14F /* IntroPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPreviews.swift; sourceTree = "<group>"; };
 		A5A19B662C2C6EBA007C1538 /* PermissionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionViewController.swift; sourceTree = "<group>"; };
 		A5A19B682C2C6ED9007C1538 /* PermissionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPresenter.swift; sourceTree = "<group>"; };
 		A5A19B6A2C2C6EFB007C1538 /* PermissionInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionInteractor.swift; sourceTree = "<group>"; };
@@ -202,13 +210,14 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		7B97B2802C2BF0160036F0AE /* Module */ = {
+		7B97B2802C2BF0160036F0AE /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				7BAFABB42C2D22000052F14F /* Common */,
 				A5A19B5F2C2C6E18007C1538 /* Intro */,
 				7B97B2A82C2BFD290036F0AE /* Main */,
 			);
-			path = Module;
+			path = Feature;
 			sourceTree = "<group>";
 		};
 		7B97B2852C2BF44C0036F0AE /* SupportTest */ = {
@@ -225,9 +234,10 @@
 			children = (
 				7BAFABA42C2CFDF40052F14F /* Const.swift */,
 				7B97B27D2C2BEA9D0036F0AE /* App */,
-				7B97B2802C2BF0160036F0AE /* Module */,
+				7BAFABB12C2D1FE90052F14F /* Component */,
+				7B97B2802C2BF0160036F0AE /* Feature */,
 				7B97B28A2C2BF5140036F0AE /* Service */,
-				7B97B2852C2BF44C0036F0AE /* SupportTest */,
+				7BAFABAC2C2D18150052F14F /* Supports */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -236,7 +246,6 @@
 			isa = PBXGroup;
 			children = (
 				7B97B2582C2BE73F0036F0AE /* LaunchScreen.storyboard */,
-				7B97B2562C2BE73F0036F0AE /* Color.xcassets */,
 				7B97B2882C2BF4A20036F0AE /* Image.xcassets */,
 			);
 			path = Resource;
@@ -430,7 +439,42 @@
 			path = Coordinators;
 			sourceTree = "<group>";
 		};
-		A5A19B5E2C2C6D3C007C1538 /* Permission */ = {
+		7BAFABAC2C2D18150052F14F /* Supports */ = {
+			isa = PBXGroup;
+			children = (
+				7BAFABAF2C2D1F270052F14F /* UIColor.swift */,
+				7BAFABAD2C2D19570052F14F /* AttributedStringBuilder.swift */,
+				7BAFABB72C2D24860052F14F /* Previews */,
+				7B97B2852C2BF44C0036F0AE /* SupportTest */,
+			);
+			path = Supports;
+			sourceTree = "<group>";
+		};
+		7BAFABB12C2D1FE90052F14F /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				7BAFABB22C2D20720052F14F /* FillButton.swift */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		7BAFABB42C2D22000052F14F /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				7BAFABB52C2D221A0052F14F /* DefaultViewController.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		7BAFABB72C2D24860052F14F /* Previews */ = {
+			isa = PBXGroup;
+			children = (
+				7BAFABB82C2D24940052F14F /* IntroPreviews.swift */,
+			);
+			path = Previews;
+			sourceTree = "<group>";
+		};
+		7BAFABBA2C2D2C0B0052F14F /* Permission */ = {
 			isa = PBXGroup;
 			children = (
 				A5A19B602C2C6E52007C1538 /* Router */,
@@ -444,7 +488,7 @@
 		A5A19B5F2C2C6E18007C1538 /* Intro */ = {
 			isa = PBXGroup;
 			children = (
-				A5A19B5E2C2C6D3C007C1538 /* Permission */,
+				7BAFABBA2C2D2C0B0052F14F /* Permission */,
 				7B97B2A72C2BFCB50036F0AE /* Guide */,
 			);
 			path = Intro;
@@ -586,7 +630,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B97B2572C2BE73F0036F0AE /* Color.xcassets in Resources */,
 				7B97B2892C2BF4A20036F0AE /* Image.xcassets in Resources */,
 				7B97B25A2C2BE73F0036F0AE /* Base in Resources */,
 			);
@@ -621,11 +664,16 @@
 				7B97B2D42C2C14F70036F0AE /* GuideRouter.swift in Sources */,
 				7B97B2BA2C2C050B0036F0AE /* RecordViewController.swift in Sources */,
 				7B97B27F2C2BEAF00036F0AE /* AppDIContainer.swift in Sources */,
+				7BAFABAE2C2D19570052F14F /* AttributedStringBuilder.swift in Sources */,
+				7BAFABB32C2D20720052F14F /* FillButton.swift in Sources */,
 				7B97B2A52C2BFABD0036F0AE /* DataServiceMock.swift in Sources */,
 				A5A19B692C2C6ED9007C1538 /* PermissionPresenter.swift in Sources */,
 				7B97B2AE2C2BFE140036F0AE /* MainDIContainer.swift in Sources */,
 				7B97B2522C2BE73D0036F0AE /* GuideViewController.swift in Sources */,
+				7BAFABB02C2D1F270052F14F /* UIColor.swift in Sources */,
+				7BAFABB92C2D24940052F14F /* IntroPreviews.swift in Sources */,
 				A5A19B672C2C6EBA007C1538 /* PermissionViewController.swift in Sources */,
+				7BAFABB62C2D221A0052F14F /* DefaultViewController.swift in Sources */,
 				7B97B2B42C2C03E70036F0AE /* MainCoordinator.swift in Sources */,
 				7BAFABA32C2CFD430052F14F /* UserDefaultProtocol.swift in Sources */,
 				7B97B24E2C2BE73D0036F0AE /* AppDelegate.swift in Sources */,
@@ -827,8 +875,9 @@
 				INFOPLIST_FILE = WatchPlayer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -855,8 +904,9 @@
 				INFOPLIST_FILE = WatchPlayer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
