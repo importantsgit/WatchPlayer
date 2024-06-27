@@ -8,16 +8,12 @@
 import UIKit
 
 protocol RouterManageable {
-    func showPermissionView()
-    
     func startIntroFlow()
-    
     func startMainFlow()
 }
 
-final public class RootCoordinator: RouterManageable {
-
-    private var childCoordinators: [BaseCoordinator] = []
+final public class RootCoordinator: RouterManageable, NodeCoordinator {
+    var childCoordinators: [BaseCoordinator] = []
     private var navigationController: UINavigationController
     private let dependencies: AppDependencies
     
@@ -27,6 +23,10 @@ final public class RootCoordinator: RouterManageable {
     ) {
         self.navigationController = navigationController
         self.dependencies = dependencies
+    }
+    
+    func start() {
+        
     }
 
     

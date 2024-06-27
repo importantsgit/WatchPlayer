@@ -7,13 +7,14 @@
 
 import UIKit
 
-protocol IntroRouterManageable: BaseCoordinator {
+protocol IntroRouterManageable: LeafCoordinator {
+    var navigationController: UINavigationController? { get }
 }
 
 final public class IntroCoordinator: IntroRouterManageable {
     
-    weak private var navigationController: UINavigationController?
-    private var dependencies: IntroDepedencies
+    weak public private(set) var navigationController: UINavigationController?
+    private let dependencies: IntroDepedencies
     
     init(
         navigationController: UINavigationController?,
@@ -29,12 +30,26 @@ final public class IntroCoordinator: IntroRouterManageable {
         return .init()
     }
     
+    func makeGuideRouterActions(
+    ) -> GuideRouterActions {
+        
+        return .init()
+    }
+    
     func start() {
         let permissionViewController = dependencies.makePermissionView(
             actions: makePermissionRouterActions()
         )
         
-        navigationController?.pushViewController(permissionViewController, animated: true)
+        navigationController?.setViewControllers([permissionViewController], animated: true)
+    }
+    
+    func showGuideView() {
+        let guideViewController = dependencies.makeGuideView(
+            actions: makeGuideRouterActions()
+        )
+        
+        navigationController?.pushViewController(guideViewController, animated: true)
     }
     
 }

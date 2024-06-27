@@ -7,18 +7,25 @@
 
 import UIKit
 
-protocol MainRouterManageable: BaseCoordinator {
+protocol MainRouterManageable: NodeCoordinator {
+    var navigationController: UINavigationController? { get }
 }
 
 final public class MainCoordinator: MainRouterManageable {
+    var childCoordinators: [BaseCoordinator] = []
     
-    private var navigationController: UINavigationController
+    weak public private(set) var navigationController: UINavigationController?
+    private let dependencies: MainDependencies
     
     init(
-        navigationController: UINavigationController
+        navigationController: UINavigationController?,
+        dependencies: MainDependencies
     ) {
         self.navigationController = navigationController
+        self.dependencies = dependencies
     }
     
-    func start() {}
+    func start() {
+        
+    }
 }

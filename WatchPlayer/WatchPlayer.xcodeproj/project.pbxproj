@@ -42,7 +42,7 @@
 		A5A19B6B2C2C6EFB007C1538 /* PermissionInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B6A2C2C6EFB007C1538 /* PermissionInteractor.swift */; };
 		A5A19B6D2C2C6F08007C1538 /* PermissionRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B6C2C2C6F08007C1538 /* PermissionRouter.swift */; };
 		A5A19B702C2C7095007C1538 /* IntroCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B6F2C2C7095007C1538 /* IntroCoordinator.swift */; };
-		A5A19B722C2C70FE007C1538 /* BaseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B712C2C70FE007C1538 /* BaseCoordinator.swift */; };
+		A5A19B722C2C70FE007C1538 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B712C2C70FE007C1538 /* CoordinatorProtocol.swift */; };
 		A5A19B742C2C721F007C1538 /* IntroDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B732C2C721F007C1538 /* IntroDIContainer.swift */; };
 		A5A19B762C2C764E007C1538 /* IntroDIContainerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B752C2C764E007C1538 /* IntroDIContainerMock.swift */; };
 /* End PBXBuildFile section */
@@ -104,7 +104,7 @@
 		A5A19B6A2C2C6EFB007C1538 /* PermissionInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionInteractor.swift; sourceTree = "<group>"; };
 		A5A19B6C2C2C6F08007C1538 /* PermissionRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionRouter.swift; sourceTree = "<group>"; };
 		A5A19B6F2C2C7095007C1538 /* IntroCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinator.swift; sourceTree = "<group>"; };
-		A5A19B712C2C70FE007C1538 /* BaseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCoordinator.swift; sourceTree = "<group>"; };
+		A5A19B712C2C70FE007C1538 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		A5A19B732C2C721F007C1538 /* IntroDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroDIContainer.swift; sourceTree = "<group>"; };
 		A5A19B752C2C764E007C1538 /* IntroDIContainerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroDIContainerMock.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -352,7 +352,7 @@
 		7B97B2AF2C2BFE1A0036F0AE /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				A5A19B712C2C70FE007C1538 /* BaseCoordinator.swift */,
+				A5A19B712C2C70FE007C1538 /* CoordinatorProtocol.swift */,
 				7B97B2812C2BF1380036F0AE /* RootCoordinator.swift */,
 				A5A19B6F2C2C7095007C1538 /* IntroCoordinator.swift */,
 				7B97B2B32C2C03E70036F0AE /* MainCoordinator.swift */,
@@ -611,7 +611,7 @@
 				7B97B2D22C2C14F00036F0AE /* GuidePresenter.swift in Sources */,
 				7B97B2B62C2C04F60036F0AE /* SettingViewController.swift in Sources */,
 				7B97B2B82C2C05000036F0AE /* PlayerListViewController.swift in Sources */,
-				A5A19B722C2C70FE007C1538 /* BaseCoordinator.swift in Sources */,
+				A5A19B722C2C70FE007C1538 /* CoordinatorProtocol.swift in Sources */,
 				A5A19B762C2C764E007C1538 /* IntroDIContainerMock.swift in Sources */,
 				7B97B2502C2BE73D0036F0AE /* SceneDelegate.swift in Sources */,
 				7B97B2A32C2BFAA40036F0AE /* DataRepositoryMock.swift in Sources */,
