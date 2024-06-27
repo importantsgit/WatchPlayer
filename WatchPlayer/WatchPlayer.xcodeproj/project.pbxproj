@@ -47,8 +47,8 @@
 		7BAFABB32C2D20720052F14F /* FillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABB22C2D20720052F14F /* FillButton.swift */; };
 		7BAFABB62C2D221A0052F14F /* DefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABB52C2D221A0052F14F /* DefaultViewController.swift */; };
 		7BAFABB92C2D24940052F14F /* IntroPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABB82C2D24940052F14F /* IntroPreviews.swift */; };
-		A53DE0DD2C2DC1FF006DF09F /* CameraRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53DE0DC2C2DC1FF006DF09F /* CameraRepository.swift */; };
-		A53DE0DF2C2DC210006DF09F /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53DE0DE2C2DC210006DF09F /* CameraService.swift */; };
+		A53DE0DD2C2DC1FF006DF09F /* RecordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53DE0DC2C2DC1FF006DF09F /* RecordRepository.swift */; };
+		A53DE0DF2C2DC210006DF09F /* RecordService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53DE0DE2C2DC210006DF09F /* RecordService.swift */; };
 		A53DE0E32C2DCDDA006DF09F /* PermissionInteractorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53DE0E22C2DCDDA006DF09F /* PermissionInteractorMock.swift */; };
 		A53DE0E52C2DCDE6006DF09F /* PermissionPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53DE0E42C2DCDE6006DF09F /* PermissionPresenterMock.swift */; };
 		A53DE0E72C2DCE08006DF09F /* PermissionRouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53DE0E62C2DCE07006DF09F /* PermissionRouterMock.swift */; };
@@ -130,8 +130,8 @@
 		8AD193BAEA98A19DF76CFB96 /* Pods-WatchPlayerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPlayerTests.release.xcconfig"; path = "Target Support Files/Pods-WatchPlayerTests/Pods-WatchPlayerTests.release.xcconfig"; sourceTree = "<group>"; };
 		8D582B7C7B6D342F02EE8CE4 /* Pods-WatchPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPlayer.debug.xcconfig"; path = "Target Support Files/Pods-WatchPlayer/Pods-WatchPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		8DF970758673104E72F57FEA /* Pods_WatchPlayerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchPlayerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A53DE0DC2C2DC1FF006DF09F /* CameraRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRepository.swift; sourceTree = "<group>"; };
-		A53DE0DE2C2DC210006DF09F /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
+		A53DE0DC2C2DC1FF006DF09F /* RecordRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRepository.swift; sourceTree = "<group>"; };
+		A53DE0DE2C2DC210006DF09F /* RecordService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordService.swift; sourceTree = "<group>"; };
 		A53DE0E22C2DCDDA006DF09F /* PermissionInteractorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionInteractorMock.swift; sourceTree = "<group>"; };
 		A53DE0E42C2DCDE6006DF09F /* PermissionPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPresenterMock.swift; sourceTree = "<group>"; };
 		A53DE0E62C2DCE07006DF09F /* PermissionRouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionRouterMock.swift; sourceTree = "<group>"; };
@@ -292,7 +292,7 @@
 		7B97B28A2C2BF5140036F0AE /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				A53DE0DB2C2DC1DC006DF09F /* Camera */,
+				A53DE0DB2C2DC1DC006DF09F /* Record */,
 				7B97B2A12C2BFA900036F0AE /* Data */,
 				7B97B2912C2BF5B90036F0AE /* Translation */,
 			);
@@ -524,13 +524,13 @@
 			path = Permission;
 			sourceTree = "<group>";
 		};
-		A53DE0DB2C2DC1DC006DF09F /* Camera */ = {
+		A53DE0DB2C2DC1DC006DF09F /* Record */ = {
 			isa = PBXGroup;
 			children = (
-				A53DE0DC2C2DC1FF006DF09F /* CameraRepository.swift */,
-				A53DE0DE2C2DC210006DF09F /* CameraService.swift */,
+				A53DE0DC2C2DC1FF006DF09F /* RecordRepository.swift */,
+				A53DE0DE2C2DC210006DF09F /* RecordService.swift */,
 			);
-			path = Camera;
+			path = Record;
 			sourceTree = "<group>";
 		};
 		A53DE0E02C2DCDAE006DF09F /* Features */ = {
@@ -873,7 +873,7 @@
 				7BAFABAE2C2D19570052F14F /* AttributedStringBuilder.swift in Sources */,
 				7BAFABB32C2D20720052F14F /* FillButton.swift in Sources */,
 				A53DE0E52C2DCDE6006DF09F /* PermissionPresenterMock.swift in Sources */,
-				A53DE0DD2C2DC1FF006DF09F /* CameraRepository.swift in Sources */,
+				A53DE0DD2C2DC1FF006DF09F /* RecordRepository.swift in Sources */,
 				7B97B2A52C2BFABD0036F0AE /* DataServiceMock.swift in Sources */,
 				A5A19B692C2C6ED9007C1538 /* PermissionPresenter.swift in Sources */,
 				7B97B2AE2C2BFE140036F0AE /* MainDIContainer.swift in Sources */,
@@ -892,7 +892,7 @@
 				7B97B29A2C2BF6FC0036F0AE /* TranslationRepositoryMock.swift in Sources */,
 				7B97B2B22C2C00920036F0AE /* MainDIContainerMock.swift in Sources */,
 				A5A19B742C2C721F007C1538 /* IntroDIContainer.swift in Sources */,
-				A53DE0DF2C2DC210006DF09F /* CameraService.swift in Sources */,
+				A53DE0DF2C2DC210006DF09F /* RecordService.swift in Sources */,
 				7B97B29E2C2BFA1A0036F0AE /* DataRepository.swift in Sources */,
 				7BAFABA52C2CFDF40052F14F /* Const.swift in Sources */,
 				7B97B28E2C2BF5800036F0AE /* TranslationService.swift in Sources */,
