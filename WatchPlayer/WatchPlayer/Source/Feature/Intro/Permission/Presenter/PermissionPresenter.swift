@@ -9,8 +9,13 @@ import Foundation
 
 protocol PermissionPresenterInput {
     func permissionButtonTapped()
+    func viewDidLoad()
+    func showPHPickerView(view: DefaultViewController)
 }
-protocol PermissionPresenterOutput {}
+
+protocol PermissionPresenterOutput {
+    
+}
 
 typealias PermissionPresenterProtocol = PermissionPresenterInput & PermissionPresenterOutput
 
@@ -25,6 +30,10 @@ final class PermissionPresenter: PermissionPresenterProtocol {
     ) {
         self.interator = interator
         self.router = router
+    }
+    
+    func viewDidLoad() {
+        
     }
     
     func permissionButtonTapped() {

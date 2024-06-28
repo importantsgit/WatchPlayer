@@ -12,11 +12,14 @@ protocol PermissionInteractorProtocol {}
 final class PermissionInteractor: PermissionInteractorProtocol {
     
     let dataRepository: DataRepositoryInterface
+    let recordRepository: RecordRepositoryInterface
     
     init(
-        dataRepository: DataRepositoryInterface
+        dataRepository: DataRepositoryInterface,
+        recordRepository: RecordRepositoryInterface
     ) {
         self.dataRepository = dataRepository
+        self.recordRepository = recordRepository
     }
 }
 

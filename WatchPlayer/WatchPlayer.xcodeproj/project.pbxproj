@@ -85,6 +85,11 @@
 		3EFC7240586A3FAB7C75F5DA /* Pods_WatchPlayer_WatchPlayerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchPlayer_WatchPlayerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		592565639DED49C5B6998089 /* Pods-WatchPlayer-WatchPlayerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPlayer-WatchPlayerUITests.debug.xcconfig"; path = "Target Support Files/Pods-WatchPlayer-WatchPlayerUITests/Pods-WatchPlayer-WatchPlayerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		623DC9169798B2762491ADB8 /* Pods-WatchPlayer-WatchPlayerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPlayer-WatchPlayerUITests.release.xcconfig"; path = "Target Support Files/Pods-WatchPlayer-WatchPlayerUITests/Pods-WatchPlayer-WatchPlayerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		7B7A00122C2E971300EFD0D7 /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B7A00162C2E971700EFD0D7 /* RxTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B7A00192C2E971A00EFD0D7 /* RxBlocking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxBlocking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B7A001C2C2E972300EFD0D7 /* RxBlocking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxBlocking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B7A00202C2E972600EFD0D7 /* RxTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B97B24A2C2BE73D0036F0AE /* WatchPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B97B24D2C2BE73D0036F0AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B97B24F2C2BE73D0036F0AE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -119,7 +124,7 @@
 		7B97B2D12C2C14F00036F0AE /* GuidePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuidePresenter.swift; sourceTree = "<group>"; };
 		7B97B2D32C2C14F70036F0AE /* GuideRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GuideRouter.swift; sourceTree = "<group>"; };
 		7BAFABA22C2CFD430052F14F /* UserDefaultProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultProtocol.swift; sourceTree = "<group>"; };
-		7BAFABA42C2CFDF40052F14F /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Const.swift; sourceTree = "<group>"; };
+		7BAFABA42C2CFDF40052F14F /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Const.swift; path = WatchPlayer/Source/Const.swift; sourceTree = SOURCE_ROOT; };
 		7BAFABA62C2D06830052F14F /* IntroCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinatorTests.swift; sourceTree = "<group>"; };
 		7BAFABAA2C2D149B0052F14F /* PermissionModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionModuleTests.swift; sourceTree = "<group>"; };
 		7BAFABAD2C2D19570052F14F /* AttributedStringBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStringBuilder.swift; sourceTree = "<group>"; };
@@ -178,6 +183,11 @@
 		6445115CB901EF7DE24FFFE0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7B7A00202C2E972600EFD0D7 /* RxTest.framework */,
+				7B7A001C2C2E972300EFD0D7 /* RxBlocking.framework */,
+				7B7A00192C2E971A00EFD0D7 /* RxBlocking.framework */,
+				7B7A00162C2E971700EFD0D7 /* RxTest.framework */,
+				7B7A00122C2E971300EFD0D7 /* RxRelay.framework */,
 				EA5B6CBAA124C4CB762D44F3 /* Pods_WatchPlayer.framework */,
 				3EFC7240586A3FAB7C75F5DA /* Pods_WatchPlayer_WatchPlayerUITests.framework */,
 				8DF970758673104E72F57FEA /* Pods_WatchPlayerTests.framework */,
@@ -1083,6 +1093,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T7JJUZE2YE;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WatchPlayer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1097,6 +1108,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jh.cudo.watch.WatchPlayer;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1114,6 +1126,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T7JJUZE2YE;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WatchPlayer/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -1128,6 +1141,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jh.cudo.watch.WatchPlayer;
+				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -1139,12 +1153,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 393A6F9A1C3F29273E730589 /* Pods-WatchPlayerTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T7JJUZE2YE;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
@@ -1162,12 +1176,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8AD193BAEA98A19DF76CFB96 /* Pods-WatchPlayerTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T7JJUZE2YE;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
@@ -1185,10 +1199,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 592565639DED49C5B6998089 /* Pods-WatchPlayer-WatchPlayerUITests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9Y3C29YBST;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
@@ -1205,10 +1219,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 623DC9169798B2762491ADB8 /* Pods-WatchPlayer-WatchPlayerUITests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9Y3C29YBST;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
