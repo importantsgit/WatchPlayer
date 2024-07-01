@@ -8,12 +8,18 @@
 import Foundation
 
 final class PermissionInteractorMock: PermissionInteractorProtocol {
-    
-    let dataRepository: DataRepositoryInterface
+
+    let dataRepository: DataRepositoryMock
     
     init(
-        dataRepository: DataRepositoryInterface
+        dataRepository: DataRepositoryMock
     ) {
         self.dataRepository = dataRepository
+    }
+    
+    var showPermissionPopupCallCount = 0
+    func showPermissionPopup() async {
+        showPermissionPopupCallCount += 1
+        dataRepository.dismissPermissionViewForever()
     }
 }

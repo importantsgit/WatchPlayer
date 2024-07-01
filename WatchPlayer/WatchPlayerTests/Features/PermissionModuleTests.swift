@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import RxTest
 @testable import WatchPlayer
 
 final class PermissionModuleTests: XCTestCase {
@@ -21,7 +22,9 @@ final class PermissionModuleTests: XCTestCase {
             dataService: DataServiceMock()
         )
         
-        let permissionRouterActionsMock = PermissionRouterActions()
+        let permissionRouterActionsMock = PermissionRouterActions(
+            showOnboardingView: .init()
+        )
         
         interactor = .init(
             dataRepository: dataRepositoryMock
@@ -44,5 +47,27 @@ final class PermissionModuleTests: XCTestCase {
         view = nil
         
         try super.tearDownWithError()
+    }
+    
+    func testShowPermissionPopup() async {
+        // Given
+        
+        // When
+        await view.presenter.permissionButtonTapped()
+        
+        // Then
+        let presenterCount = presenter.permissionButtonTappedCallCount
+        let interactorCount = interactor.showPermissionPopupCallCount
+        let dataRepositoryCount = interactor.dataRepository.dismissPermissionViewForeverCallCount
+        let dataServiceCount = interactor.dataRepository.dataService.dismissPermissionViewForeverCallCount
+        let routerCount = router.showOnboardingViewCallCount
+        
+        XCTAssertEqual(presenterCount, 1)
+        XCTAssertEqual(interactorCount, 1)
+        XCTAssertEqual(dataRepositoryCount, 1)
+        XCTAssertEqual(dataServiceCount, 1)
+        XCTAssertEqual(routerCount, 1)
+        
+        
     }
 }

@@ -9,12 +9,17 @@ import Foundation
 
 final public class DataRepositoryMock: DataRepositoryInterface {
     
-    let dataService: DataServiceInterface
+    let dataService: DataServiceMock
     
     init(
-        dataService: DataServiceInterface
+        dataService: DataServiceMock
     ) {
         self.dataService = dataService
     }
     
+    var dismissPermissionViewForeverCallCount = 0
+    func dismissPermissionViewForever() {
+        dismissPermissionViewForeverCallCount += 1
+        dataService.dismissPermissionViewForever()
+    }
 }

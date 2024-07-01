@@ -17,4 +17,9 @@ final class PermissionRouterMock: PermissionRouterProtocol {
         self.actions = actions
     }
     
+    var showOnboardingViewCallCount = 0
+    func showOnboardingView() {
+        showOnboardingViewCallCount += 1
+    }
+    
 }
