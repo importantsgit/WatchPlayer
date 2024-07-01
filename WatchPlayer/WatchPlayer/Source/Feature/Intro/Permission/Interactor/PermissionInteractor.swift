@@ -6,8 +6,13 @@
 //
 
 import Foundation
+import AVFoundation
+import Photos
 
-protocol PermissionInteractorProtocol {}
+protocol PermissionInteractorProtocol {
+    func showPermissionPopup() async
+    
+}
 
 final class PermissionInteractor: PermissionInteractorProtocol {
     
@@ -20,6 +25,20 @@ final class PermissionInteractor: PermissionInteractorProtocol {
     ) {
         self.dataRepository = dataRepository
         self.recordRepository = recordRepository
+    }
+    
+    func showPermissionPopup() async {
+        await AVCaptureDevice.hasPermissionToVideo()
+        await PHPhotoLibrary.hasPermissionToLibrary()
+        
+        if #available(iOS 17.0, *) {
+            await AVAudioApplication.hasPermissionToMicrophone()
+        }
+        else {
+            await AVAudioSession.hasPermissionToMicrophone()
+        }
+        
+        dataRepository.dismissPermissionViewForever()
     }
 }
 

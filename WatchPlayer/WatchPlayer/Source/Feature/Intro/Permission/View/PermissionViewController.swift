@@ -7,7 +7,11 @@
 
 import UIKit
 
-final class PermissionViewController: DefaultViewController {
+protocol PermissionViewProtocol {
+    
+}
+
+final class PermissionViewController: DefaultViewController, PermissionViewProtocol {
     
     let presenter: PermissionPresenterProtocol
     
@@ -52,7 +56,8 @@ final class PermissionViewController: DefaultViewController {
         var allButtonTitle = AttributedString("권한을 허용할게요")
         allButtonTitle.font = .systemFont(ofSize: 16, weight: .medium)
         allButtonTitle.foregroundColor = .white
-
+        allowButton.addTarget(self, action: #selector(permissionButtonTapped), for: .touchUpInside)
+        
         var allowButtonConfig = UIButton.Configuration.filled()
         allowButtonConfig.attributedTitle = allButtonTitle
         allowButtonConfig.cornerStyle = .capsule
@@ -61,6 +66,8 @@ final class PermissionViewController: DefaultViewController {
         
         let permissionStack = UIStackView()
         permissionStack.axis = .vertical
+        permissionStack.alignment = .center
+        permissionStack.distribution = .equalCentering
         permissionStack.spacing = 32
         
         [titleLabel, subTitleLabel, allowButton, permissionStack].forEach {
@@ -137,8 +144,7 @@ final class PermissionViewController: DefaultViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
             permissionStack.addArrangedSubview($0)
             $0.axis = .horizontal
-            $0.spacing = 16
-            $0.distribution = .fillProportionally
+            $0.spacing = 12
             $0.alignment = .center
         }
         
@@ -150,19 +156,19 @@ final class PermissionViewController: DefaultViewController {
         }
         
         [cameraTitleLabelView, microphoneTitleLabelView, galleryTitleLabelView].forEach {
-            $0.font = .systemFont(ofSize: 16, weight: .medium)
+            $0.font = .systemFont(ofSize: 16, weight: .bold)
         }
 
         [cameraDescriptionLabelView, microphoneDescriptionLabelView, galleryDescriptionLabelView].forEach {
             $0.font = .systemFont(ofSize: 14)
-            $0.textColor = .subDescription
+            $0.textColor = .subTitle
         }
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 64),
             titleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32),
             titleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -32),
             
-            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            subTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
             subTitleLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32),
             subTitleLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -32),
                         
@@ -172,8 +178,7 @@ final class PermissionViewController: DefaultViewController {
             allowButton.heightAnchor.constraint(equalToConstant: 48),
             
             permissionStack.topAnchor.constraint(equalTo: subTitleLabel.bottomAnchor, constant: 64),
-            permissionStack.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 56),
-            permissionStack.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -32),
+            permissionStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             cameraTitleLabelView.leftAnchor.constraint(equalTo: cameraLabelView.leftAnchor),
             cameraTitleLabelView.rightAnchor.constraint(equalTo: cameraLabelView.rightAnchor),
@@ -206,6 +211,8 @@ final class PermissionViewController: DefaultViewController {
     }
     
     @objc func permissionButtonTapped() {
-        presenter.permissionButtonTapped()
+        Task {
+            await presenter.permissionButtonTapped()
+        }
     }
 }

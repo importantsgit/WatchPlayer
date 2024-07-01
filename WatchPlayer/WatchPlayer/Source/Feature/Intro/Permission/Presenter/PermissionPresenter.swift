@@ -8,9 +8,8 @@
 import Foundation
 
 protocol PermissionPresenterInput {
-    func permissionButtonTapped()
+    func permissionButtonTapped() async
     func viewDidLoad()
-    func showPHPickerView(view: DefaultViewController)
 }
 
 protocol PermissionPresenterOutput {
@@ -36,7 +35,8 @@ final class PermissionPresenter: PermissionPresenterProtocol {
         
     }
     
-    func permissionButtonTapped() {
-        
+    func permissionButtonTapped() async {
+        await interator.showPermissionPopup()
+        router.showOnboardingView()
     }
 }
