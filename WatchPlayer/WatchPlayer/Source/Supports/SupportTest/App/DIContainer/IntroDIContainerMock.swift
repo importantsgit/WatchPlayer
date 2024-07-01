@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import RxRelay
 
 final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedencies {
     
     struct Dependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
+        let recordService: RecordServiceInterface
     }
     
     let dependencies: Dependencies
@@ -24,12 +26,14 @@ final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedenc
     
     var makeIntroCoordinatorCallCount = 0
     func makeIntroCoordinator(
-        navigationController: UINavigationController?
+        navigationController: UINavigationController?,
+        actions: IntroCoordinatorActions
     ) -> IntroCoordinator {
         makeIntroCoordinatorCallCount += 1
         return .init(
             navigationController: navigationController,
-            dependencies: self
+            dependencies: self, 
+            actions: actions
         )
     }
     
@@ -50,6 +54,14 @@ final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedenc
             dataService: dependencies.dataService
         )
     }
+    var  makeRecordRepositoryCallCount = 0
+    func makeRecordRepository(
+    ) -> RecordRepositoryInterface {
+        makeRecordRepositoryCallCount += 1
+        return RecordRepository(
+            recordService: dependencies.recordService
+        )
+    }
     
     // MARK: - PermissionModule
     
@@ -58,7 +70,8 @@ final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedenc
     ) -> PermissionInteractorProtocol {
         makePermissionInteractorCallCount += 1
         return PermissionInteractor(
-            dataRepository: makeDataRepository()
+            dataRepository: makeDataRepository(),
+            recordRepository: makeRecordRepository()
         )
     }
     
@@ -91,45 +104,45 @@ final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedenc
         )
     }
     
-    // MARK: - GuideModule
+    // MARK: - OnboardingModule
     
-    var makeGuideRouterCallCount = 0
-    func makeGuideRouter(
-        actions: GuideRouterActions
-    ) -> GuideRouterProtocol {
-        makeGuideRouterCallCount += 1
-        return GuideRouter(
+    var makeOnboardingRouterCallCount = 0
+    func makeOnboardingRouter(
+        actions: OnboardingRouterActions
+    ) -> OnboardingRouterProtocol {
+        makeOnboardingRouterCallCount += 1
+        return OnboardingRouter(
             actions: actions
         )
     }
     
-    var makeGuideInteractorCallCount = 0
-    func makeGuideInteractor(
-    ) -> GuideInteractorProtocol {
-        makeGuideInteractorCallCount += 1
-        return GuideInteractor(
+    var makeOnboardingInteractorCallCount = 0
+    func makeOnboardingInteractor(
+    ) -> OnboardingInteractorProtocol {
+        makeOnboardingInteractorCallCount += 1
+        return OnboardingInteractor(
             dataRepository: makeDataRepository()
         )
     }
     
-    var makeGuidePresenterCallCount = 0
-    func makeGuidePresenter(
-        actions: GuideRouterActions
-    ) -> GuidePresenterProtocol {
-        makeGuidePresenterCallCount += 1
-        return GuidePersenter(
-            interactor: makeGuideInteractor(),
-            router: makeGuideRouter(actions: actions)
+    var makeOnboardingPresenterCallCount = 0
+    func makeOnboardingPresenter(
+        actions: OnboardingRouterActions
+    ) -> OnboardingPresenterProtocol {
+        makeOnboardingPresenterCallCount += 1
+        return OnboardingPersenter(
+            interactor: makeOnboardingInteractor(),
+            router: makeOnboardingRouter(actions: actions)
         )
     }
     
-    var makeGuideViewCallCount = 0
-    func makeGuideView(
-        actions: GuideRouterActions
-    ) -> GuideViewController {
-        makeGuideViewCallCount += 1
-        return GuideViewController(
-            presenter: makeGuidePresenter(actions: actions)
+    var makeOnboardingViewCallCount = 0
+    func makeOnboardingView(
+        actions: OnboardingRouterActions
+    ) -> OnboardingViewController {
+        makeOnboardingViewCallCount += 1
+        return OnboardingViewController(
+            presenter: makeOnboardingPresenter(actions: actions)
         )
     }
 }

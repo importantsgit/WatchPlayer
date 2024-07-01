@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RxRelay
 
 protocol BaseCoordinator: AnyObject {
     func start()
@@ -17,4 +18,8 @@ protocol NodeCoordinator: BaseCoordinator{
 
 protocol LeafCoordinator: BaseCoordinator {
     
+}
+
+protocol CoordinatorActionsProtocol {
+    var finishFlow: PublishRelay<Void> { get }
 }

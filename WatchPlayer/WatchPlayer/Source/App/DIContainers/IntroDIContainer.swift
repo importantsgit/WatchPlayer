@@ -9,7 +9,8 @@ import UIKit
 
 protocol IntroDIContainerProtocol {
     func makeIntroCoordinator(
-        navigationController: UINavigationController?
+        navigationController: UINavigationController?,
+        actions: IntroCoordinatorActions
     ) -> IntroCoordinator
 }
 
@@ -18,9 +19,9 @@ protocol IntroDepedencies {
         actions: PermissionRouterActions
     ) -> PermissionViewController
     
-    func makeGuideView(
-        actions: GuideRouterActions
-    ) -> GuideViewController
+    func makeOnboardingView(
+        actions: OnboardingRouterActions
+    ) -> OnboardingViewController
 }
 
 final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies {
@@ -28,6 +29,7 @@ final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies 
     struct Dependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
+        let recordService: RecordServiceInterface
     }
     
     let dependencies: Dependencies
@@ -39,11 +41,13 @@ final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies 
     }
     
     func makeIntroCoordinator(
-        navigationController: UINavigationController?
+        navigationController: UINavigationController?,
+        actions: IntroCoordinatorActions
     ) -> IntroCoordinator {
         .init(
             navigationController: navigationController,
-            dependencies: self
+            dependencies: self,
+            actions: actions
         )
     }
     
@@ -63,12 +67,20 @@ final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies 
         )
     }
     
+    func makeRecordRepository(
+    ) -> RecordRepositoryInterface {
+        RecordRepository(
+            recordService: dependencies.recordService
+        )
+    }
+    
     // MARK: - PermissionModule
     
     func makePermissionInteractor(
     ) -> PermissionInteractorProtocol {
         PermissionInteractor(
-            dataRepository: makeDataRepository()
+            dataRepository: makeDataRepository(),
+            recordRepository: makeRecordRepository()
         )
     }
     
@@ -95,37 +107,37 @@ final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies 
         )
     }
     
-    // MARK: - GuideModule
+    // MARK: - OnboardingModule
     
-    func makeGuideRouter(
-        actions: GuideRouterActions
-    ) -> GuideRouterProtocol {
-        GuideRouter(
+    func makeOnboardingRouter(
+        actions: OnboardingRouterActions
+    ) -> OnboardingRouterProtocol {
+        OnboardingRouter(
             actions: actions
         )
     }
     
-    func makeGuideInteractor(
-    ) -> GuideInteractorProtocol {
-        GuideInteractor(
+    func makeOnboardingInteractor(
+    ) -> OnboardingInteractorProtocol {
+        OnboardingInteractor(
             dataRepository: makeDataRepository()
         )
     }
     
-    func makeGuidePresenter(
-        actions: GuideRouterActions
-    ) -> GuidePresenterProtocol {
-        GuidePersenter(
-            interactor: makeGuideInteractor(),
-            router: makeGuideRouter(actions: actions)
+    func makeOnboardingPresenter(
+        actions: OnboardingRouterActions
+    ) -> OnboardingPresenterProtocol {
+        OnboardingPersenter(
+            interactor: makeOnboardingInteractor(),
+            router: makeOnboardingRouter(actions: actions)
         )
     }
     
-    func makeGuideView(
-        actions: GuideRouterActions
-    ) -> GuideViewController {
-        GuideViewController(
-            presenter: makeGuidePresenter(actions: actions)
+    func makeOnboardingView(
+        actions: OnboardingRouterActions
+    ) -> OnboardingViewController {
+        OnboardingViewController(
+            presenter: makeOnboardingPresenter(actions: actions)
         )
     }
 }
