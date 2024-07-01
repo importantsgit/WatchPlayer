@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import AVFoundation
 
 protocol RecordServiceInterface {}
 
-final public class CameraService: RecordServiceInterface {
+final public class RecordService: RecordServiceInterface {
     
     struct Configuration {
         
@@ -23,5 +24,7 @@ final public class CameraService: RecordServiceInterface {
         self.configuration = configuration
     }
     
-    func checkPermisison() {}
+    func checkPermisison() {
+        
+    }
 }
