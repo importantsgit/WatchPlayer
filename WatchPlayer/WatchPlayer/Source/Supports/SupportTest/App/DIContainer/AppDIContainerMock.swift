@@ -19,6 +19,11 @@ final public class AppDIContainerMock: AppDependencies {
         return mock
     }()
     
+    var recordService: RecordServiceInterface = {
+        let mock = RecordServiceMock()
+        return mock
+    }()
+    
     var makeIntroDependenciesCallCount = 0
     func makeIntroDependencies(
     ) -> IntroDIContainerProtocol {
@@ -26,7 +31,8 @@ final public class AppDIContainerMock: AppDependencies {
         return IntroDIContainerMock(
             dependencies: .init(
                 translationService: translationService,
-                dataService: dataService
+                dataService: dataService,
+                recordService: recordService
             )
         )
     }
@@ -38,7 +44,8 @@ final public class AppDIContainerMock: AppDependencies {
         return MainDIContainerMock(
             dependencies: .init(
                 translationService: translationService,
-                dataService: dataService
+                dataService: dataService,
+                recordService: recordService
             )
         )
     }

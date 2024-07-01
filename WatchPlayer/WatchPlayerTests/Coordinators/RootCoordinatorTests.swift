@@ -66,10 +66,10 @@ final class RootCoordinatorTests: XCTestCase {
     }
     
     // 시나리오: 권한 페이지와 가이드 페이지를 닫은 상황
-    func testMakeMainDenpendeciesWhenDismissPermissionViewAndGuideView() {
+    func testMakeMainDenpendeciesWhenDismissPermissionViewAndOnboardingView() {
         // Given
         appDIContainerDoc.dataService.dismissPermissionViewForever()
-        appDIContainerDoc.dataService.dismissGuideViewForever()
+        appDIContainerDoc.dataService.dismissOnboardingViewForever()
         
         // When
         sut.start()
@@ -84,9 +84,9 @@ final class RootCoordinatorTests: XCTestCase {
     }
     
     // 시나리오: 권한 페이지를 보지 않고 가이드 페이지로 넘어간 상황
-    func testMakeIntroDenpendeciesWhenDismissGuideView() {
+    func testMakeIntroDenpendeciesWhenDismissOnboardingView() {
         // Given
-        appDIContainerDoc.dataService.dismissGuideViewForever()
+        appDIContainerDoc.dataService.dismissOnboardingViewForever()
         
         // When
         sut.start()

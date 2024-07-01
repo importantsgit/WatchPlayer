@@ -10,17 +10,21 @@ import Foundation
 final public class DataServiceMock: DataServiceInterface {
     var isShowPermissionView: Bool = true
      
-    var isShowGuideView: Bool = true
+    var isShowOnboardingView: Bool = true
 
     init() {
     }
     
+    var dismissPermissionViewForeverCallCount = 0
     func dismissPermissionViewForever() {
+        dismissPermissionViewForeverCallCount += 1
         isShowPermissionView = false
     }
     
-    func dismissGuideViewForever() {
-        isShowGuideView = false
+    var dismissOnboardingViewForeverCallCount = 0
+    func dismissOnboardingViewForever() {
+        dismissOnboardingViewForeverCallCount += 1
+        isShowOnboardingView = false
     }
 }
 

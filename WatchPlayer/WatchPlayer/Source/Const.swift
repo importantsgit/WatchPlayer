@@ -9,5 +9,5 @@ import Foundation
 
 enum userDefaultKey: String {
     case permission = "Permission"
-    case guide = "Guide"
+    case onboarding = "Onboarding"
 }

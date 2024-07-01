@@ -12,6 +12,7 @@ final public class MainDIContainerMock: MainDIContainerProtocol, MainDependencie
     struct Dependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
+        let recordService: RecordServiceInterface
     }
     
     let dependencies: Dependencies

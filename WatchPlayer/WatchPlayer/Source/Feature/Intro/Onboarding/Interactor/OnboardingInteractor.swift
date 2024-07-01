@@ -1,5 +1,5 @@
 //
-//  GuideInteractor.swift
+//  OnboardingInteractor.swift
 //  WatchPlayer
 //
 //  Created by 이재훈 on 6/26/24.
@@ -8,11 +8,11 @@
 import Foundation
 
 
-protocol GuideInteractorProtocol {
+protocol OnboardingInteractorProtocol {
     
 }
 
-final class GuideInteractor: GuideInteractorProtocol {
+final class OnboardingInteractor: OnboardingInteractorProtocol {
     
     let dataRepository: DataRepositoryInterface
     

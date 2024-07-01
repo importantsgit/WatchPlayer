@@ -22,6 +22,7 @@ final public class MainDIContainer: MainDIContainerProtocol, MainDependencies {
     struct Dependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
+        let recordService: RecordServiceInterface
     }
     
     let dependencies: Dependencies

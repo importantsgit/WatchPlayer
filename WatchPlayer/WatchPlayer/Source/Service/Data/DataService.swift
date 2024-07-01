@@ -9,10 +9,10 @@ import Foundation
 
 protocol DataServiceInterface {
     var isShowPermissionView: Bool { get }
-    var isShowGuideView: Bool { get }
+    var isShowOnboardingView: Bool { get }
     
     func dismissPermissionViewForever()
-    func dismissGuideViewForever()
+    func dismissOnboardingViewForever()
 }
 
 final public class DataService: DataServiceInterface, UserDefaultProtocol {
@@ -21,11 +21,11 @@ final public class DataService: DataServiceInterface, UserDefaultProtocol {
         
     }
     
-    let configuration: Configuration
+    private let configuration: Configuration
     
     // IntroFlow
     var isShowPermissionView: Bool = true
-    var isShowGuideView: Bool = true
+    var isShowOnboardingView: Bool = true
     
     init(
         configuration: Configuration
@@ -36,8 +36,8 @@ final public class DataService: DataServiceInterface, UserDefaultProtocol {
             key: userDefaultKey.permission.rawValue,
             defaultValue: true
         )
-        self.isShowGuideView = getBooleanData(
-            key: userDefaultKey.guide.rawValue,
+        self.isShowOnboardingView = getBooleanData(
+            key: userDefaultKey.onboarding.rawValue,
             defaultValue: true
         )
         
@@ -51,11 +51,11 @@ final public class DataService: DataServiceInterface, UserDefaultProtocol {
         )
     }
     
-    func dismissGuideViewForever() {
-        isShowGuideView = false
+    func dismissOnboardingViewForever() {
+        isShowOnboardingView = false
         setBooleanData(
-            val: isShowGuideView,
-            key: userDefaultKey.guide.rawValue
+            val: isShowOnboardingView,
+            key: userDefaultKey.onboarding.rawValue
         )
     }
 }

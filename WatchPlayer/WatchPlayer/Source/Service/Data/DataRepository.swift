@@ -7,11 +7,13 @@
 
 import Foundation
 
-protocol DataRepositoryInterface {}
+protocol DataRepositoryInterface {
+    func dismissPermissionViewForever()
+}
 
 final public class DataRepository: DataRepositoryInterface {
     
-    let dataService: DataServiceInterface
+    private let dataService: DataServiceInterface
     
     init(
         dataService: DataServiceInterface
@@ -19,4 +21,8 @@ final public class DataRepository: DataRepositoryInterface {
         self.dataService = dataService
     }
     
+    
+    func dismissPermissionViewForever(){
+        dataService.dismissPermissionViewForever()
+    }
 }

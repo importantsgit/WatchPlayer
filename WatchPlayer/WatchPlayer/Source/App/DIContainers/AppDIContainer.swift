@@ -10,6 +10,7 @@ import Foundation
 protocol AppDependencies {
     var dataService: DataServiceInterface { get }
     var translationService: TranslationServiceInterface { get }
+    var recordService: RecordServiceInterface { get }
     
     func makeIntroDependencies(
     ) -> IntroDIContainerProtocol
@@ -37,13 +38,22 @@ final public class AppDIContainer: AppDependencies {
         
         return translationService
     }()
+    
+    lazy var recordService: RecordServiceInterface = {
+        let recordService = RecordService(
+            configuration: .init()
+        )
+        
+        return recordService
+    }()
 
     func makeIntroDependencies(
     ) -> IntroDIContainerProtocol {
         IntroDIContainer(
             dependencies: .init(
                 translationService: translationService,
-                dataService: dataService
+                dataService: dataService,
+                recordService: recordService
             )
         )
     }
@@ -53,7 +63,8 @@ final public class AppDIContainer: AppDependencies {
         MainDIContainer(
             dependencies: .init(
                 translationService: translationService,
-                dataService: dataService
+                dataService: dataService,
+                recordService: recordService
             )
         )
     }

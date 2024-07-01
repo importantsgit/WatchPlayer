@@ -21,7 +21,8 @@ final class IntroCoordinatorTests: XCTestCase {
         
         introContainerDocDependencies = .init(
             translationService: TranslationServiceMock(),
-            dataService: DataServiceMock()
+            dataService: DataServiceMock(),
+            recordService: RecordServiceMock()
         )
         
         introContainerDoc = .init(
@@ -30,7 +31,8 @@ final class IntroCoordinatorTests: XCTestCase {
         
         sut = .init(
             navigationController: navigationViewController,
-            dependencies: introContainerDoc
+            dependencies: introContainerDoc,
+            actions: .init(finishFlow: .init())
         )
     }
 

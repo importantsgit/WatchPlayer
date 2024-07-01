@@ -1,5 +1,5 @@
 //
-//  GuideViewController.swift
+//  OnboardingViewController.swift
 //  WatchPlayer
 //
 //  Created by 이재훈 on 6/26/24.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-class GuideViewController: UIViewController {
+class OnboardingViewController: UIViewController {
 
-    let presenter: GuidePresenterProtocol
+    let presenter: OnboardingPresenterProtocol
     
     init(
-        presenter: GuidePresenterProtocol
+        presenter: OnboardingPresenterProtocol
     ) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
