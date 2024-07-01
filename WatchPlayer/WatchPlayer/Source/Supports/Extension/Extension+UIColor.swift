@@ -27,10 +27,11 @@ extension UIColor {
                   alpha: alpha)
     }
     
-    static let primary = UIColor.systemTeal
+    static let primary = UIColor.systemIndigo
     static let separator = UIColor(hex: "EEEEEE")
     
     static let title = UIColor(hex: "222222")
+    static let subTitle = UIColor(hex: "424242")
     static let subDescription = UIColor(hex: "5D5D5D")
 }
 

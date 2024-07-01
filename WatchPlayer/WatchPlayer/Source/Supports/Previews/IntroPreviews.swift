@@ -18,16 +18,19 @@ import Combine
     let dependencies = IntroDIContainer(
         dependencies: .init(
             translationService: TranslationService(configuration: .init()),
-            dataService: DataService(configuration: .init())
+            dataService: DataService(configuration: .init()),
+            recordService: RecordService(configuration: .init())
         )
     )
 
     let coordinator = IntroCoordinator(
         navigationController: navigationController,
-        dependencies: dependencies
+        dependencies: dependencies,
+        actions: .init(finishFlow: .init())
     )
     
     coordinator.start()
+    coordinator.showOnboardingView()
     return navigationController
 }
 
