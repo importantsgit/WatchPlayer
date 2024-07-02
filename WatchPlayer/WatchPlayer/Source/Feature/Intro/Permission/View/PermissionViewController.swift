@@ -13,7 +13,7 @@ protocol PermissionViewProtocol {
 
 final class PermissionViewController: DefaultViewController, PermissionViewProtocol {
     
-    let presenter: PermissionPresenterProtocol
+    private let presenter: PermissionPresenterProtocol
     
     init(
         presenter: PermissionPresenterProtocol
@@ -175,7 +175,7 @@ final class PermissionViewController: DefaultViewController, PermissionViewProto
             allowButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
             allowButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 32),
             allowButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -32),
-            allowButton.heightAnchor.constraint(equalToConstant: 48),
+            allowButton.heightAnchor.constraint(equalToConstant: 56),
             
             permissionStack.topAnchor.constraint(equalTo: subTitleLabel.bottomAnchor, constant: 64),
             permissionStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
