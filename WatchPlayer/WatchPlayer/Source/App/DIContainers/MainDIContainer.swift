@@ -14,7 +14,14 @@ protocol MainDIContainerProtocol {
 }
 
 protocol MainDependencies {
+    func makeVideoListDependencies(
+    ) -> VideoListDIContainerProtocol
     
+    func makeRecordDependencies(
+    ) -> RecordDIContainerProtocol
+    
+    func makeSettingDependencies(
+    ) -> SettingDIContainerProtocol
 }
 
 final public class MainDIContainer: MainDIContainerProtocol, MainDependencies {
@@ -39,6 +46,39 @@ final public class MainDIContainer: MainDIContainerProtocol, MainDependencies {
         .init(
             navigationController: navigationController,
             dependencies: self
+        )
+    }
+    
+    func makeVideoListDependencies(
+    ) -> VideoListDIContainerProtocol {
+        VideoListDIContainer(
+            dependencies: .init(
+                translationService: dependencies.translationService,
+                dataService: dependencies.dataService,
+                recordService: dependencies.recordService
+            )
+        )
+    }
+    
+    func makeRecordDependencies(
+    ) -> RecordDIContainerProtocol {
+        RecordDIContainer(
+            dependencies: .init(
+                translationService: dependencies.translationService,
+                dataService: dependencies.dataService,
+                recordService: dependencies.recordService
+            )
+        )
+    }
+    
+    func makeSettingDependencies(
+    ) -> SettingDIContainerProtocol {
+        SettingDIContainer(
+            dependencies: .init(
+                translationService: dependencies.translationService,
+                dataService: dependencies.dataService,
+                recordService: dependencies.recordService
+            )
         )
     }
     
