@@ -8,7 +8,7 @@
 import Foundation
 
 protocol OnboardingPresenterProtocolInput {
-    
+    func confirmButtonTapped()
 }
 
 protocol OnboardingPresenterProtocolOutput {
@@ -17,8 +17,8 @@ protocol OnboardingPresenterProtocolOutput {
 
 typealias OnboardingPresenterProtocol = OnboardingPresenterProtocolInput & OnboardingPresenterProtocolOutput
 
-final class OnboardingPersenter: OnboardingPresenterProtocol {
-    
+final class OnboardingPresenter: OnboardingPresenterProtocol {
+
     let interactor: OnboardingInteractorProtocol
     let router: OnboardingRouterProtocol
     
@@ -28,5 +28,10 @@ final class OnboardingPersenter: OnboardingPresenterProtocol {
     ) {
         self.interactor = interactor
         self.router = router
+    }
+    
+    func confirmButtonTapped() {
+        interactor.neverShowOnboardingView()
+        router.dismissOnboardingView()
     }
 }

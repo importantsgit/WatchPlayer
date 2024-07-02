@@ -2,14 +2,13 @@
 //  OnboardingInteractor.swift
 //  WatchPlayer
 //
-//  Created by 이재훈 on 6/26/24.
+//  Created by 이재훈 on 7/2/24.
 //
 
 import Foundation
 
-
 protocol OnboardingInteractorProtocol {
-    
+    func neverShowOnboardingView()
 }
 
 final class OnboardingInteractor: OnboardingInteractorProtocol {
@@ -20,5 +19,9 @@ final class OnboardingInteractor: OnboardingInteractorProtocol {
         dataRepository: DataRepositoryInterface
     ) {
         self.dataRepository = dataRepository
+    }
+    
+    func neverShowOnboardingView() {
+        dataRepository.dismissOnboardingViewForever()
     }
 }
