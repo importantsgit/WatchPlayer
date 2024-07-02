@@ -22,4 +22,11 @@ final public class DataRepositoryMock: DataRepositoryInterface {
         dismissPermissionViewForeverCallCount += 1
         dataService.dismissPermissionViewForever()
     }
+    
+    var dismissOnboardingViewForeverCallCount = 0
+    func dismissOnboardingViewForever() {
+        dismissOnboardingViewForeverCallCount += 1
+        dataService.dismissOnboardingViewForever()
+    }
+    
 }

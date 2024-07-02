@@ -9,6 +9,7 @@ import Foundation
 
 protocol DataRepositoryInterface {
     func dismissPermissionViewForever()
+    func dismissOnboardingViewForever()
 }
 
 final public class DataRepository: DataRepositoryInterface {
@@ -21,8 +22,11 @@ final public class DataRepository: DataRepositoryInterface {
         self.dataService = dataService
     }
     
-    
     func dismissPermissionViewForever(){
         dataService.dismissPermissionViewForever()
+    }
+    
+    func dismissOnboardingViewForever() {
+        dataService.dismissOnboardingViewForever()
     }
 }
