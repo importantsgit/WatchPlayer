@@ -28,11 +28,21 @@ extension UIColor {
     }
     
     static let primary = UIColor.systemIndigo
+    static let primary900 = UIColor(hex: "6D6FC6")
+    static let primary600 = UIColor(hex: "8889C5")
+    static let primary400 = UIColor(hex: "BABBD8")
+    static let primary100 = UIColor(hex: "CACBD9")
+    
+    static let darkPrimary = UIColor(hex: "2E3088")
+    
     static let separator = UIColor(hex: "EEEEEE")
+    static let cDarkGray = UIColor(hex: "6C6C6C")
     
     static let title = UIColor(hex: "222222")
     static let subTitle = UIColor(hex: "424242")
     static let subDescription = UIColor(hex: "5D5D5D")
+    
+    static let disabled = UIColor(hex: "CECECE")
 }
 
 
