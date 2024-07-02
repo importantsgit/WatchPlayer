@@ -33,5 +33,44 @@ final public class MainDIContainerMock: MainDIContainerProtocol, MainDependencie
             dependencies: self
         )
     }
+    
+    var makeVideoListDependenciesCallCount = 0
+    func makeVideoListDependencies(
+    ) -> VideoListDIContainerProtocol {
+        makeVideoListDependenciesCallCount += 1
+        return VideoListDIContainer(
+            dependencies: .init(
+                translationService: dependencies.translationService,
+                dataService: dependencies.dataService,
+                recordService: dependencies.recordService
+            )
+        )
+    }
+    
+    var makeRecordDependenciesCallCount = 0
+    func makeRecordDependencies(
+    ) -> RecordDIContainerProtocol {
+        makeRecordDependenciesCallCount += 1
+        return RecordDIContainer(
+            dependencies: .init(
+                translationService: dependencies.translationService,
+                dataService: dependencies.dataService,
+                recordService: dependencies.recordService
+            )
+        )
+    }
+    
+    var makeSettingDependenciesCallCount = 0
+    func makeSettingDependencies(
+    ) -> SettingDIContainerProtocol {
+        makeSettingDependenciesCallCount += 1
+        return SettingDIContainer(
+            dependencies: .init(
+                translationService: dependencies.translationService,
+                dataService: dependencies.dataService,
+                recordService: dependencies.recordService
+            )
+        )
+    }
 }
 
