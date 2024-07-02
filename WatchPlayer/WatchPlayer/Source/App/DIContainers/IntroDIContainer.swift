@@ -15,13 +15,17 @@ protocol IntroDIContainerProtocol {
 }
 
 protocol IntroDepedencies {
-    func makePermissionView(
+    
+    func makePermissionView (
         actions: PermissionRouterActions
     ) -> PermissionViewController
     
-    func makeOnboardingView(
+    func makeOnboardingView (
         actions: OnboardingRouterActions
     ) -> OnboardingViewController
+    
+    func isShowPermissionView (
+    ) -> Bool
 }
 
 final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies {
@@ -49,6 +53,11 @@ final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies 
             dependencies: self,
             actions: actions
         )
+    }
+    
+    func isShowPermissionView(
+    ) -> Bool {
+        dependencies.dataService.isShowPermissionView
     }
     
     // MARK: - Repository
@@ -109,6 +118,13 @@ final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies 
     
     // MARK: - OnboardingModule
     
+    func makeOnboardingInteractor(
+    ) -> OnboardingInteractorProtocol {
+        OnboardingInteractor(
+            dataRepository: makeDataRepository()
+        )
+    }
+    
     func makeOnboardingRouter(
         actions: OnboardingRouterActions
     ) -> OnboardingRouterProtocol {
@@ -117,17 +133,10 @@ final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies 
         )
     }
     
-    func makeOnboardingInteractor(
-    ) -> OnboardingInteractorProtocol {
-        OnboardingInteractor(
-            dataRepository: makeDataRepository()
-        )
-    }
-    
     func makeOnboardingPresenter(
         actions: OnboardingRouterActions
     ) -> OnboardingPresenterProtocol {
-        OnboardingPersenter(
+        OnboardingPresenter(
             interactor: makeOnboardingInteractor(),
             router: makeOnboardingRouter(actions: actions)
         )

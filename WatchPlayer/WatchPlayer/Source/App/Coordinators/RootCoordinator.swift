@@ -32,6 +32,7 @@ final public class RootCoordinator: RouterManageable {
     ) -> IntroCoordinatorActions {
         let finishFlow = PublishRelay<Void>()
         finishFlow.subscribe( onNext: { [weak self] in
+            self?.childCoordinators.removeLast()
             self?.startMainFlow()
         })
         .disposed(by: disposeBag)
@@ -40,15 +41,13 @@ final public class RootCoordinator: RouterManageable {
     }
     
     func start() {
+        
         let isShowPermissionView = dependencies.dataService.isShowPermissionView
         let isShowOnboardingView = dependencies.dataService.isShowOnboardingView
         
-        if isShowPermissionView || isShowOnboardingView {
-            startIntroFlow()
-        }
-        else {
-            startMainFlow()
-        }
+        isShowPermissionView || isShowOnboardingView ?
+        startIntroFlow() :
+        startMainFlow()
     }
 
     func startIntroFlow(

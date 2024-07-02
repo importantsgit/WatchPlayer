@@ -11,6 +11,7 @@ import RxRelay
 
 protocol IntroRouterManageable: LeafCoordinator {
     var navigationController: UINavigationController? { get }
+    var rootViewController: UIViewController? { get }
 }
 
 struct IntroCoordinatorActions: CoordinatorActionsProtocol {
@@ -20,6 +21,7 @@ struct IntroCoordinatorActions: CoordinatorActionsProtocol {
 final public class IntroCoordinator: IntroRouterManageable {
     
     weak public private(set) var navigationController: UINavigationController?
+    weak public private(set) var rootViewController: UIViewController?
     private let dependencies: IntroDepedencies
     private let actions: IntroCoordinatorActions
     var disposeBag = DisposeBag()
@@ -64,8 +66,9 @@ final public class IntroCoordinator: IntroRouterManageable {
     }
     
     func start() {
-        // TODO: 권한 페이지 노출 여부
-        showPermissionView()
+        dependencies.isShowPermissionView() ?
+        showPermissionView() :
+        showOnboardingView()
     }
     
     func showPermissionView() {
@@ -77,6 +80,7 @@ final public class IntroCoordinator: IntroRouterManageable {
             [permissionViewController],
             animated: true
         )
+        rootViewController = permissionViewController
     }
     
     func showOnboardingView() {
@@ -84,9 +88,19 @@ final public class IntroCoordinator: IntroRouterManageable {
             actions: makeOnboardingRouterActions()
         )
         
-        navigationController?.pushViewController(
-            OnboardingViewController,
-            animated: true
-        )
+        if navigationController?.viewControllers.isEmpty == true {
+            navigationController?.setViewControllers(
+                [OnboardingViewController],
+                animated: true
+            )
+            
+            rootViewController = OnboardingViewController
+        }
+        else {
+            navigationController?.pushViewController(
+                OnboardingViewController,
+                animated: true
+            )
+        }
     }
 }

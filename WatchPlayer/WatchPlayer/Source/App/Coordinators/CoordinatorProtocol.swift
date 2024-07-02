@@ -5,20 +5,18 @@
 //  Created by Importants on 6/27/24.
 //
 
-import Foundation
+import UIKit
 import RxRelay
 
 protocol BaseCoordinator: AnyObject {
     func start()
 }
 
-protocol NodeCoordinator: BaseCoordinator{
+protocol NodeCoordinator: BaseCoordinator {
     var childCoordinators: [BaseCoordinator] { get set }
 }
 
-protocol LeafCoordinator: BaseCoordinator {
-    
-}
+protocol LeafCoordinator: BaseCoordinator {}
 
 protocol CoordinatorActionsProtocol {
     var finishFlow: PublishRelay<Void> { get }
