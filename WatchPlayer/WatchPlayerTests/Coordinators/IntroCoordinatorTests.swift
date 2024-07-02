@@ -52,6 +52,12 @@ final class IntroCoordinatorTests: XCTestCase {
         sut.start()
         
         // Then
+        let permissionViewisRootView = sut.rootViewController is PermissionViewController
+        let onboardingViewisRootView = sut.rootViewController is OnboardingViewController
+        
+        XCTAssertTrue(permissionViewisRootView)
+        XCTAssertFalse(onboardingViewisRootView)
+        
         let permissionViewCount = introContainerDoc.makePermissionViewCallCount
         let permissionRouterCount = introContainerDoc.makePermissionRouterCallCount
         let permissionPresenterCount = introContainerDoc.makePermissionPresenterCallCount
@@ -62,5 +68,47 @@ final class IntroCoordinatorTests: XCTestCase {
         XCTAssertEqual(permissionPresenterCount, 1)
         XCTAssertEqual(permissionInteractorCount, 1)
         
+        let onboardingViewCount = introContainerDoc.makeOnboardingViewCallCount
+        let onboardingRouterCount = introContainerDoc.makeOnboardingRouterCallCount
+        let onboardingPresenterCount = introContainerDoc.makeOnboardingPresenterCallCount
+        let onboardingInteractorCount = introContainerDoc.makeOnboardingInteractorCallCount
+        
+        XCTAssertEqual(onboardingViewCount, 0)
+        XCTAssertEqual(onboardingRouterCount, 0)
+        XCTAssertEqual(onboardingPresenterCount, 0)
+        XCTAssertEqual(onboardingInteractorCount, 0)
+    }
+    
+    func testShowOnboardingView() {
+        // Given
+        introContainerDoc.dependencies.dataService.dismissPermissionViewForever()
+        // When
+        sut.start()
+        // Then
+        let permissionViewisRootView = sut.rootViewController is PermissionViewController
+        let onboardingViewisRootView = sut.rootViewController is OnboardingViewController
+        
+        XCTAssertFalse(permissionViewisRootView)
+        XCTAssertTrue(onboardingViewisRootView)
+        
+        let permissionViewCount = introContainerDoc.makePermissionViewCallCount
+        let permissionRouterCount = introContainerDoc.makePermissionRouterCallCount
+        let permissionPresenterCount = introContainerDoc.makePermissionPresenterCallCount
+        let permissionInteractorCount = introContainerDoc.makePermissionInteractorCallCount
+        
+        XCTAssertEqual(permissionViewCount, 0)
+        XCTAssertEqual(permissionRouterCount, 0)
+        XCTAssertEqual(permissionPresenterCount, 0)
+        XCTAssertEqual(permissionInteractorCount, 0)
+        
+        let onboardingViewCount = introContainerDoc.makeOnboardingViewCallCount
+        let onboardingRouterCount = introContainerDoc.makeOnboardingRouterCallCount
+        let onboardingPresenterCount = introContainerDoc.makeOnboardingPresenterCallCount
+        let onboardingInteractorCount = introContainerDoc.makeOnboardingInteractorCallCount
+        
+        XCTAssertEqual(onboardingViewCount, 1)
+        XCTAssertEqual(onboardingRouterCount, 1)
+        XCTAssertEqual(onboardingPresenterCount, 1)
+        XCTAssertEqual(onboardingInteractorCount, 1)
     }
 }

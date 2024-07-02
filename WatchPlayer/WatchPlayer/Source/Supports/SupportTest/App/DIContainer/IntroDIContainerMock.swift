@@ -9,7 +9,7 @@ import UIKit
 import RxRelay
 
 final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedencies {
-    
+
     struct Dependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
@@ -36,6 +36,14 @@ final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedenc
             actions: actions
         )
     }
+    var isShowPermissionViewCallCount = 0
+    func isShowPermissionView(
+    ) -> Bool {
+        isShowPermissionViewCallCount += 1
+        return dependencies.dataService.isShowPermissionView
+    }
+    
+    // MARK: - Repository
     
     var makeTranslationRepositoryCallCount = 0
     func makeTranslationRepository(
@@ -105,6 +113,15 @@ final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedenc
     }
     
     // MARK: - OnboardingModule
+
+    var makeOnboardingInteractorCallCount = 0
+    func makeOnboardingInteractor(
+    ) -> OnboardingInteractorProtocol {
+        makeOnboardingInteractorCallCount += 1
+        return OnboardingInteractor(
+            dataRepository: makeDataRepository()
+        )
+    }
     
     var makeOnboardingRouterCallCount = 0
     func makeOnboardingRouter(
@@ -116,21 +133,12 @@ final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedenc
         )
     }
     
-    var makeOnboardingInteractorCallCount = 0
-    func makeOnboardingInteractor(
-    ) -> OnboardingInteractorProtocol {
-        makeOnboardingInteractorCallCount += 1
-        return OnboardingInteractor(
-            dataRepository: makeDataRepository()
-        )
-    }
-    
     var makeOnboardingPresenterCallCount = 0
     func makeOnboardingPresenter(
         actions: OnboardingRouterActions
     ) -> OnboardingPresenterProtocol {
         makeOnboardingPresenterCallCount += 1
-        return OnboardingPersenter(
+        return OnboardingPresenter(
             interactor: makeOnboardingInteractor(),
             router: makeOnboardingRouter(actions: actions)
         )

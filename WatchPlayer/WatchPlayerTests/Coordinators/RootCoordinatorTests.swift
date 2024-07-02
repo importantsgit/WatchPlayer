@@ -78,7 +78,6 @@ final class RootCoordinatorTests: XCTestCase {
         let introDependenciesCount = appDIContainerDoc.makeIntroDependenciesCallCount
         XCTAssertEqual(introDependenciesCount, 0)
         
-        
         let mainDependenciesCount = appDIContainerDoc.makeMainDependenciesCallCount
         XCTAssertEqual(mainDependenciesCount, 1)
     }
@@ -94,7 +93,6 @@ final class RootCoordinatorTests: XCTestCase {
         // Then
         let introDependenciesCount = appDIContainerDoc.makeIntroDependenciesCallCount
         XCTAssertEqual(introDependenciesCount, 1)
-        
         
         let mainDependenciesCount = appDIContainerDoc.makeMainDependenciesCallCount
         XCTAssertEqual(mainDependenciesCount, 0)

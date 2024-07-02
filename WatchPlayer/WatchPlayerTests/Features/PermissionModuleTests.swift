@@ -13,7 +13,7 @@ final class PermissionModuleTests: XCTestCase {
     var interactor: PermissionInteractorMock!
     var presenter: PermissionPresenterMock!
     var router: PermissionRouterMock!
-    var view: PermissionViewController!
+    var sub: PermissionViewController!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -37,23 +37,24 @@ final class PermissionModuleTests: XCTestCase {
             router: router
         )
         
-        view = .init(presenter: presenter)
+        sub = .init(presenter: presenter)
     }
 
     override func tearDownWithError() throws {
         interactor = nil
         presenter = nil
         router = nil
-        view = nil
+        sub = nil
         
         try super.tearDownWithError()
     }
     
+    // FIXME: When 시점이 애매함
     func testShowPermissionPopup() async {
         // Given
         
         // When
-        await view.presenter.permissionButtonTapped()
+        await presenter.permissionButtonTapped()
         
         // Then
         let presenterCount = presenter.permissionButtonTappedCallCount
@@ -67,7 +68,6 @@ final class PermissionModuleTests: XCTestCase {
         XCTAssertEqual(dataRepositoryCount, 1)
         XCTAssertEqual(dataServiceCount, 1)
         XCTAssertEqual(routerCount, 1)
-        
-        
+
     }
 }
