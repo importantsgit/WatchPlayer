@@ -13,6 +13,8 @@ protocol PermissionViewProtocol {
 
 final class PermissionViewController: DefaultViewController, PermissionViewProtocol {
     
+    let allowButton = UIButton()
+    
     private let presenter: PermissionPresenterProtocol
     
     init(
@@ -51,8 +53,7 @@ final class PermissionViewController: DefaultViewController, PermissionViewProto
         subTitleLabel.textColor = .subDescription
         subTitleLabel.font = .systemFont(ofSize: 14)
         subTitleLabel.textAlignment = .center
-
-        let allowButton = UIButton()
+        
         var allButtonTitle = AttributedString("권한을 허용할게요")
         allButtonTitle.font = .systemFont(ofSize: 16, weight: .medium)
         allButtonTitle.foregroundColor = .white
@@ -211,7 +212,9 @@ final class PermissionViewController: DefaultViewController, PermissionViewProto
     }
     
     @objc func permissionButtonTapped() {
+        if allowButton.isSelected == true { return }
         Task {
+            allowButton.isSelected = true
             await presenter.permissionButtonTapped()
         }
     }

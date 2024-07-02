@@ -129,6 +129,8 @@ final class OnboardingViewController: UIPageViewController {
     }
     
     @objc func confirmButtonTapped(){
+        if confirmButton.isSelected == true { return }
+        confirmButton.isSelected = true
         presenter.confirmButtonTapped()
     }
 }
