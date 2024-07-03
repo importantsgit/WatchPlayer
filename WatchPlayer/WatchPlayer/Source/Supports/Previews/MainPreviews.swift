@@ -1,8 +1,8 @@
 //
-//  IntroPreviews.swift
+//  MainPreviews.swift
 //  WatchPlayer
 //
-//  Created by 이재훈 on 6/27/24.
+//  Created by 이재훈 on 7/3/24.
 //
 
 import UIKit
@@ -14,24 +14,24 @@ import UIKit
     let navigationController = UINavigationController()
     navigationController.isNavigationBarHidden = true
 
-    let dependencies = IntroDIContainer(
+    let dependencies = MainDIContainer(
         dependencies: .init(
             translationService: TranslationService(configuration: .init()),
             dataService: DataService(configuration: .init()),
-            recordService: RecordService(configuration: .init())
+            recordService: RecordService(configuration: .init()),
+            libraryService: LibraryService(configuration: .init(fetchLimit: 20))
         )
     )
 
-    let coordinator = IntroCoordinator(
+    let coordinator = MainCoordinator(
         navigationController: navigationController,
-        dependencies: dependencies,
-        actions: .init(finishFlow: .init())
+        dependencies: dependencies
     )
     
     coordinator.start()
-    coordinator.showOnboardingView()
     return navigationController
 }
 
 #endif
+
 
