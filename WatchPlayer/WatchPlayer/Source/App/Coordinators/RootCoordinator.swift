@@ -26,6 +26,13 @@ final public class RootCoordinator: RouterManageable {
     ) {
         self.navigationController = navigationController
         self.dependencies = dependencies
+        setNavigationBar()
+    }
+    
+    func setNavigationBar() {
+        self.navigationController.navigationBar.isHidden = true
+        self.navigationController.modalPresentationStyle = .fullScreen
+        self.navigationController.modalTransitionStyle = .crossDissolve
     }
     
     func makeIntroCoordinatorActions(
