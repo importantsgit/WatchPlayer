@@ -129,7 +129,6 @@ extension VideoListViewController: UIScrollViewDelegate {
         let height = scrollView.frame.size.height
 
         if offsetY >= contentHeight - height {
-            print("true!!")
             presenter.fetchVideos()
         }
     }
