@@ -6,16 +6,25 @@
 //
 
 import Foundation
+import Photos
 
-protocol LibraryRepositoryInterface {}
+protocol LibraryRepositoryInterface {
+    func fetchVideos(
+    ) async throws -> ([PHAsset], Bool)
+}
 
 final public class LibraryRepository: LibraryRepositoryInterface {
     
-    let recordService: RecordServiceInterface
+    let libraryService: LibraryServiceInterface
     
     init(
-        recordService: RecordServiceInterface
+        libraryService: LibraryServiceInterface
     ) {
-        self.recordService = recordService
+        self.libraryService = libraryService
+    }
+    
+    func fetchVideos(
+    ) async throws -> ([PHAsset], Bool) {
+        try await libraryService.fetchVideos()
     }
 }
