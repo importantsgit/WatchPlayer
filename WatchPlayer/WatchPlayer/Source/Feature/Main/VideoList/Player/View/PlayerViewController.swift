@@ -13,7 +13,7 @@ import RxRelay
 final class PlayerViewController: DefaultViewController {
     
     let navigationBar: NavigationBarProtocol = NavigationBarView()
-    var playerViewController: AVPlayerViewController = .init()
+    var playerViewController: PlayerView = PlayerView()
     
     let presenter: PlayerPresenterProtocol
 
@@ -40,10 +40,11 @@ final class PlayerViewController: DefaultViewController {
         
         let navigationBar = navigationBar as! UIView
         
-        addChild(playerViewController)
-        playerViewController.didMove(toParent: self)
+//        addChild(playerViewController)
+//        playerViewController.didMove(toParent: self)
+        playerViewController.backgroundColor = .black
         
-        [playerViewController.view, navigationBar].forEach {
+        [playerViewController, navigationBar].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -54,10 +55,10 @@ final class PlayerViewController: DefaultViewController {
             navigationBar.rightAnchor.constraint(equalTo: view.rightAnchor),
             navigationBar.heightAnchor.constraint(equalToConstant: 56),
             
-            playerViewController.view.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
-            playerViewController.view.leftAnchor.constraint(equalTo: view.leftAnchor),
-            playerViewController.view.rightAnchor.constraint(equalTo: view.rightAnchor),
-            playerViewController.view.heightAnchor.constraint(equalToConstant: 300)
+            playerViewController.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            playerViewController.leftAnchor.constraint(equalTo: view.leftAnchor),
+            playerViewController.rightAnchor.constraint(equalTo: view.rightAnchor),
+            playerViewController.heightAnchor.constraint(equalToConstant: 300)
             
         ])
         
@@ -87,8 +88,8 @@ extension PlayerViewController {
     }
     
     func play(item: AVPlayerItem) {
-        let player = AVPlayer(playerItem: item)
-        playerViewController.player = player
-        player.play()
+        //let player = AVPlayer(playerItem: item)
+        playerViewController.startPlayer(playerItem: item)
+        
     }
 }

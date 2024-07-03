@@ -113,6 +113,7 @@
 		A5A19B722C2C70FE007C1538 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B712C2C70FE007C1538 /* CoordinatorProtocol.swift */; };
 		A5A19B742C2C721F007C1538 /* IntroDIContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B732C2C721F007C1538 /* IntroDIContainer.swift */; };
 		A5A19B762C2C764E007C1538 /* IntroDIContainerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A19B752C2C764E007C1538 /* IntroDIContainerMock.swift */; };
+		A5EDCE542C359A30000C99AA /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5EDCE532C359A30000C99AA /* PlayerView.swift */; };
 		D0C1A7C8ACDB1463E600D1E6 /* Pods_WatchPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA5B6CBAA124C4CB762D44F3 /* Pods_WatchPlayer.framework */; };
 /* End PBXBuildFile section */
 
@@ -254,6 +255,7 @@
 		A5A19B712C2C70FE007C1538 /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
 		A5A19B732C2C721F007C1538 /* IntroDIContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroDIContainer.swift; sourceTree = "<group>"; };
 		A5A19B752C2C764E007C1538 /* IntroDIContainerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroDIContainerMock.swift; sourceTree = "<group>"; };
+		A5EDCE532C359A30000C99AA /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		D950471E92AEAF51DF7F357B /* Pods-WatchPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPlayer.release.xcconfig"; path = "Target Support Files/Pods-WatchPlayer/Pods-WatchPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		EA5B6CBAA124C4CB762D44F3 /* Pods_WatchPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -949,6 +951,7 @@
 			isa = PBXGroup;
 			children = (
 				7BFAB8492C353C810082C456 /* PlayerViewController.swift */,
+				A5EDCE532C359A30000C99AA /* PlayerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1321,6 +1324,7 @@
 				7B8A13DF2C33A10C00E6E2D1 /* OnboardingInteractor.swift in Sources */,
 				7BAFABB32C2D20720052F14F /* FillButton.swift in Sources */,
 				A53DE0E52C2DCDE6006DF09F /* PermissionPresenterMock.swift in Sources */,
+				A5EDCE542C359A30000C99AA /* PlayerView.swift in Sources */,
 				7B9992562C34D87300B56DEB /* LibraryServiceMock.swift in Sources */,
 				7BCD7FCE2C33E4EA009158D5 /* VideoListDIContainer.swift in Sources */,
 				7BCD7FFC2C33FA55009158D5 /* VideoListInteractorMock.swift in Sources */,
@@ -1587,7 +1591,8 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -1624,7 +1629,8 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "";
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
