@@ -44,35 +44,36 @@ final class PlayerPresenter: PlayerPresenterProtocol {
     func viewDidLoad() {
         Task {
             do {
-                let avAsset = try await requestAVAsset(asset)
-                playerItem = .init(asset: avAsset)
-                fetchPlayerItem.accept(playerItem!)
+                print(asset.pixelWidth, asset.pixelHeight)
+                let item = try await requestAVPlayerItem(asset)
+                playerItem = item
+                fetchPlayerItem.accept(item)
             }
             catch {
-                
+                print(error)
             }
         }
     }
     
-    func requestAVAsset(
+    private func requestAVPlayerItem(
         _ asset: PHAsset
-    ) async throws -> AVAsset {
+    ) async throws -> AVPlayerItem {
         return try await withCheckedThrowingContinuation { continuation in
             let options = PHVideoRequestOptions()
             options.version = .current
-            options.deliveryMode = .highQualityFormat
+            options.deliveryMode = .automatic
             
-            PHImageManager.default().requestAVAsset(
+            PHImageManager.default().requestPlayerItem(
                 forVideo: asset,
                 options: options
-            ) { (asset, _, _) in
-                guard let asset = asset
+            ) { item, _ in
+                guard let item = item
                 // FIXME: 에러 처리
                 else {
                     continuation.resume(throwing: AssetError.invaild)
                     return
                 }
-                continuation.resume(returning: asset)
+                continuation.resume(returning: item)
             }
         }
     }
