@@ -30,12 +30,23 @@ protocol NavigationBarProtocol {
     ) -> Observable<Void>
 }
 
+extension NavigationBarProtocol {
+    @discardableResult
+    func setLeftButton(
+        imageName: String = "Nor"
+    ) -> Observable<Void> {
+        setLeftButton(imageName: imageName)
+    }
+}
+
 final class NavigationBarView: UIView, NavigationBarProtocol {
+    
     private var leftButtonAction = PublishRelay<Void>()
     private var rightButtonAction = PublishRelay<Void>()
     private var hiddenButtonAction = PublishRelay<Void>()
     
     private let navigationBarColor: UIColor
+    private let imageSize: CGFloat = 24
     
     private var titleLabel: UILabel = {
         var label = UILabel()
@@ -51,7 +62,7 @@ final class NavigationBarView: UIView, NavigationBarProtocol {
     
     init(
         title: String = "",
-        navigationBarColor: UIColor = .clear
+        navigationBarColor: UIColor = .white
     ){
         self.titleLabel.text = title
         self.navigationBarColor = navigationBarColor
@@ -110,8 +121,8 @@ extension NavigationBarView {
         
         NSLayoutConstraint.activate([
             leftButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 4),
-            leftButton.widthAnchor.constraint(equalToConstant: 48),
-            leftButton.heightAnchor.constraint(equalToConstant: 48),
+            leftButton.widthAnchor.constraint(equalToConstant: imageSize * 2),
+            leftButton.heightAnchor.constraint(equalToConstant: imageSize * 2),
             
             titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
@@ -121,8 +132,8 @@ extension NavigationBarView {
             hiddenButton.heightAnchor.constraint(equalToConstant: 32),
             
             rightButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -4),
-            rightButton.widthAnchor.constraint(equalToConstant: 48),
-            rightButton.heightAnchor.constraint(equalToConstant: 48),
+            rightButton.widthAnchor.constraint(equalToConstant: imageSize * 2),
+            rightButton.heightAnchor.constraint(equalToConstant: imageSize * 2),
         ])
         
         leftButton.isHidden = true
@@ -143,8 +154,9 @@ extension NavigationBarView {
         titleLabel.attributedText = name
     }
     
+    @discardableResult
     func setLeftButton(
-        imageName: String = "backButton_black"
+        imageName: String
     ) -> Observable<Void> {
         leftButton.isHidden = false
         setLeftConfig(imageName: imageName)
@@ -154,6 +166,7 @@ extension NavigationBarView {
             .asObservable()
     }
     
+    @discardableResult
     func setRightButton(
         imageName: String
     ) -> Observable<Void> {
@@ -176,7 +189,8 @@ extension NavigationBarView {
     
     private func setLeftConfig(imageName: String) {
         var buttonConfig = UIButton.Configuration.plain()
-        buttonConfig.image = UIImage(named: imageName)
+        buttonConfig.image = UIImage(named: imageName)?
+            .resized(to: .init(width: imageSize, height: imageSize))
         buttonConfig.imagePlacement = .all
         
         leftButton.configuration = buttonConfig
@@ -184,7 +198,8 @@ extension NavigationBarView {
     
     private func setRightConfig(imageName: String) {
         var buttonConfig = UIButton.Configuration.plain()
-        buttonConfig.image = UIImage(named: imageName)
+        buttonConfig.image = UIImage(named: imageName)?
+            .resized(to: .init(width: imageSize, height: imageSize))
         buttonConfig.imagePlacement = .all
         
         rightButton.configuration = buttonConfig
