@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxRelay
+import Photos
 
 protocol VideoListRouterManageable: LeafCoordinator {
     var navigationController: UINavigationController? { get }
@@ -31,7 +32,29 @@ final public class VideoListCoordinator: VideoListRouterManageable {
     
     func makeVideoListRouterActions(
     ) -> VideoListRouterActions {
-        return .init()
+        let showPlayer = PublishRelay<PHAsset>()
+        showPlayer
+            .subscribe(onNext: { [weak self] asset in
+            self?.showPlayer(asset: asset)
+        })
+        .disposed(by: disposeBag)
+        
+        return .init(
+            showPlayer: showPlayer
+        )
+    }
+    
+    func makePlayerRouterActions(
+    ) -> PlayerRouterActions {
+        let dismissView = PublishRelay<Void>()
+        dismissView.subscribe(onNext: { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        })
+        .disposed(by: disposeBag)
+        
+        return .init(
+            dismissView: dismissView
+        )
     }
     
     func start() {
@@ -45,4 +68,12 @@ final public class VideoListCoordinator: VideoListRouterManageable {
         rootViewController = videoListViewController
     }
     
+    func showPlayer(asset: PHAsset) {
+        let playerViewController = dependencies.makePlayerViewController(
+            actions: makePlayerRouterActions(),
+            asset: asset
+        )
+        
+        navigationController?.pushViewController(playerViewController, animated: true)
+    }
 }

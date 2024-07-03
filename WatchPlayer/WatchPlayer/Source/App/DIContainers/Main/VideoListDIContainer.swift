@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Photos
 
 protocol VideoListDIContainerProtocol {
     func makeVideoListCoordinator(
@@ -17,6 +18,11 @@ protocol VideoListDependencies {
     func makeVideoListViewController(
         actions: VideoListRouterActions
     ) -> VideoListViewController
+    
+    func makePlayerViewController(
+        actions: PlayerRouterActions,
+        asset: PHAsset
+    ) -> PlayerViewController
 }
 
 final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoListDependencies {
@@ -25,6 +31,7 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
         let recordService: RecordServiceInterface
+        let libraryService: LibraryServiceInterface
     }
     
     let dependencies: Dependencies
@@ -67,11 +74,20 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
         )
     }
     
+    func makeLibraryRepository(
+    ) -> LibraryRepositoryInterface {
+        LibraryRepository(
+            libraryService: dependencies.libraryService
+        )
+    }
+    
     // MARK: - VideoListModule
     
     func makeVideoListInteractor(
     ) -> VideoListInteractorProtocol {
-        VideoListInteractor()
+        VideoListInteractor(
+            libraryRepository: makeLibraryRepository()
+        )
     }
     
     func makeVideoListRouter(
@@ -97,6 +113,42 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
         .init(
             presenter: makeVideoListPresenter(
                 actions: actions
+            )
+        )
+    }
+    
+    // MARK: - PlayerModule
+    
+    func makePlayerInteractor(
+    ) -> PlayerInteractorProtocol {
+        PlayerInteractor()
+    }
+    
+    func makePlayerRouter(
+        actions: PlayerRouterActions
+    ) -> PlayerRouterProtocol {
+        PlayerRouter(actions: actions)
+    }
+    
+    func makePlayerPresenter(
+        actions: PlayerRouterActions,
+        asset: PHAsset
+    ) -> PlayerPresenterProtocol {
+        PlayerPresenter(
+            router: makePlayerRouter(actions: actions),
+            interactor: makePlayerInteractor(),
+            asset: asset
+        )
+    }
+    
+    func makePlayerViewController(
+        actions: PlayerRouterActions,
+        asset: PHAsset
+    ) -> PlayerViewController {
+        .init(
+            presenter: makePlayerPresenter(
+                actions: actions,
+                asset: asset
             )
         )
     }
