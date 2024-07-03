@@ -22,5 +22,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
 
+    static var orientationRotate = UIInterfaceOrientationMask.portrait {
+        didSet {
+            UIApplication.shared.connectedScenes.forEach { scene in
+                if let windowScene = scene as? UIWindowScene {
+                    windowScene.requestGeometryUpdate(
+                        .iOS(interfaceOrientations: orientationRotate))
+                }
+            }
+            UIViewController.attemptRotationToDeviceOrientation()
+        }
+        
+    }
+    
+
+    /**
+     회전할 수 있는 방향을 지정하는 변수, 첫 진입시 portrait 고정
+     */
+    static var orientationLock: UIInterfaceOrientationMask = .portrait {
+        didSet{
+            if let firstScene = UIApplication.shared.connectedScenes.first as? UIWindowScene{
+                if let rootViewController = firstScene.windows.first?.rootViewController{
+                    rootViewController.setNeedsUpdateOfSupportedInterfaceOrientations()
+                }
+            }
+        }
+    }
+    
+    
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return AppDelegate.orientationLock
+    }
+
 }
 
