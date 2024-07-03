@@ -6,11 +6,16 @@
 //
 
 import Foundation
+import RxRelay
+import Photos
 
-protocol VideoListRouterProtocol {}
+protocol VideoListRouterProtocol {
+    func showPlayer(asset: PHAsset)
+    
+}
 
 struct VideoListRouterActions {
-    
+    let showPlayer: PublishRelay<PHAsset>
 }
 
 final class VideoListRouter: VideoListRouterProtocol {
@@ -21,5 +26,11 @@ final class VideoListRouter: VideoListRouterProtocol {
         actions: VideoListRouterActions
     ) {
         self.actions = actions
+    }
+    
+    func showPlayer(
+        asset: PHAsset
+    ) {
+        actions.showPlayer.accept(asset)
     }
 }

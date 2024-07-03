@@ -6,9 +6,34 @@
 //
 
 import Foundation
+import Photos
 
-protocol VideoListInteractorProtocol {}
+protocol VideoListInteractorProtocol {
+    func fetchVideos(
+    ) async throws -> ([PHAsset], Bool)
+}
 
 final class VideoListInteractor: VideoListInteractorProtocol {
     
+    let libraryRepository: LibraryRepositoryInterface
+    
+    init(
+        libraryRepository: LibraryRepositoryInterface
+    ) {
+        self.libraryRepository = libraryRepository
+    }
+    
+    func fetchVideos(
+    ) async throws -> ([PHAsset], Bool) {
+        do {
+            let result = try await libraryRepository.fetchVideos()
+            return result
+        }
+        catch {
+            // FIXME: 수정
+            throw DataLibraryError.notAuthorized
+            // Error Handler
+        }
+        
+    }
 }
