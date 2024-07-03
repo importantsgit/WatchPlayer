@@ -6,7 +6,10 @@
 //
 
 import Foundation
+import Photos
 
 final class VideoListRouterMock: VideoListRouterProtocol {
-    
+    func showPlayer(asset: PHAsset) {
+     
+    }
 }
