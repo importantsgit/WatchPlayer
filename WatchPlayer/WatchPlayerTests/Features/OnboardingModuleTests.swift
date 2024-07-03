@@ -41,6 +41,8 @@ final class OnboardingModuleTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
+        dataRepository = nil
+        interactor = nil
         presenter = nil
         router = nil
         sub = nil

@@ -25,6 +25,4 @@ final class VideoListCoordinatorTests: XCTestCase {
         sut = nil
         try super.tearDownWithError()
     }
-
-
 }

@@ -22,7 +22,8 @@ final class MainCoordinatorTests: XCTestCase {
         mainContainerDocDependencies = .init(
             translationService: TranslationServiceMock(),
             dataService: DataServiceMock(),
-            recordService: RecordServiceMock()
+            recordService: RecordServiceMock(),
+            libraryService: LibraryServiceMock()
         )
         
         mainDIContainerDoc = .init(dependencies: mainContainerDocDependencies)

@@ -8,5 +8,11 @@
 import Foundation
 
 final public class TranslationRepositoryMock: TranslationRepositoryInterface {
+    let translationService: TranslationServiceMock
     
+    init(
+        translationService: TranslationServiceMock
+    ) {
+        self.translationService = translationService
+    }
 }

@@ -10,9 +10,10 @@ import UIKit
 final public class MainDIContainerMock: MainDIContainerProtocol, MainDependencies {
 
     struct Dependencies {
-        let translationService: TranslationServiceInterface
-        let dataService: DataServiceInterface
-        let recordService: RecordServiceInterface
+        let translationService: TranslationServiceMock
+        let dataService: DataServiceMock
+        let recordService: RecordServiceMock
+        let libraryService: LibraryServiceMock
     }
     
     let dependencies: Dependencies
@@ -38,11 +39,12 @@ final public class MainDIContainerMock: MainDIContainerProtocol, MainDependencie
     func makeVideoListDependencies(
     ) -> VideoListDIContainerProtocol {
         makeVideoListDependenciesCallCount += 1
-        return VideoListDIContainer(
+        return VideoListDIContainerMock(
             dependencies: .init(
                 translationService: dependencies.translationService,
                 dataService: dependencies.dataService,
-                recordService: dependencies.recordService
+                recordService: dependencies.recordService,
+                libraryService: dependencies.libraryService
             )
         )
     }
@@ -51,7 +53,7 @@ final public class MainDIContainerMock: MainDIContainerProtocol, MainDependencie
     func makeRecordDependencies(
     ) -> RecordDIContainerProtocol {
         makeRecordDependenciesCallCount += 1
-        return RecordDIContainer(
+        return RecordDIContainerMock(
             dependencies: .init(
                 translationService: dependencies.translationService,
                 dataService: dependencies.dataService,
@@ -64,7 +66,7 @@ final public class MainDIContainerMock: MainDIContainerProtocol, MainDependencie
     func makeSettingDependencies(
     ) -> SettingDIContainerProtocol {
         makeSettingDependenciesCallCount += 1
-        return SettingDIContainer(
+        return SettingDIContainerMock(
             dependencies: .init(
                 translationService: dependencies.translationService,
                 dataService: dependencies.dataService,
