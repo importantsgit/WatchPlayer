@@ -11,6 +11,7 @@ protocol AppDependencies {
     var dataService: DataServiceInterface { get }
     var translationService: TranslationServiceInterface { get }
     var recordService: RecordServiceInterface { get }
+    var libraryService: LibraryServiceInterface { get }
     
     func makeIntroDependencies(
     ) -> IntroDIContainerProtocol
@@ -46,6 +47,15 @@ final public class AppDIContainer: AppDependencies {
         
         return recordService
     }()
+    
+    lazy var libraryService: LibraryServiceInterface = {
+        let libraryService = LibraryService(
+            configuration: .init(
+                fetchLimit: appConfiguration.fetchLimit
+            )
+        )
+        return libraryService
+    }()
 
     func makeIntroDependencies(
     ) -> IntroDIContainerProtocol {
@@ -64,7 +74,8 @@ final public class AppDIContainer: AppDependencies {
             dependencies: .init(
                 translationService: translationService,
                 dataService: dataService,
-                recordService: recordService
+                recordService: recordService,
+                libraryService: libraryService
             )
         )
     }

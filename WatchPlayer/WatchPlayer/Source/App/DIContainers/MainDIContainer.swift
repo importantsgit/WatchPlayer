@@ -30,6 +30,7 @@ final public class MainDIContainer: MainDIContainerProtocol, MainDependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
         let recordService: RecordServiceInterface
+        let libraryService: LibraryServiceInterface
     }
     
     let dependencies: Dependencies
@@ -55,7 +56,8 @@ final public class MainDIContainer: MainDIContainerProtocol, MainDependencies {
             dependencies: .init(
                 translationService: dependencies.translationService,
                 dataService: dependencies.dataService,
-                recordService: dependencies.recordService
+                recordService: dependencies.recordService,
+                libraryService: dependencies.libraryService
             )
         )
     }

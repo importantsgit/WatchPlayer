@@ -42,7 +42,6 @@ final public class RecordCoordinator: RecordRouterManageable {
         let recordViewController = dependencies.makeRecordViewController(
             actions: makeRecordRouterActions()
         )
-        print("record: \(recordViewController)")
         rootViewController = recordViewController
     }
     
