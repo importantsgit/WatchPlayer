@@ -15,6 +15,9 @@
 		7B7A410D2C32601400CF278B /* RecordRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A410C2C32601400CF278B /* RecordRepositoryMock.swift */; };
 		7B7A41102C32752400CF278B /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A410F2C32752400CF278B /* NavigationBar.swift */; };
 		7B7A41132C32755B00CF278B /* NavigationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A41122C32755B00CF278B /* NavigationType.swift */; };
+		7B8878A12C36640600389A91 /* PlayerServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8878A02C36640600389A91 /* PlayerServiceMock.swift */; };
+		7B8878A32C36642300389A91 /* PlayerRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8878A22C36642300389A91 /* PlayerRepositoryMock.swift */; };
+		7B8878A52C3667A300389A91 /* PlayerControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8878A42C3667A300389A91 /* PlayerControllerView.swift */; };
 		7B8A13D32C337FF700E6E2D1 /* OnboardingContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8A13D22C337FF700E6E2D1 /* OnboardingContentViewController.swift */; };
 		7B8A13D62C33965400E6E2D1 /* OnboardingPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8A13D52C33965400E6E2D1 /* OnboardingPresenterMock.swift */; };
 		7B8A13D82C33965E00E6E2D1 /* OnboardingRouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8A13D72C33965E00E6E2D1 /* OnboardingRouterMock.swift */; };
@@ -57,6 +60,8 @@
 		7B9992602C3505C800B56DEB /* VideoListContentViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B99925F2C3505C800B56DEB /* VideoListContentViewCell.swift */; };
 		7B9992622C35238F00B56DEB /* VideoListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9992612C35238F00B56DEB /* VideoListDataSource.swift */; };
 		7B9992642C3529E800B56DEB /* VideoListModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9992632C3529E800B56DEB /* VideoListModuleTests.swift */; };
+		7BA487122C3622E500A01F2F /* PlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA487112C3622E500A01F2F /* PlayerService.swift */; };
+		7BA487162C36259700A01F2F /* PlayerRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BA487152C36259700A01F2F /* PlayerRepository.swift */; };
 		7BAFABA32C2CFD430052F14F /* UserDefaultProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABA22C2CFD430052F14F /* UserDefaultProtocol.swift */; };
 		7BAFABA52C2CFDF40052F14F /* Const.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABA42C2CFDF40052F14F /* Const.swift */; };
 		7BAFABA72C2D06830052F14F /* IntroCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABA62C2D06830052F14F /* IntroCoordinatorTests.swift */; };
@@ -150,6 +155,9 @@
 		7B7A410C2C32601400CF278B /* RecordRepositoryMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRepositoryMock.swift; sourceTree = "<group>"; };
 		7B7A410F2C32752400CF278B /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		7B7A41122C32755B00CF278B /* NavigationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationType.swift; sourceTree = "<group>"; };
+		7B8878A02C36640600389A91 /* PlayerServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerServiceMock.swift; sourceTree = "<group>"; };
+		7B8878A22C36642300389A91 /* PlayerRepositoryMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRepositoryMock.swift; sourceTree = "<group>"; };
+		7B8878A42C3667A300389A91 /* PlayerControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControllerView.swift; sourceTree = "<group>"; };
 		7B8A13D22C337FF700E6E2D1 /* OnboardingContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingContentViewController.swift; sourceTree = "<group>"; };
 		7B8A13D52C33965400E6E2D1 /* OnboardingPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPresenterMock.swift; sourceTree = "<group>"; };
 		7B8A13D72C33965E00E6E2D1 /* OnboardingRouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRouterMock.swift; sourceTree = "<group>"; };
@@ -196,6 +204,8 @@
 		7B99925F2C3505C800B56DEB /* VideoListContentViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListContentViewCell.swift; sourceTree = "<group>"; };
 		7B9992612C35238F00B56DEB /* VideoListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListDataSource.swift; sourceTree = "<group>"; };
 		7B9992632C3529E800B56DEB /* VideoListModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoListModuleTests.swift; sourceTree = "<group>"; };
+		7BA487112C3622E500A01F2F /* PlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerService.swift; sourceTree = "<group>"; };
+		7BA487152C36259700A01F2F /* PlayerRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRepository.swift; sourceTree = "<group>"; };
 		7BAFABA22C2CFD430052F14F /* UserDefaultProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultProtocol.swift; sourceTree = "<group>"; };
 		7BAFABA42C2CFDF40052F14F /* Const.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Const.swift; path = WatchPlayer/Source/Const.swift; sourceTree = SOURCE_ROOT; };
 		7BAFABA62C2D06830052F14F /* IntroCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCoordinatorTests.swift; sourceTree = "<group>"; };
@@ -339,13 +349,22 @@
 			path = Types;
 			sourceTree = "<group>";
 		};
-		7B7A41112C32754E00CF278B /* NavigationStyle */ = {
+		7B7A41112C32754E00CF278B /* NavigationBar */ = {
 			isa = PBXGroup;
 			children = (
 				7B7A410F2C32752400CF278B /* NavigationBar.swift */,
 				7B7A41122C32755B00CF278B /* NavigationType.swift */,
 			);
-			path = NavigationStyle;
+			path = NavigationBar;
+			sourceTree = "<group>";
+		};
+		7B88789F2C3663F900389A91 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				7B8878A02C36640600389A91 /* PlayerServiceMock.swift */,
+				7B8878A22C36642300389A91 /* PlayerRepositoryMock.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 		7B8A13D42C33962F00E6E2D1 /* Onboarding */ = {
@@ -473,6 +492,7 @@
 		7B97B28A2C2BF5140036F0AE /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				7BA487102C3622DA00A01F2F /* Player */,
 				A5028EA22C3450930024066D /* Library */,
 				A53DE0DB2C2DC1DC006DF09F /* Record */,
 				7B97B2A12C2BFA900036F0AE /* Data */,
@@ -501,6 +521,7 @@
 		7B97B2952C2BF6CB0036F0AE /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				7B88789F2C3663F900389A91 /* Player */,
 				7B9992522C34D85400B56DEB /* Library */,
 				7B7A41092C325FFB00CF278B /* Record */,
 				7B97B29C2C2BFA0A0036F0AE /* Data */,
@@ -657,6 +678,15 @@
 			path = Library;
 			sourceTree = "<group>";
 		};
+		7BA487102C3622DA00A01F2F /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				7BA487112C3622E500A01F2F /* PlayerService.swift */,
+				7BA487152C36259700A01F2F /* PlayerRepository.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 		7BAFABA82C2D14710052F14F /* Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -694,7 +724,7 @@
 			isa = PBXGroup;
 			children = (
 				7BAFABB22C2D20720052F14F /* FillButton.swift */,
-				7B7A41112C32754E00CF278B /* NavigationStyle */,
+				7B7A41112C32754E00CF278B /* NavigationBar */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -952,6 +982,7 @@
 			children = (
 				7BFAB8492C353C810082C456 /* PlayerViewController.swift */,
 				A5EDCE532C359A30000C99AA /* PlayerView.swift */,
+				7B8878A42C3667A300389A91 /* PlayerControllerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -959,8 +990,8 @@
 		A5028EA22C3450930024066D /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				A5028EA32C3450D60024066D /* LibraryService.swift */,
 				A5028EA52C3450E40024066D /* LibraryRepository.swift */,
+				A5028EA32C3450D60024066D /* LibraryService.swift */,
 				7B99925D2C34EEE000B56DEB /* LibraryError.swift */,
 			);
 			path = Library;
@@ -1343,12 +1374,16 @@
 				7BAFABB92C2D24940052F14F /* IntroPreviews.swift in Sources */,
 				7BCD7FF32C33F8F1009158D5 /* SettingCoordinator.swift in Sources */,
 				A5A19B672C2C6EBA007C1538 /* PermissionViewController.swift in Sources */,
+				7BA487162C36259700A01F2F /* PlayerRepository.swift in Sources */,
 				7BAFABB62C2D221A0052F14F /* DefaultViewController.swift in Sources */,
 				7B97B2B42C2C03E70036F0AE /* MainCoordinator.swift in Sources */,
 				A5028E9F2C3446920024066D /* VideoListPresenterMock.swift in Sources */,
 				7BAFABA32C2CFD430052F14F /* UserDefaultProtocol.swift in Sources */,
+				7BA487122C3622E500A01F2F /* PlayerService.swift in Sources */,
+				7B8878A32C36642300389A91 /* PlayerRepositoryMock.swift in Sources */,
 				A5028EA62C3450E40024066D /* LibraryRepository.swift in Sources */,
 				7BCD7FCC2C33E4C8009158D5 /* VideoListCoordinator.swift in Sources */,
+				7B8878A12C36640600389A91 /* PlayerServiceMock.swift in Sources */,
 				7B97B24E2C2BE73D0036F0AE /* AppDelegate.swift in Sources */,
 				7BCD7FDF2C33F1A9009158D5 /* RecordDIContainer.swift in Sources */,
 				7B97B2902C2BF5930036F0AE /* TranslationRepository.swift in Sources */,
@@ -1396,6 +1431,7 @@
 				7B7A410B2C32600A00CF278B /* RecordServiceMock.swift in Sources */,
 				7B97B2A32C2BFAA40036F0AE /* DataRepositoryMock.swift in Sources */,
 				A5A19B702C2C7095007C1538 /* IntroCoordinator.swift in Sources */,
+				7B8878A52C3667A300389A91 /* PlayerControllerView.swift in Sources */,
 				7BFAB8462C353C710082C456 /* PlayerInteractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
