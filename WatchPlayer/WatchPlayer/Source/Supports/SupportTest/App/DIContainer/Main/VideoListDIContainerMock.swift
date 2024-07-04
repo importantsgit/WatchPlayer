@@ -15,6 +15,7 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
         let dataService: DataServiceMock
         let recordService: RecordServiceMock
         let libraryService: LibraryServiceMock
+        let playerService: PlayerServiceMock
     }
     
     let dependencies: Dependencies
@@ -74,6 +75,15 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
         )
     }
     
+    var makePlayerRepositoryCallCount = 0
+    func makePlayerRepository(
+    ) -> PlayerRepositoryInterface {
+        makePlayerRepositoryCallCount += 1
+        return PlayerRepository(
+            playerService: dependencies.playerService
+        )
+    }
+    
     // MARK: - VideoListModule
     
     var makeVideoListInteractorCallCount = 0
@@ -124,7 +134,9 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
     func makePlayerInteractor(
     ) -> PlayerInteractorProtocol {
         makePlayerInteractorCallCout += 1
-        return PlayerInteractor()
+        return PlayerInteractor(
+            playerRepository: makePlayerRepository()
+        )
     }
     
     var makePlayerRouterCallCount = 0

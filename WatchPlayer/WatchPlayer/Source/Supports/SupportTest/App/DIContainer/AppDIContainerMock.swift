@@ -8,7 +8,7 @@
 import Foundation
 
 final public class AppDIContainerMock: AppDependencies {
-
+    
     var dataService: DataServiceInterface = {
         let mock = DataServiceMock()
         return mock
@@ -26,6 +26,11 @@ final public class AppDIContainerMock: AppDependencies {
     
     var libraryService: LibraryServiceInterface = {
         let mock = LibraryServiceMock()
+        return mock
+    }()
+    
+    var playerService: PlayerServiceInterface = {
+       let mock = PlayerServiceMock()
         return mock
     }()
     
@@ -51,7 +56,8 @@ final public class AppDIContainerMock: AppDependencies {
                 translationService: translationService as! TranslationServiceMock,
                 dataService: dataService as! DataServiceMock,
                 recordService: recordService as! RecordServiceMock,
-                libraryService: libraryService as! LibraryServiceMock
+                libraryService: libraryService as! LibraryServiceMock,
+                playerService: playerService as! PlayerServiceMock
             )
         )
     }

@@ -32,6 +32,7 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
         let dataService: DataServiceInterface
         let recordService: RecordServiceInterface
         let libraryService: LibraryServiceInterface
+        let playerService: PlayerServiceInterface
     }
     
     let dependencies: Dependencies
@@ -81,6 +82,13 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
         )
     }
     
+    func makePlayerRepository(
+    ) -> PlayerRepositoryInterface {
+        PlayerRepository(
+            playerService: dependencies.playerService
+        )
+    }
+    
     // MARK: - VideoListModule
     
     func makeVideoListInteractor(
@@ -121,7 +129,9 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
     
     func makePlayerInteractor(
     ) -> PlayerInteractorProtocol {
-        PlayerInteractor()
+        PlayerInteractor(
+            playerRepository: makePlayerRepository()
+        )
     }
     
     func makePlayerRouter(

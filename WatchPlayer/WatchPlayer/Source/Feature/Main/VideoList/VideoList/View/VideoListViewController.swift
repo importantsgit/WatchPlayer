@@ -7,6 +7,7 @@
 
 import UIKit
 import Photos
+import RxSwift
 
 final class VideoListViewController: DefaultViewController {
     
@@ -49,15 +50,15 @@ final class VideoListViewController: DefaultViewController {
         self.dataSource = VideoListDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, asset in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "VideoListContentViewCell", for: indexPath) as? VideoListContentViewCell
             else { return UICollectionViewCell() }
-    
+            
             cell.setupLayout()
             let width = self?.view.frame.width ?? 300
             cell.configure(with: asset, targetSize: CGSize(width: width/3, height: width/3))
-    
+            
             return cell
         }
         self.dataSource.setupSnapshot()
-            
+        
     }
     
     required init?(coder: NSCoder) {
@@ -72,7 +73,7 @@ final class VideoListViewController: DefaultViewController {
     
     override func setupLayout() {
         super.setupLayout()
-    
+        
         let navigationBar = navigationBar as! UIView
         
         [collectionView, navigationBar].forEach {
@@ -90,8 +91,10 @@ final class VideoListViewController: DefaultViewController {
             collectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
             collectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-
+            
         ])
+        
+        collectionView.isScrollEnabled = false
     }
     
     override func setupNavigationBar() {
@@ -101,11 +104,16 @@ final class VideoListViewController: DefaultViewController {
 
 extension VideoListViewController {
     func bind(with presenter: VideoListPresenterProtocol) {
-        presenter.fetchVideoList.subscribe(onNext: { [weak self] assets in
-            self?.finishedFirstfetch = true
-            self?.dataSource.updateSnapshot(with: assets)
-        })
-        .disposed(by: disposeBag)
+        presenter.fetchVideoList
+            .observe(on: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] assets in
+                if self?.finishedFirstfetch == false {
+                    self?.collectionView.isScrollEnabled = true
+                }
+                self?.finishedFirstfetch = true
+                self?.dataSource.updateSnapshot(with: assets)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -127,7 +135,7 @@ extension VideoListViewController: UIScrollViewDelegate {
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
-
+        
         if offsetY >= contentHeight - height {
             presenter.fetchVideos()
         }

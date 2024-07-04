@@ -14,6 +14,7 @@ final public class MainDIContainerMock: MainDIContainerProtocol, MainDependencie
         let dataService: DataServiceMock
         let recordService: RecordServiceMock
         let libraryService: LibraryServiceMock
+        let playerService: PlayerServiceMock
     }
     
     let dependencies: Dependencies
@@ -44,7 +45,8 @@ final public class MainDIContainerMock: MainDIContainerProtocol, MainDependencie
                 translationService: dependencies.translationService,
                 dataService: dependencies.dataService,
                 recordService: dependencies.recordService,
-                libraryService: dependencies.libraryService
+                libraryService: dependencies.libraryService, 
+                playerService: dependencies.playerService
             )
         )
     }

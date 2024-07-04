@@ -12,6 +12,7 @@ protocol AppDependencies {
     var translationService: TranslationServiceInterface { get }
     var recordService: RecordServiceInterface { get }
     var libraryService: LibraryServiceInterface { get }
+    var playerService: PlayerServiceInterface { get }
     
     func makeIntroDependencies(
     ) -> IntroDIContainerProtocol
@@ -56,7 +57,13 @@ final public class AppDIContainer: AppDependencies {
         )
         return libraryService
     }()
-
+    
+    lazy var playerService: PlayerServiceInterface = {
+        let playerService = PlayerService()
+        
+        return playerService
+    }()
+    
     func makeIntroDependencies(
     ) -> IntroDIContainerProtocol {
         IntroDIContainer(
@@ -75,7 +82,8 @@ final public class AppDIContainer: AppDependencies {
                 translationService: translationService,
                 dataService: dataService,
                 recordService: recordService,
-                libraryService: libraryService
+                libraryService: libraryService,
+                playerService: playerService
             )
         )
     }
