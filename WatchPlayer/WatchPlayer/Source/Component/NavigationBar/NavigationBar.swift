@@ -111,6 +111,7 @@ final class NavigationBarView: UIView, NavigationBarProtocol {
 
 extension NavigationBarView {
     private func setupLayout() {
+        titleLabel.textAlignment = .center
         
         [leftButton, titleLabel, rightButton, hiddenButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -124,7 +125,9 @@ extension NavigationBarView {
             leftButton.widthAnchor.constraint(equalToConstant: imageSize * 2),
             leftButton.heightAnchor.constraint(equalToConstant: imageSize * 2),
             
-            titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            // titleLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            titleLabel.leftAnchor.constraint(equalTo: leftButton.rightAnchor),
+            titleLabel.rightAnchor.constraint(equalTo: rightButton.leftAnchor),
             
             hiddenButton.centerXAnchor.constraint(equalTo: titleLabel.centerXAnchor),
             hiddenButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
