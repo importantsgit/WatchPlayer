@@ -52,6 +52,11 @@
 		7B97B2BA2C2C050B0036F0AE /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2B92C2C050B0036F0AE /* RecordViewController.swift */; };
 		7B97B2D22C2C14F00036F0AE /* OnboardingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2D12C2C14F00036F0AE /* OnboardingPresenter.swift */; };
 		7B97B2D42C2C14F70036F0AE /* OnboardingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2D32C2C14F70036F0AE /* OnboardingRouter.swift */; };
+		7B986CBB2C37805B0089FB8B /* PlayerRouterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B986CBA2C37805B0089FB8B /* PlayerRouterMock.swift */; };
+		7B986CBD2C3780670089FB8B /* PlayerInteractorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B986CBC2C3780670089FB8B /* PlayerInteractorMock.swift */; };
+		7B986CBF2C3780710089FB8B /* PlayerPresenterMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B986CBE2C3780710089FB8B /* PlayerPresenterMock.swift */; };
+		7B986CC12C37A3C80089FB8B /* PlayerDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B986CC02C37A3C80089FB8B /* PlayerDefine.swift */; };
+		7B986CC92C37C0750089FB8B /* Extension+CMTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B986CC82C37C0750089FB8B /* Extension+CMTime.swift */; };
 		7B9992542C34D86500B56DEB /* LibraryRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9992532C34D86500B56DEB /* LibraryRepositoryMock.swift */; };
 		7B9992562C34D87300B56DEB /* LibraryServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9992552C34D87300B56DEB /* LibraryServiceMock.swift */; };
 		7B9992582C34DAEF00B56DEB /* MainPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9992572C34DAEF00B56DEB /* MainPreviews.swift */; };
@@ -97,6 +102,7 @@
 		7BCD800E2C340054009158D5 /* SettingInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCD800D2C340054009158D5 /* SettingInteractor.swift */; };
 		7BCD80102C340078009158D5 /* SettingPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCD800F2C340078009158D5 /* SettingPresenter.swift */; };
 		7BCD80122C3400BC009158D5 /* SettingRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCD80112C3400BC009158D5 /* SettingRouter.swift */; };
+		7BDC70112C37E7CE00614BB9 /* PlayerAudioControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDC70102C37E7CE00614BB9 /* PlayerAudioControllerView.swift */; };
 		7BFAB8442C353C6A0082C456 /* PlayerRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFAB8432C353C6A0082C456 /* PlayerRouter.swift */; };
 		7BFAB8462C353C710082C456 /* PlayerInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFAB8452C353C710082C456 /* PlayerInteractor.swift */; };
 		7BFAB8482C353C7A0082C456 /* PlayerPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFAB8472C353C7A0082C456 /* PlayerPresenter.swift */; };
@@ -196,6 +202,11 @@
 		7B97B2B92C2C050B0036F0AE /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		7B97B2D12C2C14F00036F0AE /* OnboardingPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingPresenter.swift; sourceTree = "<group>"; };
 		7B97B2D32C2C14F70036F0AE /* OnboardingRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingRouter.swift; sourceTree = "<group>"; };
+		7B986CBA2C37805B0089FB8B /* PlayerRouterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRouterMock.swift; sourceTree = "<group>"; };
+		7B986CBC2C3780670089FB8B /* PlayerInteractorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInteractorMock.swift; sourceTree = "<group>"; };
+		7B986CBE2C3780710089FB8B /* PlayerPresenterMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPresenterMock.swift; sourceTree = "<group>"; };
+		7B986CC02C37A3C80089FB8B /* PlayerDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDefine.swift; sourceTree = "<group>"; };
+		7B986CC82C37C0750089FB8B /* Extension+CMTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+CMTime.swift"; sourceTree = "<group>"; };
 		7B9992532C34D86500B56DEB /* LibraryRepositoryMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryRepositoryMock.swift; sourceTree = "<group>"; };
 		7B9992552C34D87300B56DEB /* LibraryServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryServiceMock.swift; sourceTree = "<group>"; };
 		7B9992572C34DAEF00B56DEB /* MainPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPreviews.swift; sourceTree = "<group>"; };
@@ -241,6 +252,7 @@
 		7BCD800D2C340054009158D5 /* SettingInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingInteractor.swift; sourceTree = "<group>"; };
 		7BCD800F2C340078009158D5 /* SettingPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingPresenter.swift; sourceTree = "<group>"; };
 		7BCD80112C3400BC009158D5 /* SettingRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingRouter.swift; sourceTree = "<group>"; };
+		7BDC70102C37E7CE00614BB9 /* PlayerAudioControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAudioControllerView.swift; sourceTree = "<group>"; };
 		7BFAB8432C353C6A0082C456 /* PlayerRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRouter.swift; sourceTree = "<group>"; };
 		7BFAB8452C353C710082C456 /* PlayerInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerInteractor.swift; sourceTree = "<group>"; };
 		7BFAB8472C353C7A0082C456 /* PlayerPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPresenter.swift; sourceTree = "<group>"; };
@@ -320,6 +332,7 @@
 				7BAFABAF2C2D1F270052F14F /* Extension+UIColor.swift */,
 				7BCD7FC82C33D0CE009158D5 /* Extension+UIView.swift */,
 				7B99925A2C34E51300B56DEB /* Extension+UIImage.swift */,
+				7B986CC82C37C0750089FB8B /* Extension+CMTime.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -669,6 +682,16 @@
 			path = Router;
 			sourceTree = "<group>";
 		};
+		7B986CB92C3780490089FB8B /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				7B986CBA2C37805B0089FB8B /* PlayerRouterMock.swift */,
+				7B986CBC2C3780670089FB8B /* PlayerInteractorMock.swift */,
+				7B986CBE2C3780710089FB8B /* PlayerPresenterMock.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
 		7B9992522C34D85400B56DEB /* Library */ = {
 			isa = PBXGroup;
 			children = (
@@ -683,6 +706,7 @@
 			children = (
 				7BA487112C3622E500A01F2F /* PlayerService.swift */,
 				7BA487152C36259700A01F2F /* PlayerRepository.swift */,
+				7B986CC02C37A3C80089FB8B /* PlayerDefine.swift */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -878,6 +902,7 @@
 				7BCD7FF62C33FA2D009158D5 /* Setting */,
 				7BCD7FEE2C33F480009158D5 /* Record */,
 				7BCD7FED2C33F478009158D5 /* VideoList */,
+				7B986CB92C3780490089FB8B /* Player */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -983,6 +1008,7 @@
 				7BFAB8492C353C810082C456 /* PlayerViewController.swift */,
 				A5EDCE532C359A30000C99AA /* PlayerView.swift */,
 				7B8878A42C3667A300389A91 /* PlayerControllerView.swift */,
+				7BDC70102C37E7CE00614BB9 /* PlayerAudioControllerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1363,6 +1389,8 @@
 				7BCD7FD52C33E7C8009158D5 /* VideoListInteractor.swift in Sources */,
 				7B97B2A52C2BFABD0036F0AE /* DataServiceMock.swift in Sources */,
 				7B7A41042C32365A00CF278B /* Extension+Permission.swift in Sources */,
+				7B986CBB2C37805B0089FB8B /* PlayerRouterMock.swift in Sources */,
+				7B986CBD2C3780670089FB8B /* PlayerInteractorMock.swift in Sources */,
 				A5A19B692C2C6ED9007C1538 /* PermissionPresenter.swift in Sources */,
 				7BCD80102C340078009158D5 /* SettingPresenter.swift in Sources */,
 				7BCD7FE72C33F276009158D5 /* RecordRouter.swift in Sources */,
@@ -1375,6 +1403,7 @@
 				7BCD7FF32C33F8F1009158D5 /* SettingCoordinator.swift in Sources */,
 				A5A19B672C2C6EBA007C1538 /* PermissionViewController.swift in Sources */,
 				7BA487162C36259700A01F2F /* PlayerRepository.swift in Sources */,
+				7B986CC12C37A3C80089FB8B /* PlayerDefine.swift in Sources */,
 				7BAFABB62C2D221A0052F14F /* DefaultViewController.swift in Sources */,
 				7B97B2B42C2C03E70036F0AE /* MainCoordinator.swift in Sources */,
 				A5028E9F2C3446920024066D /* VideoListPresenterMock.swift in Sources */,
@@ -1399,8 +1428,10 @@
 				7B97B29A2C2BF6FC0036F0AE /* TranslationRepositoryMock.swift in Sources */,
 				7B7A410D2C32601400CF278B /* RecordRepositoryMock.swift in Sources */,
 				7B97B2B22C2C00920036F0AE /* MainDIContainerMock.swift in Sources */,
+				7BDC70112C37E7CE00614BB9 /* PlayerAudioControllerView.swift in Sources */,
 				7B9992582C34DAEF00B56DEB /* MainPreviews.swift in Sources */,
 				7BFAB84A2C353C810082C456 /* PlayerViewController.swift in Sources */,
+				7B986CBF2C3780710089FB8B /* PlayerPresenterMock.swift in Sources */,
 				7BCD7FE92C33F2C9009158D5 /* RecordInteractor.swift in Sources */,
 				7BCD800E2C340054009158D5 /* SettingInteractor.swift in Sources */,
 				7BFAB8482C353C7A0082C456 /* PlayerPresenter.swift in Sources */,
@@ -1418,6 +1449,7 @@
 				7B97B28E2C2BF5800036F0AE /* TranslationService.swift in Sources */,
 				7B7A41062C32398A00CF278B /* Result.swift in Sources */,
 				7BCD7FE12C33F1B8009158D5 /* RecordCoordinator.swift in Sources */,
+				7B986CC92C37C0750089FB8B /* Extension+CMTime.swift in Sources */,
 				7BCD7FD92C33E7DC009158D5 /* VideoListRouter.swift in Sources */,
 				7B97B2D22C2C14F00036F0AE /* OnboardingPresenter.swift in Sources */,
 				7B7A41102C32752400CF278B /* NavigationBar.swift in Sources */,
