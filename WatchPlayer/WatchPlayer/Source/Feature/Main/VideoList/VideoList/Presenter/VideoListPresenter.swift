@@ -59,7 +59,6 @@ final class VideoListPresenter: VideoListPresenterProtocol {
                 self.isLastPage = isLastPage
                 self.videoList += addList
                 self.fetchVideoList.accept(addList)
-                print(addList)
                 isFetching = false
             }
             catch {
