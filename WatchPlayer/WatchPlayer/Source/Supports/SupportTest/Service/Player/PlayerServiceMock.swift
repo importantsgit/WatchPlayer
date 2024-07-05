@@ -7,38 +7,126 @@
 
 import Foundation
 import AVFoundation
+import RxSwift
 
 final class PlayerServiceMock: PlayerServiceInterface {
     
-    var player: AVPlayer?
+    private let sendEventToView = PublishSubject<(SendFromServiceEvent, Any?)>()
+    private var player: AVPlayer?
+    
+    private let disposeBag = DisposeBag()
+    private var periodicTimeObserver: Any?
     
     var setCallCount = 0
-    func set(player: AVPlayer) {
+    func set(
+        player: AVPlayer
+    ) -> Observable<(SendFromServiceEvent, Any?)> {
         setCallCount += 1
-        self.player = player
+        return sendEventToView
+            .asObservable()
     }
     
-    var playCallCount = 0
+    var handleEventCallCount = 0
+    func handleEvent(
+        _ event: ReceiveByServiceEvent
+    ) -> Any? {
+        handleEventCallCount += 1
+        return nil
+    }
+    
+}
+
+extension PlayerServiceMock {
+    func setupObservers(player: AVPlayer?) {
+        guard let currentItem = player?.currentItem else { return }
+        
+        // NotificationCenter observer
+        NotificationCenter.default.rx.notification(.AVPlayerItemDidPlayToEndTime, object: currentItem)
+            .subscribe(onNext: { [weak self] _ in
+                self?.sendEventToView.onNext((.didPlayToEndTime, nil))
+            })
+            .disposed(by: disposeBag)
+        
+        // KVO observers
+        currentItem.rx.observe(AVPlayerItem.Status.self, #keyPath(AVPlayerItem.status))
+            .subscribe(onNext: { [weak self] status in
+                print("status: \(status)")
+            })
+            .disposed(by: disposeBag)
+        
+        currentItem.rx.observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackBufferFull))
+            .subscribe(onNext: { [weak self] isBufferFull in
+                print("isBufferFull: \(isBufferFull)")
+            })
+            .disposed(by: disposeBag)
+        
+        currentItem.rx.observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackBufferEmpty))
+            .subscribe(onNext: { [weak self] isBufferEmpty in
+                print("isBufferEmpty: \(isBufferEmpty)")
+            })
+            .disposed(by: disposeBag)
+        
+        currentItem.rx.observe(Bool.self, #keyPath(AVPlayerItem.isPlaybackLikelyToKeepUp))
+            .subscribe(onNext: { [weak self] isLikelyToKeepUp in
+                print("isLikelyToKeepUp: \(isLikelyToKeepUp)")
+            })
+            .disposed(by: disposeBag)
+        
+        currentItem.rx.observe([NSValue].self, #keyPath(AVPlayerItem.loadedTimeRanges))
+            .subscribe(onNext: { [weak self] loadedTimeRanges in
+                print("loadedTimeRanges: \(loadedTimeRanges)")
+            })
+            .disposed(by: disposeBag)
+        
+        // Periodic time observer
+        let interval = CMTime(seconds: 0.5, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        periodicTimeObserver = player?.addPeriodicTimeObserver(
+            forInterval: interval,
+            queue: DispatchQueue.main
+        ) { [weak self] currentTime in
+            guard let self = self else { return }
+            self.sendEventToView.onNext((.setTimes, (currentTime, player?.currentItem?.duration)))
+        }
+    }
+    
+    func playButtonTapped() -> PlayerState {
+        switch player?.timeControlStatus {
+        case .playing:
+            print("playing")
+            pause()
+            return .paused
+        case .paused:
+            print("pause")
+            play()
+            return .playing
+        default:
+            print("default")
+            return .ended
+        }
+    }
+    
     func play() {
-        playCallCount += 1
+        guard let player = player
+        else { return }
         
-        player?.play()
+        player.play()
     }
     
-    var pauseCallCount = 0
     func pause() {
-        pauseCallCount += 1
+        guard let player = player
+        else { return }
         
-        player?.pause()
+        player.pause()
     }
     
-    var seekForwardCallCount = 0
-    func seekForward() {
-        seekForwardCallCount += 1
+    func seekForward(count: Int) {
+        guard let player = player
+        else { return }
     }
     
-    var seekBackwardCallCount = 0
-    func seekBackward() {
-        seekBackwardCallCount += 1
+    func seekRewind(count: Int) {
+        guard let player = player
+        else { return }
     }
+    
 }

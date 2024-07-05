@@ -1,30 +1,32 @@
 //
-//  PlayerRepositoryMock.swift
+//  PlayerInteractorMock.swift
 //  WatchPlayer
 //
-//  Created by 이재훈 on 7/4/24.
+//  Created by 이재훈 on 7/5/24.
 //
 
 import Foundation
 import AVFoundation
 import RxSwift
 
-final class PlayerRepositoryMock: PlayerRepositoryInterface {
+final class PlayerInteractorMock: PlayerInteractorProtocol {
+
     
-    let playerService: PlayerServiceMock
+    let playerRepository: PlayerRepositoryMock
     
     init(
-        playerService: PlayerServiceMock
+        playerRepository: PlayerRepositoryMock
     ) {
-        self.playerService = playerService
+        self.playerRepository = playerRepository
     }
+    
     
     var setCallCount = 0
     func set(
         player: AVPlayer
     ) -> Observable<(SendFromServiceEvent, Any?)> {
         setCallCount += 1
-        return playerService.set(player: player)
+        return playerRepository.set(player: player)
     }
     
     var handleEventCallCount = 0
@@ -32,8 +34,6 @@ final class PlayerRepositoryMock: PlayerRepositoryInterface {
         _ event: ReceiveByServiceEvent
     ) -> Any? {
         handleEventCallCount += 1
-        return playerService.handleEvent(event)
+        return playerRepository.handleEvent(event)
     }
-    
-    
 }

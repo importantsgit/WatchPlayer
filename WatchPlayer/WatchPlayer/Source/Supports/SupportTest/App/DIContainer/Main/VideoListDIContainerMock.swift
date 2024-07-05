@@ -9,7 +9,7 @@ import UIKit
 import Photos
 
 final public class VideoListDIContainerMock: VideoListDIContainerProtocol, VideoListDependencies {
-    
+
     struct Dependencies {
         let translationService: TranslationServiceMock
         let dataService: DataServiceMock
@@ -79,98 +79,55 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
     func makePlayerRepository(
     ) -> PlayerRepositoryInterface {
         makePlayerRepositoryCallCount += 1
-        return PlayerRepository(
+        return PlayerRepositoryMock(
             playerService: dependencies.playerService
         )
     }
     
     // MARK: - VideoListModule
     
-    var makeVideoListInteractorCallCount = 0
-    func makeVideoListInteractor(
-    ) -> VideoListInteractorProtocol {
-        makeVideoListInteractorCallCount += 1
-        return VideoListInteractor(
-            libraryRepository: makeLibraryRepository()
-        )
-    }
-    
-    var makeVideoListRouterCallCount = 0
-    func makeVideoListRouter(
-        actions: VideoListRouterActions
-    ) -> VideoListRouterProtocol {
-        makeVideoListRouterCallCount += 1
-        return VideoListRouter(
-            actions: actions
-        )
-    }
-    
-    var makeVideoListPresenterCallCount = 0
-    func makeVideoListPresenter(
-        actions: VideoListRouterActions
-    ) -> VideoListPresenterProtocol {
-        makeVideoListPresenterCallCount += 1
-        return VideoListPresenter(
-            router: makeVideoListRouter(actions: actions),
-            interactor: makeVideoListInteractor()
-        )
-    }
-    
-    var makeVideoListViewController = 0
-    func makeVideoListViewController(
+    var makeVideoListModuleCallCount = 0
+    func makeVideoListModule(
         actions: VideoListRouterActions
     ) -> VideoListViewController {
-        makeVideoListViewController += 1
-        return .init(
-            presenter: makeVideoListPresenter(
-                actions: actions
-            )
+        makeVideoListModuleCallCount += 1
+        let router = VideoListRouter(actions: actions)
+        let interactor = VideoListInteractorMock(libraryRepository: makeLibraryRepository() as! LibraryRepositoryMock)
+        let presenter = VideoListPresenter(
+            router: router,
+            interactor: interactor
         )
+        
+        return .init(presenter: presenter)
     }
     
     // MARK: - PlayerModule
     
-    var  makePlayerInteractorCallCout = 0
-    func makePlayerInteractor(
-    ) -> PlayerInteractorProtocol {
-        makePlayerInteractorCallCout += 1
-        return PlayerInteractor(
-            playerRepository: makePlayerRepository()
-        )
-    }
-    
-    var makePlayerRouterCallCount = 0
-    func makePlayerRouter(
-        actions: PlayerRouterActions
-    ) -> PlayerRouterProtocol {
-        makePlayerRouterCallCount += 1
-        return PlayerRouter(actions: actions)
-    }
-    
-    var  makePlayerPresenterCallCount = 0
-    func makePlayerPresenter(
-        actions: PlayerRouterActions,
-        asset: PHAsset
-    ) -> PlayerPresenterProtocol {
-        makePlayerPresenterCallCount += 1
-        return PlayerPresenter(
-            router: makePlayerRouter(actions: actions),
-            interactor: makePlayerInteractor(),
-            asset: asset
-        )
-    }
-    
-    var makePlayerViewControllerCallCount = 0
-    func makePlayerViewController(
+    var makePlayerModuleCallCount = 0
+    func makePlayerModule(
         actions: PlayerRouterActions,
         asset: PHAsset
     ) -> PlayerViewController {
-        makePlayerViewControllerCallCount += 1
+        makePlayerModuleCallCount += 1
+        let router = PlayerRouterMock(actions: actions)
+        let interactor = PlayerInteractorMock(playerRepository: makePlayerRepository() as! PlayerRepositoryMock)
+        let presenter = PlayerPresenterMock(
+            router: router,
+            interactor: interactor,
+            asset: asset
+        )
+        let playerView = PlayerView()
+        let controllerView = PlayerControllerView()
+        
+        playerView.presenter = presenter
+        controllerView.presenter = presenter
+        presenter.playerView = playerView
+        presenter.controllerView = controllerView
+        
         return .init(
-            presenter: makePlayerPresenter(
-                actions: actions,
-                asset: asset
-            )
+            presenter: presenter,
+            playerView: playerView,
+            controllerView: controllerView
         )
     }
 }
