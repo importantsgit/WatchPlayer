@@ -7,13 +7,13 @@
 
 import Foundation
 import AVFoundation
+import RxSwift
 
 protocol PlayerInteractorProtocol {
-    func start(player: AVPlayer)
-    func play()
-    func pause()
-    func seekForward()
-    func seekBackward()
+    func set(player: AVPlayer) -> Observable<(SendFromServiceEvent, Any?)>
+    
+    @discardableResult
+    func handleEvent(_ event: ReceiveByServiceEvent) -> Any?
 }
 
 final class PlayerInteractor: PlayerInteractorProtocol {
@@ -26,23 +26,15 @@ final class PlayerInteractor: PlayerInteractorProtocol {
         self.playerRepository = playerRepository
     }
     
-    func start(player: AVPlayer) {
-        playerRepository.start(player: player)
+    func set(
+        player: AVPlayer
+    ) -> Observable<(SendFromServiceEvent, Any?)> {
+        playerRepository.set(player: player)
     }
     
-    func play() {
-        playerRepository.play()
-    }
-    
-    func pause() {
-        playerRepository.pause()
-    }
-    
-    func seekForward() {
-        playerRepository.seekForward()
-    }
-    
-    func seekBackward() {
-        playerRepository.seekBackward()
+    func handleEvent(
+        _ event: ReceiveByServiceEvent
+    ) -> Any? {
+        playerRepository.handleEvent(event)
     }
 }
