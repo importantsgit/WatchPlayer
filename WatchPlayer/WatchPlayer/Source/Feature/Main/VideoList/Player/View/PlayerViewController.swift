@@ -14,23 +14,28 @@ import Photos
 final class PlayerViewController: DefaultViewController {
     
     private let playerView: PlayerView
-    private let playerControllerView: PlayerControllerView
+    private let controllerView: PlayerControllerView
     private let activityIndicator: UIActivityIndicatorView? = UIActivityIndicatorView()
     
     let presenter: PlayerPresenterProtocol
     
+    private var layoutConstraints: [NSLayoutConstraint]?
+    
     
     init(
-        presenter: PlayerPresenterProtocol
+        presenter: PlayerPresenterProtocol,
+        playerView: PlayerView,
+        controllerView: PlayerControllerView
+        
     ) {
         self.presenter = presenter
-        self.playerView = .init(
-            presenter: self.presenter as! PlayerControllerProtocol
-        )
-        self.playerControllerView = .init(
-            presenter: self.presenter as! PlayerControllerProtocol
-        )
+        self.playerView = playerView
+        self.controllerView = controllerView
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    override func updateViewConstraints() {
+        super.updateViewConstraints()
     }
     
     required init?(coder: NSCoder) {
@@ -61,24 +66,41 @@ extension PlayerViewController {
             .disposed(by: disposeBag)
         
         presenter
-            .fetchPlayerItem
+            .fetchPlayerLayer
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] player in
-                self?.set(player: player)
+            .subscribe(onNext: { [weak self] playerLayer in
+                self?.set(playerLayer: playerLayer)
             })
             .disposed(by: disposeBag)
         
         presenter
             .showController
             .subscribe(onNext: { [weak self] in
-                self?.playerControllerView.isHidden = false
+                self?.controllerView.isHidden = false
             })
             .disposed(by: disposeBag)
         
         presenter
             .setLayout
-            .subscribe(onNext: {
+            .subscribe(onNext: { [weak self] style in
+                guard let self = self else { return }
+                self.view.setNeedsUpdateConstraints()
+                NSLayoutConstraint.deactivate(self.layoutConstraints ?? [])
                 
+                let newConstraints: [NSLayoutConstraint]
+                switch style {
+                case .landscape:
+                    newConstraints = self.setLayoutToLandscape()
+                case .portrait:
+                    newConstraints = self.setLayoutToPortrait()
+                }
+                
+                NSLayoutConstraint.activate(newConstraints)
+                self.layoutConstraints = newConstraints
+                
+                UIView.animate(withDuration: 0.3) {
+                    self.view.layoutIfNeeded()
+                }
             })
             .disposed(by: disposeBag)
         
@@ -89,15 +111,15 @@ extension PlayerViewController {
         
         hideController
             .subscribe(onNext: { [weak self] in
-                self?.playerControllerView.isHidden = true
+                self?.controllerView.isHidden = true
             })
             .disposed(by: disposeBag)
     }
 }
 extension PlayerViewController {
-    private func set(player: AVPlayer) {
+    private func set(playerLayer: AVPlayerLayer) {
         activityIndicator?.stopAnimating()
-        playerView.set(player: player)
+        playerView.set(playerLayer: playerLayer)
     }
     
     private func setPlayerViewLayout(_ asset: PHAsset) {
@@ -108,36 +130,61 @@ extension PlayerViewController {
         activityIndicator?.startAnimating()
         playerView.backgroundColor = .black
         
-        playerControllerView.isHidden = true
+        controllerView.isHidden = true
 
-        [playerView, playerControllerView, activityIndicator!].forEach {
+        [playerView, controllerView, activityIndicator!].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
         
-        NSLayoutConstraint.activate([
+
+        layoutConstraints = setInitialLayout()
+         NSLayoutConstraint.activate(layoutConstraints!)
+    }
+    
+    private func setInitialLayout() -> [NSLayoutConstraint] {
+        if view.frame.width > view.frame.height {
+            return setLayoutToLandscape()
+        } else {
+            return setLayoutToPortrait()
+        }
+    }
+    
+    private func setLayoutToPortrait(
+    ) -> [NSLayoutConstraint] {
+        let constraints = [
             playerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             playerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            playerView.widthAnchor.constraint(equalToConstant: view.frame.width),
-            playerView.heightAnchor.constraint(equalToConstant: view.frame.width * (9/16)),
+            playerView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            playerView.heightAnchor.constraint(equalTo: playerView.widthAnchor, multiplier: 9.0 / 16.0),
             
-            playerControllerView.topAnchor.constraint(equalTo: playerView.topAnchor),
-            playerControllerView.leftAnchor.constraint(equalTo: playerView.leftAnchor),
-            playerControllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
-            playerControllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            controllerView.topAnchor.constraint(equalTo: playerView.topAnchor),
+            controllerView.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            controllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            controllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             
-            activityIndicator!.topAnchor.constraint(equalTo: playerView.topAnchor),
-            activityIndicator!.leftAnchor.constraint(equalTo: playerView.leftAnchor),
-            activityIndicator!.rightAnchor.constraint(equalTo: playerView.rightAnchor),
-            activityIndicator!.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
-        ])
+            activityIndicator!.centerXAnchor.constraint(equalTo: playerView.centerXAnchor),
+            activityIndicator!.centerYAnchor.constraint(equalTo: playerView.centerYAnchor)
+        ]
+        return constraints
     }
     
-    private func setLayoutToPortrait() {
-        
-    }
-    
-    private func setLayoutToLandscape() {
-        
+    private func setLayoutToLandscape(
+    ) -> [NSLayoutConstraint] {
+        let constraints = [
+            playerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            playerView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            playerView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            playerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            controllerView.topAnchor.constraint(equalTo: playerView.topAnchor),
+            controllerView.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            controllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            controllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            
+            activityIndicator!.centerXAnchor.constraint(equalTo: playerView.centerXAnchor),
+            activityIndicator!.centerYAnchor.constraint(equalTo: playerView.centerYAnchor)
+        ]
+        return constraints
     }
 }
