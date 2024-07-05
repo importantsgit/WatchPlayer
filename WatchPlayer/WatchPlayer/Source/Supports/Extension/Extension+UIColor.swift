@@ -40,9 +40,11 @@ extension UIColor {
     
     static let title = UIColor(hex: "222222")
     static let subTitle = UIColor(hex: "424242")
-    static let subDescription = UIColor(hex: "5D5D5D")
+    static let subDescription = UIColor(hex: "5D5D5D") 
     
     static let disabled = UIColor(hex: "CECECE")
+    
+    static let time = UIColor(hex: "CACACA")
 }
 
 
