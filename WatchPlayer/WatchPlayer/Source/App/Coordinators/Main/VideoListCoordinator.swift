@@ -62,14 +62,14 @@ final public class VideoListCoordinator: VideoListRouterManageable {
     }
     
     func showVideoListView() {
-        let videoListViewController = dependencies.makeVideoListViewController(
+        let videoListViewController = dependencies.makeVideoListModule(
             actions: makeVideoListRouterActions()
         )
         rootViewController = videoListViewController
     }
     
     func showPlayer(asset: PHAsset) {
-        let playerViewController = dependencies.makePlayerViewController(
+        let playerViewController = dependencies.makePlayerModule(
             actions: makePlayerRouterActions(),
             asset: asset
         )
