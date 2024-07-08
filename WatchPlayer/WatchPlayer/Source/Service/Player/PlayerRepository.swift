@@ -17,6 +17,9 @@ protocol PlayerRepositoryInterface {
     
     @discardableResult
     func handleEvent(_ event: PlayerCommandEvent) -> Any?
+    
+    @discardableResult
+    func handleEvent(_ event: SettingCommandEvent) -> Any?
 }
 
 protocol SettingRepositoryInterface {

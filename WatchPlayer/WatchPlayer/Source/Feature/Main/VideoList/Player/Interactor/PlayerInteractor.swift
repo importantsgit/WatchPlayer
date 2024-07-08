@@ -16,6 +16,9 @@ protocol PlayerInteractorProtocol {
     
     @discardableResult
     func handleEvent(_ event: PlayerCommandEvent) -> Any?
+    
+    @discardableResult
+    func handleEvent(_ event: SettingCommandEvent) -> Any?
 }
 
 final class PlayerInteractor: PlayerInteractorProtocol {
@@ -44,6 +47,12 @@ final class PlayerInteractor: PlayerInteractorProtocol {
     
     func handleEvent(
         _ event: PlayerCommandEvent
+    ) -> Any? {
+        playerRepository.handleEvent(event)
+    }
+    
+    func handleEvent(
+        _ event: SettingCommandEvent
     ) -> Any? {
         playerRepository.handleEvent(event)
     }

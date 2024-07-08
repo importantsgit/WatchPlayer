@@ -18,10 +18,12 @@ enum SettingEvent {
 
 enum PlayerSettingViewUIUpdateEvent {
     case reset
+    case updateSettingData(selectedIndexPath: [IndexPath])
 }
 
 protocol PlayerSettingViewProtocol: AnyObject {
     func handleEvent(_ event: PlayerSettingViewUIUpdateEvent)
+    
 }
 
 final class PlayerSettingView: UIView {
@@ -36,9 +38,9 @@ final class PlayerSettingView: UIView {
     ]
     
     var selectedIndexPath: [IndexPath] = [
+        IndexPath(row: 0, section: 0),
         IndexPath(row: 1, section: 0),
-        IndexPath(row: 2, section: 0),
-        IndexPath(row: 1, section: 0)
+        IndexPath(row: 0, section: 0)
     ]
     
     var selectedCategory: String?
@@ -113,6 +115,10 @@ extension PlayerSettingView: PlayerSettingViewProtocol {
         case .reset:
             selectedCategory = nil
             tableView.reloadData()
+            
+        case .updateSettingData(let selectedIndexPath):
+            self.selectedIndexPath = selectedIndexPath
+            tableView.reloadData()
         }
     }
 }
@@ -158,7 +164,13 @@ extension PlayerSettingView: UITableViewDataSource {
         else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerSettingSectionCell", for: indexPath) as? PlayerSettingSectionCell
             else { return .init() }
-            cell.setupCell(categorys[indexPath.row])
+            let selectedIndexPath = selectedIndexPath[indexPath.row]
+            let title = categorys[indexPath.row]
+            
+            cell.setupCell(
+                title: title,
+                detail: settingsData[title]![selectedIndexPath.row]
+            )
             return cell
         }
         
@@ -185,11 +197,14 @@ extension PlayerSettingView: UITableViewDataSource {
                 
                 switch index {
                 case 0:
-                    break
+                    presenter?.handleEvent(.updateQuality(index: indexPath.row))
+                    
                 case 1:
-                    break
+                    presenter?.handleEvent(.updateSpeed(index: indexPath.row))
+                    
                 case 2:
-                    break
+                    presenter?.handleEvent(.updateGravity(index: indexPath.row))
+                    
                 default: fatalError()
                 }
                 

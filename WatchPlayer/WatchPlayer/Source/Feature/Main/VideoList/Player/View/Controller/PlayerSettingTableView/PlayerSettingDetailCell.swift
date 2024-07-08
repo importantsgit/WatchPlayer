@@ -16,6 +16,7 @@ final class PlayerSettingDetailCell: UITableViewCell {
         selectionStyle = .none
         
         titleLabel.text = title
+        checkImageView.image = .accessorySelected
         
         [titleLabel, checkImageView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -28,14 +29,14 @@ final class PlayerSettingDetailCell: UITableViewCell {
             
             checkImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             checkImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -16),
-            checkImageView.widthAnchor.constraint(equalToConstant: 42),
-            checkImageView.heightAnchor.constraint(equalToConstant: 42),
+            checkImageView.widthAnchor.constraint(equalToConstant: 32),
+            checkImageView.heightAnchor.constraint(equalToConstant: 32),
         ])
     }
     
     func setTapped(isChecked: Bool = false) {
         titleLabel.textColor = isChecked ? .primary100 : .lightGray
-        titleLabel.font = isChecked ? .systemFont(ofSize: 17, weight: .black) : .systemFont(ofSize: 17, weight: .light)
+        titleLabel.font = isChecked ? .systemFont(ofSize: 17, weight: .bold) : .systemFont(ofSize: 17, weight: .light)
         checkImageView.isHidden = isChecked == false
     }
 }

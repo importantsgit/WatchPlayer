@@ -76,6 +76,12 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
     let showSettingView = PublishRelay<Bool>()
     let setLayout = PublishRelay<LayoutStyle>()
     
+    var selectedIndexPath = [
+        IndexPath(row: 0, section: 0),
+        IndexPath(row: 1, section: 0),
+        IndexPath(row: 0, section: 0)
+    ]
+    
     let disposeBag = DisposeBag()
     
     init(
@@ -90,6 +96,22 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
     }
     
     func viewDidLoad() {
+        // TODO: 추후 settingPopup과 통합
+        settingView?.handleEvent(
+            .updateSettingData(selectedIndexPath: selectedIndexPath)
+        )
+        
+        // FIXME: 추후 수정
+        let quality = PlayerQuality.getValueFromIndex(selectedIndexPath[0].row)
+        interactor.handleEvent(.updateQuality(quality))
+        
+        let speed = PlayerSpeed.getValueFromIndex(selectedIndexPath[1].row)
+        interactor.handleEvent(.updateSpeed(speed))
+        
+        let gravity = PlayerGravity.getValueFromIndex(selectedIndexPath[2].row)
+        playerView?.handleEvent(.updateGravity(gravity: gravity))
+        
+        
         
         Task {
             do {
@@ -281,12 +303,65 @@ extension PlayerPresenter: PlayerSettingProtocol {
     @discardableResult
     func handleEvent(_ event: SettingEvent) -> Any? {
         switch event {
+            
         case .updateGravity(let index):
-            break
+            let gravity = PlayerGravity.getValueFromIndex(index)
+            playerView?.handleEvent(.updateGravity(gravity: gravity))
+            
+            switch index {
+            case 0:
+                print("원본 비율")
+            case 1:
+                print("꽉찬 화면")
+            default:
+                break
+            }
+            
         case .updateQuality(let index):
-            break
+            let quality = PlayerQuality.getValueFromIndex(index)
+            interactor.handleEvent(.updateQuality(quality))
+            
+            switch index {
+            case 0:
+                print("자동")
+                
+            case 1:
+                print("1080p")
+                
+            case 2:
+                print("720p")
+                
+            case 3:
+                print("480p")
+                
+            default:
+                break
+            }
+            
         case .updateSpeed(let index):
+            let speed = PlayerSpeed.getValueFromIndex(index)
+            interactor.handleEvent(.updateSpeed(speed))
+            switch index {
+            case 0:
+                print("0.5배")
+                
+            case 1:
+                print("1.0배")
+                
+            case 2:
+                print("1.25배")
+                
+            case 3:
+                print("1.5배")
+                
+            case 4:
+                print("2.0배")
+                
+            default:
+                break
+            }
             break
+            
         case .closeView:
             isShowSettingView = false
             showSettingView.accept(isShowSettingView)

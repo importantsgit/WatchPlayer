@@ -21,6 +21,7 @@ enum PlayerEvent {
 enum PlayerViewUIUpdateEvent {
     case set(playerLayer: AVPlayerLayer)
     case update(player: AVPlayer?)
+    case updateGravity(gravity: PlayerGravity)
     case updateLayout
 }
 
@@ -84,6 +85,9 @@ extension PlayerView: PlayerViewProtocol {
 
         case .update(let player):
             playerLayer?.player = player
+            
+        case .updateGravity(let gravity):
+            playerLayer?.videoGravity = gravity.getGravity()
             
         case .updateLayout:
             // TODO: 뷰 업데이트가 필요하면 작성
