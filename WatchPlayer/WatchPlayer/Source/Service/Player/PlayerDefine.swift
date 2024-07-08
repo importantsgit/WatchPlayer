@@ -23,7 +23,15 @@ enum LayoutStyle {
     case landscape
 }
 
-enum Quality {
+enum PlayerSpeed: Float {
+    case X15 = 1.5
+    case X12 = 1.2
+    case X10 = 1.0
+    case X07 = 0.7
+    case X05 = 0.5
+}
+
+enum PlayerQuality {
     case high
     case middle
     case low
@@ -36,4 +44,9 @@ enum Quality {
         case .low:      CGSize(width: 854.0, height: 480.0)
         }
     }
+}
+
+struct PlayerSetting {
+    var speed: PlayerSpeed?
+    var quality: PlayerQuality?
 }
