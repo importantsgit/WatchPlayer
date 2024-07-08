@@ -10,13 +10,21 @@ import AVFoundation
 import RxSwift
 
 protocol PlayerRepositoryInterface {
-    func set(player: AVPlayer) -> Observable<(SendFromServiceEvent, Any?)>
+    func set(
+        player: AVPlayer,
+        setting: PlayerSetting
+    ) -> Observable<(PlayBackEvent, Any?)>
     
     @discardableResult
-    func handleEvent(_ event: ReceiveByServiceEvent) -> Any?
+    func handleEvent(_ event: PlayerCommandEvent) -> Any?
 }
 
-final class PlayerRepository: PlayerRepositoryInterface {
+protocol SettingRepositoryInterface {
+    @discardableResult
+    func handleEvent(_ event: SettingCommandEvent) -> Any?
+}
+
+final class PlayerRepository: PlayerRepositoryInterface, SettingRepositoryInterface {
     
     let playerService: PlayerServiceInterface
     
@@ -27,13 +35,23 @@ final class PlayerRepository: PlayerRepositoryInterface {
     }
     
     func set(
-        player: AVPlayer
-    ) -> Observable<(SendFromServiceEvent, Any?)> {
-        playerService.set(player: player)
+        player: AVPlayer,
+        setting: PlayerSetting
+    ) -> Observable<(PlayBackEvent, Any?)> {
+        playerService.set(
+            player: player,
+            setting: setting
+        )
     }
     
     func handleEvent(
-        _ event: ReceiveByServiceEvent
+        _ event: PlayerCommandEvent
+    ) -> Any? {
+        playerService.handleEvent(event)
+    }
+    
+    func handleEvent(
+        _ event: SettingCommandEvent
     ) -> Any? {
         playerService.handleEvent(event)
     }

@@ -13,55 +13,62 @@ import RxSwift
 import RxGesture
 import RxCocoa
 
-enum SendFromControllerEvent {
-    case playViewTapped
+// 컨트롤러에서 presenter로 전달되는 이벤트
+enum ControllerEvent {
     case controllerTapped
-    
-    case audioButtonTapped
+    case showAudioButtonTapped
     case settingButtonTapped
     case rotationButtonTapped
     case backButtonTapped
-    
     case playButtonTapped
 }
 
-enum ReceiveByControllerEvent {
-    case setPlayButton(state: PlayerState)
-    case setTime(current: CMTime, duration: CMTime)
-    case setLayout(style: LayoutStyle)
+// presenter에서 컨트롤러로 전달되는 UIUpdate 이벤트
+enum PlayerControllerViewUIUpdateEvent {
+    case setTitle(title: String)
+    case updateLayout(style: LayoutStyle)
+    case updatePlayButton(state: PlayerState)
+    case updateTime(current: CMTime, duration: CMTime)
 }
 
 protocol PlayerControllerViewProtocol: AnyObject {
-    func handleEvent(_ event: ReceiveByControllerEvent)
+    func handleEvent(_ event: PlayerControllerViewUIUpdateEvent)
 }
 
-class PlayerControllerView: UIView {
+final class PlayerControllerView: UIView {
+    
     weak var presenter: PlayerControllerProtocol?
     
     private var titleLabel: UILabel = {
         var label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .medium)
-        label.textColor = .title
+        label.textColor = .white
+        label.textAlignment = .left
         
         return label
     }()
     
+    // TOP
     private let topControlView = UIStackView()
-    private let middleControlView = UIStackView()
-    private let bottomControlView = UIStackView()
-    private let seekbarView = UIView()
-    private let seekbar = UIView()
+    private let spacer = UIView()
     private var backButton = UIButton()
     private var audioButton = UIButton()
     private var settingButton = UIButton()
+    
+    // MIDDLE
+    private let middleControlView = UIStackView()
     private var playButton = UIButton()
+    
+    // BOTTOM
+    private let bottomControlView = UIStackView()
+    private let seekbarView = UIView()
+    private let seekbar = UIView()
     private var timeLabel = UILabel()
     private var rotationButton = UIButton()
     
+    private var layoutConstraints: [NSLayoutConstraint]?
     
     private var disposeBag = DisposeBag()
-    
-    private var layoutConstraints: [NSLayoutConstraint]?
     
     init() {
         super.init(frame: .zero)
@@ -79,7 +86,7 @@ class PlayerControllerView: UIView {
         self.rx.tapGesture()
             .when(.recognized)
             .subscribe(onNext: { [weak self] _ in
-                self?.presenter?.handleContollerEvent(.controllerTapped)
+                self?.presenter?.handleEvent(.controllerTapped)
             })
             .disposed(by: disposeBag)
     }
@@ -90,44 +97,46 @@ class PlayerControllerView: UIView {
             $0.configuration?.imagePlacement = .all
         }
         
+        backButton.configuration?.image = UIImage(named: "back")?
+            .resized(to: .init(width: 42, height: 42))
+        
+        playButton.configuration?.image = UIImage(named: "pause")?
+            .resized(to: .init(width: 42, height: 42))
+        
         backButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleContollerEvent(.backButtonTapped)
+            self?.presenter?.handleEvent(.backButtonTapped)
         }
         .disposed(by: disposeBag)
 
         audioButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleContollerEvent(.audioButtonTapped)
+            self?.presenter?.handleEvent(.showAudioButtonTapped)
         }
         .disposed(by: disposeBag)
         
         settingButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleContollerEvent(.settingButtonTapped)
+            self?.presenter?.handleEvent(.settingButtonTapped)
         }
         .disposed(by: disposeBag)
         
         playButton.rx.tap.bind { [weak self] in
-            guard let state = self?.presenter?.handleContollerEvent(.playButtonTapped) as? PlayerState
+            guard let state = self?.presenter?.handleEvent(.playButtonTapped) as? PlayerState
             else { return }
             self?.setPlayButton(state: state)
         }
         .disposed(by: disposeBag)
         
         rotationButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleContollerEvent(.rotationButtonTapped)
+            self?.presenter?.handleEvent(.rotationButtonTapped)
         }
         .disposed(by: disposeBag)
-        
-        playButton.configuration?.image = UIImage(named: "pause")?
-            .resized(to: .init(width: 42, height: 42))
     }
     
     private func setupLayout() {
-        
         self.backgroundColor = UIColor(hex: "000000", alpha: 0.4)
         
-        titleLabel.textAlignment = .center
         
-        [backButton, titleLabel, audioButton, settingButton].forEach {
+        
+        [spacer, backButton, titleLabel, audioButton, settingButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             topControlView.addArrangedSubview($0)
         }
@@ -156,7 +165,7 @@ class PlayerControllerView: UIView {
         [topControlView, middleControlView, bottomControlView].forEach{
             $0.axis = .horizontal
             $0.spacing = 4
-            $0.alignment = .bottom
+            $0.alignment = .fill
             $0.distribution = .fill
             
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -174,7 +183,8 @@ class PlayerControllerView: UIView {
          NSLayoutConstraint.activate(layoutConstraints!)
     }
     
-    private func setInitialLayout() -> [NSLayoutConstraint] {
+    private func setInitialLayout(
+    ) -> [NSLayoutConstraint] {
         if frame.width > frame.height {
             return setLayoutToLandscape()
         } else {
@@ -185,8 +195,10 @@ class PlayerControllerView: UIView {
     func setLayoutToPortrait(
     ) -> [NSLayoutConstraint] {
         let imageSize: CGFloat = 32
-        backButton.configuration?.image = UIImage(named: "back")?
-            .resized(to: .init(width: imageSize, height: imageSize))
+        backButton.isHidden = true
+        titleLabel.isHidden = true
+        spacer.isHidden = false
+        
         audioButton.configuration?.image = UIImage(named: "audio")?
             .resized(to: .init(width: imageSize, height: imageSize))
         settingButton.configuration?.image = UIImage(named: "setting")?
@@ -222,13 +234,15 @@ class PlayerControllerView: UIView {
     func setLayoutToLandscape(
     ) -> [NSLayoutConstraint] {
         let imageSize: CGFloat = 42
-        backButton.configuration?.image = UIImage(named: "back")?
-            .resized(to: .init(width: imageSize, height: imageSize))
+        backButton.isHidden = false
+        titleLabel.isHidden = false
+        spacer.isHidden = true
+        
         audioButton.configuration?.image = UIImage(named: "audio")?
             .resized(to: .init(width: imageSize, height: imageSize))
         settingButton.configuration?.image = UIImage(named: "setting")?
             .resized(to: .init(width: imageSize, height: imageSize))
-        rotationButton.configuration?.image = UIImage(named: "expand")?
+        rotationButton.configuration?.image = UIImage(named: "shrink")?
             .resized(to: .init(width: imageSize, height: imageSize))
         
         return [
@@ -269,32 +283,32 @@ class PlayerControllerView: UIView {
 }
 
 extension PlayerControllerView: PlayerControllerViewProtocol {
-    func handleEvent(_ event: ReceiveByControllerEvent) {
+    func handleEvent(_ event: PlayerControllerViewUIUpdateEvent) {
         switch event {
-        case .setLayout(let style):
-            self.setNeedsUpdateConstraints()
+        case .updateLayout(let style):
             NSLayoutConstraint.deactivate(self.layoutConstraints ?? [])
             
             let newConstraints: [NSLayoutConstraint]
             switch style {
             case .landscape:
                 newConstraints = self.setLayoutToLandscape()
+                [topControlView, middleControlView, bottomControlView].forEach{ $0.spacing = 12 }
             case .portrait:
                 newConstraints = self.setLayoutToPortrait()
+                [topControlView, middleControlView, bottomControlView].forEach{ $0.spacing = 4 }
             }
             
             NSLayoutConstraint.activate(newConstraints)
             self.layoutConstraints = newConstraints
             
-            UIView.animate(withDuration: 0.3) {
-                self.layoutIfNeeded()
-            }
-            
-        case .setPlayButton(let state):
+        case .updatePlayButton(let state):
             setPlayButton(state: state)
             
-        case .setTime(current: let current, duration: let duration):
+        case .updateTime(current: let current, duration: let duration):
             set(times: (current, duration))
+            
+        case .setTitle(let title):
+            titleLabel.text = title
         }
     }
         

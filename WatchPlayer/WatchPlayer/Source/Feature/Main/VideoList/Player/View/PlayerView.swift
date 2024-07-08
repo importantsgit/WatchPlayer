@@ -12,15 +12,25 @@ import MediaPlayer
 import RxSwift
 import RxGesture
 
+// 플레이어뷰에서 presenter로 전달되는 이벤트
+enum PlayerEvent {
+    case playerTapped
+}
+
+// presenter에서 플레이어뷰로 전달되는 UIUpdate 이벤트
+enum PlayerViewUIUpdateEvent {
+    case set(playerLayer: AVPlayerLayer)
+    case update(player: AVPlayer?)
+    case updateLayout
+}
+
 protocol PlayerViewProtocol: AnyObject {
-    func set(playerLayer: AVPlayerLayer)
-    func setPip(isUse: Bool)
-    func setLayout()
+    func handleEvent(_ event: PlayerViewUIUpdateEvent)
 }
 
 class PlayerView: UIView {
     
-    weak var presenter: PlayerControllerProtocol?
+    weak var presenter: PlayerProtocol?
     
     private var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
@@ -43,7 +53,7 @@ class PlayerView: UIView {
         self.rx.tapGesture()
             .when(.recognized)
             .subscribe(onNext: { [weak self] _ in
-                self?.presenter?.handleContollerEvent(.playViewTapped)
+                self?.presenter?.handleEvent(.playerTapped)
             })
             .disposed(by: disposeBag)
     }
@@ -55,22 +65,30 @@ class PlayerView: UIView {
 }
 
 extension PlayerView: PlayerViewProtocol {
-    func set(playerLayer: AVPlayerLayer) {
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-            try AVAudioSession.sharedInstance().setActive(true)
+    func handleEvent(_ event: PlayerViewUIUpdateEvent) {
+        switch event {
+        case .set(let playerLayer):
+            Task { @MainActor in
+                do {
+                    try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+                    try AVAudioSession.sharedInstance().setActive(true)
+                }
+                catch {
+                    // Error
+                }
+                
+                self.playerLayer = playerLayer
+                layer.addSublayer(self.playerLayer!)
+                self.setNeedsLayout()
+            }
+
+        case .update(let player):
+            playerLayer?.player = player
+            
+        case .updateLayout:
+            // TODO: 뷰 업데이트가 필요하면 작성
+            break
         }
-        catch {
-            // Error
-        }
-        
-        self.playerLayer = playerLayer
-        layer.addSublayer(self.playerLayer!)
-        self.setNeedsLayout()
-    }
-    
-    func setLayout() {
-        self.playerLayer?.frame = self.bounds
     }
     
     func setPip(isUse: Bool) {

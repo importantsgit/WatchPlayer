@@ -12,9 +12,11 @@ import RxRelay
 import Photos
 
 final class PlayerViewController: DefaultViewController {
-    
+    private let navigationBar = NavigationBarView()
     private let playerView: PlayerView
     private let controllerView: PlayerControllerView
+    private let audioControllerView: PlayerAudioControllerView
+    private let settingView: PlayerSettingView
     private let activityIndicator: UIActivityIndicatorView? = UIActivityIndicatorView()
     
     let presenter: PlayerPresenterProtocol
@@ -25,12 +27,15 @@ final class PlayerViewController: DefaultViewController {
     init(
         presenter: PlayerPresenterProtocol,
         playerView: PlayerView,
-        controllerView: PlayerControllerView
-        
+        controllerView: PlayerControllerView,
+        audioControllerView: PlayerAudioControllerView,
+        settingView: PlayerSettingView
     ) {
         self.presenter = presenter
         self.playerView = playerView
         self.controllerView = controllerView
+        self.audioControllerView = audioControllerView
+        self.settingView = settingView
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -51,6 +56,15 @@ final class PlayerViewController: DefaultViewController {
     override func setupLayout() {
         super.setupLayout()
     }
+    
+    override func setupNavigationBar() {
+        super.setupNavigationBar()
+        navigationBar.setLeftButton()
+            .subscribe(onNext: { [weak self] in
+                self?.presenter.backButtonTapped()
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 extension PlayerViewController {
@@ -58,25 +72,21 @@ extension PlayerViewController {
         with presenter: PlayerPresenterProtocol
     ) {
         presenter
-            .setAsset
+            .playerTitle
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] asset in
-                self?.setPlayerViewLayout(asset)
+            .subscribe(onNext: { [weak self] title in
+                self?.setPlayerViewLayout()
+                self?.navigationBar.setTitle(title)
+                self?.controllerView.handleEvent(.setTitle(title: title))
+                self?.audioControllerView.handleEvent(.setTitle(title: title))
             })
             .disposed(by: disposeBag)
         
         presenter
-            .fetchPlayerLayer
+            .didLoad
             .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] playerLayer in
-                self?.set(playerLayer: playerLayer)
-            })
-            .disposed(by: disposeBag)
-        
-        presenter
-            .showController
             .subscribe(onNext: { [weak self] in
-                self?.controllerView.isHidden = false
+                self?.activityIndicator?.stopAnimating()
             })
             .disposed(by: disposeBag)
         
@@ -100,7 +110,30 @@ extension PlayerViewController {
                 
                 UIView.animate(withDuration: 0.3) {
                     self.view.layoutIfNeeded()
+                } completion: { _ in
+                    self.playerView.handleEvent(.updateLayout)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        presenter
+            .showAudioController
+            .subscribe(onNext: { [weak self] isShow in
+                self?.audioControllerView.isHidden = (isShow == false)
+            })
+            .disposed(by: disposeBag)
+        
+        presenter
+            .showSettingView
+            .subscribe(onNext: { [weak self] isShow in
+                self?.settingView.isHidden = (isShow == false)
+            })
+            .disposed(by: disposeBag)
+        
+        presenter
+            .showController
+            .subscribe(onNext: { [weak self] in
+                self?.controllerView.isHidden = false
             })
             .disposed(by: disposeBag)
         
@@ -117,12 +150,9 @@ extension PlayerViewController {
     }
 }
 extension PlayerViewController {
-    private func set(playerLayer: AVPlayerLayer) {
-        activityIndicator?.stopAnimating()
-        playerView.set(playerLayer: playerLayer)
-    }
+
     
-    private func setPlayerViewLayout(_ asset: PHAsset) {
+    private func setPlayerViewLayout() {
         
         activityIndicator?.hidesWhenStopped = true
         activityIndicator?.color = .white
@@ -131,13 +161,14 @@ extension PlayerViewController {
         playerView.backgroundColor = .black
         
         controllerView.isHidden = true
-
-        [playerView, controllerView, activityIndicator!].forEach {
+        audioControllerView.isHidden = true
+        settingView.isHidden = true
+    
+        [playerView, controllerView, audioControllerView, settingView, activityIndicator!, navigationBar].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
         
-
         layoutConstraints = setInitialLayout()
          NSLayoutConstraint.activate(layoutConstraints!)
     }
@@ -152,8 +183,15 @@ extension PlayerViewController {
     
     private func setLayoutToPortrait(
     ) -> [NSLayoutConstraint] {
+        navigationBar.isHidden = false
+        
         let constraints = [
-            playerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leftAnchor.constraint(equalTo: view.leftAnchor),
+            navigationBar.rightAnchor.constraint(equalTo: view.rightAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 56),
+            
+            playerView.topAnchor.constraint(equalTo: navigationBar.bottomAnchor),
             playerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             playerView.widthAnchor.constraint(equalTo: view.widthAnchor),
             playerView.heightAnchor.constraint(equalTo: playerView.widthAnchor, multiplier: 9.0 / 16.0),
@@ -163,6 +201,11 @@ extension PlayerViewController {
             controllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
             controllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             
+            audioControllerView.topAnchor.constraint(equalTo: playerView.topAnchor),
+            audioControllerView.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            audioControllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            audioControllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            
             activityIndicator!.centerXAnchor.constraint(equalTo: playerView.centerXAnchor),
             activityIndicator!.centerYAnchor.constraint(equalTo: playerView.centerYAnchor)
         ]
@@ -171,6 +214,8 @@ extension PlayerViewController {
     
     private func setLayoutToLandscape(
     ) -> [NSLayoutConstraint] {
+        navigationBar.isHidden = true
+        
         let constraints = [
             playerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             playerView.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -181,6 +226,16 @@ extension PlayerViewController {
             controllerView.leftAnchor.constraint(equalTo: playerView.leftAnchor),
             controllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
             controllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            
+            audioControllerView.topAnchor.constraint(equalTo: playerView.topAnchor),
+            audioControllerView.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            audioControllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            audioControllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            
+            settingView.topAnchor.constraint(equalTo: playerView.topAnchor),
+            settingView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            settingView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            settingView.widthAnchor.constraint(equalToConstant: 334),
             
             activityIndicator!.centerXAnchor.constraint(equalTo: playerView.centerXAnchor),
             activityIndicator!.centerYAnchor.constraint(equalTo: playerView.centerYAnchor)

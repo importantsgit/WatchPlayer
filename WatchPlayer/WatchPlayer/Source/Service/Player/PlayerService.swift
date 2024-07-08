@@ -13,42 +13,61 @@ import MediaPlayer
 
 // MARK: 컨트롤러의 많은 기능으로 인해 무수한 func을 정의해야 함
 protocol PlayerServiceInterface {
-    func set(player: AVPlayer) -> Observable<(SendFromServiceEvent, Any?)>
+    func set(
+        player: AVPlayer,
+        setting: PlayerSetting
+    ) -> Observable<(PlayBackEvent, Any?)>
     
     @discardableResult
-    func handleEvent(_ event: ReceiveByServiceEvent) -> Any?
+    func handleEvent(_ event: PlayerCommandEvent) -> Any?
+    
+    @discardableResult
+    func handleEvent(_ event: SettingCommandEvent) -> Any?
 }
 
 // MARK: service단에서 감지된 이벤트
-enum SendFromServiceEvent {
+enum PlayBackEvent {
     case didPlayToEndTime
     case setTimes
 }
 
 // MARK: Controller를 통해 입력된 이벤트
-enum ReceiveByServiceEvent {
+enum PlayerCommandEvent {
     case seek(SeekType)
-    
-    case setQuality(Quality)
     
     case playButtonTapped
     case backButtonTapped
     case audioButtonTapped(isUse: Bool)
 }
 
+enum SettingCommandEvent {
+    case updateQuality(PlayerQuality)
+    case updateSpeed(PlayerSpeed)
+    case updateGravity(AVLayerVideoGravity)
+}
+
 
 final class PlayerService: NSObject, PlayerServiceInterface {
     
-    private let sendEventToView = PublishSubject<(SendFromServiceEvent, Any?)>()
+    private let sendEventToView = PublishSubject<(PlayBackEvent, Any?)>()
     private var player: AVPlayer?
     
     private let disposeBag = DisposeBag()
     private var periodicTimeObserver: Any?
     
     func set(
-        player: AVPlayer
-    ) -> Observable<(SendFromServiceEvent, Any?)> {
+        player: AVPlayer,
+        setting: PlayerSetting
+    ) -> Observable<(PlayBackEvent, Any?)> {
         self.player = player
+        
+        if let quality = setting.quality {
+            self.player?.currentItem?.preferredMaximumResolution = quality.getMaxResolution()
+        }
+        if let speed = setting.speed {
+            self.player?.rate = speed.rawValue
+        }
+        
         setupObservers(player: self.player)
         play()
         return sendEventToView
@@ -57,7 +76,7 @@ final class PlayerService: NSObject, PlayerServiceInterface {
     
     @discardableResult
     func handleEvent(
-        _ event: ReceiveByServiceEvent
+        _ event: PlayerCommandEvent
     ) -> Any? {
         switch event {
         case .playButtonTapped:
@@ -78,13 +97,30 @@ final class PlayerService: NSObject, PlayerServiceInterface {
             
         case .audioButtonTapped(let isUse):
             setCommandCenter(isUse: isUse)
-            return nil
+            return isUse ? nil : player
             
-        case .setQuality(let quality):
-            player?.currentItem?.preferredMaximumResolution = quality.getMaxResolution()
+
             
         }
         
+        return nil
+    }
+    
+    @discardableResult
+    func handleEvent(
+        _ event: SettingCommandEvent
+    ) -> Any? {
+        switch event {
+            
+        case .updateQuality(let quality):
+            player?.currentItem?.preferredMaximumResolution = quality.getMaxResolution()
+            
+        case .updateSpeed(let speed):
+            player?.rate = speed.rawValue
+            
+        case .updateGravity(let gravity):
+            break
+        }
         return nil
     }
 }

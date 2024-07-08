@@ -10,22 +10,40 @@ import RxRelay
 import RxSwift
 import Photos
 
-protocol PlayerPresenterProtocolInput {
-    func viewDidLoad()
+protocol PlayerProtocol: AnyObject {
+    @discardableResult
+    func handleEvent(_ event: PlayerEvent) -> Any?
 }
 
 protocol PlayerControllerProtocol: AnyObject {
     @discardableResult
-    func handleContollerEvent(_ event: SendFromControllerEvent) -> Any?
+    func handleEvent(_ event: ControllerEvent) -> Any?
+}
+
+protocol PlayerAudioControllerProtocol: AnyObject {
+    @discardableResult
+    func handleEvent(_ event: AudioControllerEvent) -> Any?
+}
+
+protocol PlayerSettingProtocol: AnyObject {
+    @discardableResult
+    func handleEvent(_ event: SettingEvent) -> Any?
+}
+
+protocol PlayerPresenterProtocolInput {
+    func viewDidLoad()
+    func backButtonTapped()
 }
 
 protocol PlayerPresenterProtocolOutput {
-    var setAsset: PublishRelay<PHAsset> { get }
-    var fetchPlayerLayer: PublishRelay<AVPlayerLayer> { get }
-    
+    var playerTitle: PublishRelay<String> { get }
+    var didLoad: PublishRelay<Void> { get }
+
     var hideControllerDelay: PublishSubject<Void> { get }
     var hideControllerImmediately: PublishSubject<Void> { get }
     var showController: PublishRelay<Void> { get }
+    var showAudioController: PublishRelay<Bool> { get }
+    var showSettingView: PublishRelay<Bool> { get }
     
     var setLayout: PublishRelay<LayoutStyle> { get }
 }
@@ -41,16 +59,21 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
     // MARK: - PlayerView, Controller Binding with Handler
     weak var playerView: PlayerViewProtocol?
     weak var controllerView: PlayerControllerViewProtocol?
+    weak var audioControllerView: PlayerAudioControllerViewProtocol?
+    weak var settingView: PlayerSettingViewProtocol?
     
     // MARK: - PlayerViewController Binding with RxSwift
+    let playerTitle = PublishRelay<String>()
     
-    let setAsset = PublishRelay<PHAsset>()
-    let fetchPlayerLayer = PublishRelay<AVPlayerLayer>()
+    let didLoad = PublishRelay<Void>()
     
     let hideControllerDelay = PublishSubject<Void>()
     let hideControllerImmediately = PublishSubject<Void>()
-    
     let showController = PublishRelay<Void>()
+    
+    let showAudioController = PublishRelay<Bool>()
+    private var isShowSettingView = false
+    let showSettingView = PublishRelay<Bool>()
     let setLayout = PublishRelay<LayoutStyle>()
     
     let disposeBag = DisposeBag()
@@ -70,25 +93,28 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
         
         Task {
             do {
-                setAsset.accept(asset)
+                playerTitle.accept(asset.creationDate?.getDateString() ?? Date.getCurrentDateString())
                 let item = try await requestAVPlayerItem(asset)
+            
                 let player = AVPlayer(playerItem: item)
                 let playerLayer = AVPlayerLayer(player: player)
-                fetchPlayerLayer.accept(playerLayer)
+                playerView?.handleEvent(.set(playerLayer: playerLayer))
+                didLoad.accept(())
                 
                 let getServiceEvent = interactor.set(player: player)
                 getServiceEvent
                     .subscribe(onNext: { [weak self] (event, param) in
                         switch event {
                         case .didPlayToEndTime:
-                            self?.controllerView?.handleEvent(.setPlayButton(state: .ended))
+                            self?.controllerView?.handleEvent(.updatePlayButton(state: .ended))
+                            self?.audioControllerView?.handleEvent(.updatePlayButton(state: .ended))
                             
                         case .setTimes:
                             guard let times = param as? (CMTime?, CMTime?),
                                   let current = times.0,
                                   let duration = times.1
                             else { return }
-                            self?.controllerView?.handleEvent(.setTime(current: current, duration: duration))
+                            self?.controllerView?.handleEvent(.updateTime(current: current, duration: duration))
                         }
                     })
                     .disposed(by: disposeBag)
@@ -97,11 +123,13 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
                 print(error)
             }
         }
-    }
     
+    }
+        
     private func requestAVPlayerItem(
         _ asset: PHAsset
     ) async throws -> AVPlayerItem {
+        
         return try await withCheckedThrowingContinuation { continuation in
             let options = PHVideoRequestOptions()
             options.version = .current
@@ -128,56 +156,143 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
         }
     }
     
+    func backButtonTapped() {
+        interactor.handleEvent(.backButtonTapped)
+        router.backButtonTapped()
+        AppDelegate.orientationLock = .portrait
+    }
+    
+    func showControllerView() {
+        showController.accept(())
+        hideControllerDelay.onNext(())
+    }
+    
+    func updateToPortrait() {
+        guard AppDelegate.orientationLock == .landscape
+        else { return }
+        
+        AppDelegate.orientationLock = .portrait
+        setLayout.accept(.portrait)
+        controllerView?.handleEvent(.updateLayout(style: .portrait))
+        audioControllerView?.handleEvent(.updateLayout(style: .portrait))
+    }
+    
+    func updateToLandscape() {
+        guard AppDelegate.orientationLock == .portrait
+        else { return }
+        
+        AppDelegate.orientationLock = .landscape
+        setLayout.accept(.landscape)
+        controllerView?.handleEvent(.updateLayout(style: .landscape))
+        audioControllerView?.handleEvent(.updateLayout(style: .landscape))
+    }
 }
 
-extension PlayerPresenter: PlayerControllerProtocol {
-    @discardableResult
-    func handleContollerEvent(_ event: SendFromControllerEvent) -> Any? {
+extension PlayerPresenter: PlayerProtocol {
+    
+    // 플레이어 뷰에서 입력된 이벤트
+    func handleEvent(_ event: PlayerEvent) -> Any? {
         switch event {
-        case .playViewTapped:
-            showController.accept(())
-            hideControllerDelay.onNext(())
-            
-        case .controllerTapped:
-            hideControllerImmediately.onNext(())
-            
-        case .backButtonTapped:
-            interactor.handleEvent(.backButtonTapped)
-            router.backButtonTapped()
-            AppDelegate.orientationLock = .portrait
-            
-        case .playButtonTapped:
-            hideControllerDelay.onNext(())
-            return interactor.handleEvent(.playButtonTapped)
-            
-        case .audioButtonTapped:
-            interactor.handleEvent(.audioButtonTapped(isUse: true))
-        case .settingButtonTapped:
-            break
-        case .rotationButtonTapped:
-            print("AppDelegate.orientationLock \(AppDelegate.orientationLock == .landscape)")
-            print(AppDelegate.orientationLock)
-            if AppDelegate.orientationLock == .landscape {
-                AppDelegate.orientationLock = .portrait
-                setLayout.accept(.portrait)
-                controllerView?.handleEvent(.setLayout(style: .portrait))
-                playerView?.setLayout()
+        case .playerTapped:
+            if isShowSettingView {
+                isShowSettingView = false
+                showSettingView.accept(isShowSettingView)
+                settingView?.handleEvent(.reset)
             }
-            else if AppDelegate.orientationLock == .portrait {
-                AppDelegate.orientationLock = .landscape
-                setLayout.accept(.landscape)
-                controllerView?.handleEvent(.setLayout(style: .landscape))
-                playerView?.setLayout()
+            else {
+                showControllerView()
             }
         }
         
         return nil
     }
     
-    func backButtonTapped() {
-        
-    }
+}
+
+extension PlayerPresenter: PlayerControllerProtocol {
     
+    // 컨트롤러에서 입력된 이벤트
+    @discardableResult
+    func handleEvent(_ event: ControllerEvent) -> Any? {
+        switch event {
+        case .controllerTapped:
+            print("controllerTapped")
+            hideControllerImmediately.onNext(())
+            
+        case .backButtonTapped:
+            updateToPortrait()
+            
+        case .playButtonTapped:
+            hideControllerDelay.onNext(())
+            return interactor.handleEvent(.playButtonTapped)
+            
+        case .showAudioButtonTapped:
+            interactor.handleEvent(.audioButtonTapped(isUse: true))
+            playerView?.handleEvent(.update(player: nil))
+            showAudioController.accept(true)
+            hideControllerImmediately.onNext(())
+            
+        case .settingButtonTapped:
+            isShowSettingView = true
+            
+            if AppDelegate.orientationLock == .landscape {
+                showSettingView.accept(isShowSettingView)
+            }
+            //TODO: 세로뷰일 때, 팝업 뜨게
+            hideControllerImmediately.onNext(())
+            
+        case .rotationButtonTapped:
+            // 가로일 때, 세로로 전환 / 세로일 때, 가로로 전환
+            AppDelegate.orientationLock == .landscape ? updateToPortrait() : updateToLandscape()
+                
+        }
+        
+        return nil
+    }
+}
+
+extension PlayerPresenter: PlayerAudioControllerProtocol {
+    
+    // 오디오 컨트롤러에서 입력된 이벤트
+    @discardableResult
+    func handleEvent(_ event: AudioControllerEvent) -> Any? {
+        switch event {
+        case .dismissAudioButtonTapped:
+            guard let player = interactor.handleEvent(.audioButtonTapped(isUse: false)) as? AVPlayer
+            else {
+                fatalError()
+            }
+            playerView?.handleEvent(.update(player: player))
+            showAudioController.accept(false)
+            showControllerView()
+            
+        case .backButtonTapped:
+            updateToPortrait()
+            
+        case .playButtonTapped:
+            return interactor.handleEvent(.playButtonTapped)
+        }
+        
+        return nil
+    }
+}
+
+extension PlayerPresenter: PlayerSettingProtocol {
+    @discardableResult
+    func handleEvent(_ event: SettingEvent) -> Any? {
+        switch event {
+        case .updateGravity(let index):
+            break
+        case .updateQuality(let index):
+            break
+        case .updateSpeed(let index):
+            break
+        case .closeView:
+            isShowSettingView = false
+            showSettingView.accept(isShowSettingView)
+        }
+        return nil
+    }
 }
 
 enum AssetError: Error {
