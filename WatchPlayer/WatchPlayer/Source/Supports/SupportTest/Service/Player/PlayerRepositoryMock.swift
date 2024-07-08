@@ -10,7 +10,7 @@ import AVFoundation
 import RxSwift
 
 final class PlayerRepositoryMock: PlayerRepositoryInterface {
-    
+
     let playerService: PlayerServiceMock
     
     init(
@@ -39,5 +39,9 @@ final class PlayerRepositoryMock: PlayerRepositoryInterface {
         return playerService.handleEvent(event)
     }
     
-    
+    func handleEvent(
+        _ event: SettingCommandEvent
+    ) -> Any? {
+        return nil
+    }
 }

@@ -11,7 +11,6 @@ import RxSwift
 
 final class PlayerInteractorMock: PlayerInteractorProtocol {
 
-    
     let playerRepository: PlayerRepositoryMock
     let dataRepository: DataRepositoryMock
     
@@ -38,11 +37,19 @@ final class PlayerInteractorMock: PlayerInteractorProtocol {
         )
     }
     
-    var handleEventCallCount = 0
+    var handlePlayerCommandEventCallCount = 0
     func handleEvent(
         _ event: PlayerCommandEvent
     ) -> Any? {
-        handleEventCallCount += 1
+        handlePlayerCommandEventCallCount += 1
+        return playerRepository.handleEvent(event)
+    }
+    
+    var handleSettingCommandEventCallCount = 0
+    func handleEvent(
+        _ event: SettingCommandEvent
+    ) -> Any? {
+        handleSettingCommandEventCallCount += 1
         return playerRepository.handleEvent(event)
     }
 }
