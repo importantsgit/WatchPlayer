@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		16913612BB2C01DE87F3D771 /* Pods_WatchPlayerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF970758673104E72F57FEA /* Pods_WatchPlayerTests.framework */; };
 		2C021D3BF3138DCC860C9C74 /* Pods_WatchPlayer_WatchPlayerUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EFC7240586A3FAB7C75F5DA /* Pods_WatchPlayer_WatchPlayerUITests.framework */; };
+		7B026A3C2C3BC8B400D2FF07 /* PlayerSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B026A3B2C3BC8B400D2FF07 /* PlayerSettingView.swift */; };
+		7B026A3F2C3BCAD000D2FF07 /* PlayerSettingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B026A3E2C3BCAD000D2FF07 /* PlayerSettingHeaderView.swift */; };
+		7B026A412C3BCAD800D2FF07 /* PlayerSettingSectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B026A402C3BCAD800D2FF07 /* PlayerSettingSectionCell.swift */; };
+		7B026A432C3BCAFD00D2FF07 /* PlayerSettingDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B026A422C3BCAFD00D2FF07 /* PlayerSettingDetailCell.swift */; };
+		7B63CE322C3B950D00EC344B /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B63CE312C3B950D00EC344B /* Extension+Date.swift */; };
 		7B7A41042C32365A00CF278B /* Extension+Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A41032C32365A00CF278B /* Extension+Permission.swift */; };
 		7B7A41062C32398A00CF278B /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A41052C32398A00CF278B /* Result.swift */; };
 		7B7A410B2C32600A00CF278B /* RecordServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A410A2C32600A00CF278B /* RecordServiceMock.swift */; };
@@ -150,6 +155,11 @@
 		3EFC7240586A3FAB7C75F5DA /* Pods_WatchPlayer_WatchPlayerUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WatchPlayer_WatchPlayerUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		592565639DED49C5B6998089 /* Pods-WatchPlayer-WatchPlayerUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPlayer-WatchPlayerUITests.debug.xcconfig"; path = "Target Support Files/Pods-WatchPlayer-WatchPlayerUITests/Pods-WatchPlayer-WatchPlayerUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		623DC9169798B2762491ADB8 /* Pods-WatchPlayer-WatchPlayerUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WatchPlayer-WatchPlayerUITests.release.xcconfig"; path = "Target Support Files/Pods-WatchPlayer-WatchPlayerUITests/Pods-WatchPlayer-WatchPlayerUITests.release.xcconfig"; sourceTree = "<group>"; };
+		7B026A3B2C3BC8B400D2FF07 /* PlayerSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSettingView.swift; sourceTree = "<group>"; };
+		7B026A3E2C3BCAD000D2FF07 /* PlayerSettingHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSettingHeaderView.swift; sourceTree = "<group>"; };
+		7B026A402C3BCAD800D2FF07 /* PlayerSettingSectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSettingSectionCell.swift; sourceTree = "<group>"; };
+		7B026A422C3BCAFD00D2FF07 /* PlayerSettingDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSettingDetailCell.swift; sourceTree = "<group>"; };
+		7B63CE312C3B950D00EC344B /* Extension+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
 		7B7A00122C2E971300EFD0D7 /* RxRelay.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxRelay.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B7A00162C2E971700EFD0D7 /* RxTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B7A00192C2E971A00EFD0D7 /* RxBlocking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxBlocking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -325,6 +335,27 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7B026A3D2C3BCA5800D2FF07 /* PlayerSettingTableView */ = {
+			isa = PBXGroup;
+			children = (
+				7B026A3E2C3BCAD000D2FF07 /* PlayerSettingHeaderView.swift */,
+				7B026A402C3BCAD800D2FF07 /* PlayerSettingSectionCell.swift */,
+				7B026A422C3BCAFD00D2FF07 /* PlayerSettingDetailCell.swift */,
+			);
+			path = PlayerSettingTableView;
+			sourceTree = "<group>";
+		};
+		7B63CE302C3B7EC400EC344B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				7B8878A42C3667A300389A91 /* PlayerControllerView.swift */,
+				7BDC70102C37E7CE00614BB9 /* PlayerAudioControllerView.swift */,
+				7B026A3B2C3BC8B400D2FF07 /* PlayerSettingView.swift */,
+				7B026A3D2C3BCA5800D2FF07 /* PlayerSettingTableView */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		7B7A41072C3239F800CF278B /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -333,6 +364,7 @@
 				7BCD7FC82C33D0CE009158D5 /* Extension+UIView.swift */,
 				7B99925A2C34E51300B56DEB /* Extension+UIImage.swift */,
 				7B986CC82C37C0750089FB8B /* Extension+CMTime.swift */,
+				7B63CE312C3B950D00EC344B /* Extension+Date.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1007,8 +1039,7 @@
 			children = (
 				7BFAB8492C353C810082C456 /* PlayerViewController.swift */,
 				A5EDCE532C359A30000C99AA /* PlayerView.swift */,
-				7B8878A42C3667A300389A91 /* PlayerControllerView.swift */,
-				7BDC70102C37E7CE00614BB9 /* PlayerAudioControllerView.swift */,
+				7B63CE302C3B7EC400EC344B /* Controller */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1412,6 +1443,7 @@
 				7B8878A32C36642300389A91 /* PlayerRepositoryMock.swift in Sources */,
 				A5028EA62C3450E40024066D /* LibraryRepository.swift in Sources */,
 				7BCD7FCC2C33E4C8009158D5 /* VideoListCoordinator.swift in Sources */,
+				7B026A432C3BCAFD00D2FF07 /* PlayerSettingDetailCell.swift in Sources */,
 				7B8878A12C36640600389A91 /* PlayerServiceMock.swift in Sources */,
 				7B97B24E2C2BE73D0036F0AE /* AppDelegate.swift in Sources */,
 				7BCD7FDF2C33F1A9009158D5 /* RecordDIContainer.swift in Sources */,
@@ -1426,6 +1458,7 @@
 				7B97B2972C2BF6E30036F0AE /* TranslationServiceMock.swift in Sources */,
 				A5028EA42C3450D60024066D /* LibraryService.swift in Sources */,
 				7B97B29A2C2BF6FC0036F0AE /* TranslationRepositoryMock.swift in Sources */,
+				7B026A3C2C3BC8B400D2FF07 /* PlayerSettingView.swift in Sources */,
 				7B7A410D2C32601400CF278B /* RecordRepositoryMock.swift in Sources */,
 				7B97B2B22C2C00920036F0AE /* MainDIContainerMock.swift in Sources */,
 				7BDC70112C37E7CE00614BB9 /* PlayerAudioControllerView.swift in Sources */,
@@ -1438,7 +1471,9 @@
 				7BCD7FC92C33D0CE009158D5 /* Extension+UIView.swift in Sources */,
 				A5A19B742C2C721F007C1538 /* IntroDIContainer.swift in Sources */,
 				A53DE0DF2C2DC210006DF09F /* RecordService.swift in Sources */,
+				7B026A3F2C3BCAD000D2FF07 /* PlayerSettingHeaderView.swift in Sources */,
 				7B97B29E2C2BFA1A0036F0AE /* DataRepository.swift in Sources */,
+				7B63CE322C3B950D00EC344B /* Extension+Date.swift in Sources */,
 				7B99925B2C34E51300B56DEB /* Extension+UIImage.swift in Sources */,
 				7B9992542C34D86500B56DEB /* LibraryRepositoryMock.swift in Sources */,
 				7BFAB8442C353C6A0082C456 /* PlayerRouter.swift in Sources */,
@@ -1448,6 +1483,7 @@
 				7BAFABA52C2CFDF40052F14F /* Const.swift in Sources */,
 				7B97B28E2C2BF5800036F0AE /* TranslationService.swift in Sources */,
 				7B7A41062C32398A00CF278B /* Result.swift in Sources */,
+				7B026A412C3BCAD800D2FF07 /* PlayerSettingSectionCell.swift in Sources */,
 				7BCD7FE12C33F1B8009158D5 /* RecordCoordinator.swift in Sources */,
 				7B986CC92C37C0750089FB8B /* Extension+CMTime.swift in Sources */,
 				7BCD7FD92C33E7DC009158D5 /* VideoListRouter.swift in Sources */,
