@@ -21,15 +21,19 @@ final class PlayerRepositoryMock: PlayerRepositoryInterface {
     
     var setCallCount = 0
     func set(
-        player: AVPlayer
-    ) -> Observable<(SendFromServiceEvent, Any?)> {
+        player: AVPlayer,
+        setting: PlayerSetting
+    ) -> Observable<(PlayBackEvent, Any?)> {
         setCallCount += 1
-        return playerService.set(player: player)
+        return playerService.set(
+            player: player,
+            setting: setting
+        )
     }
     
     var handleEventCallCount = 0
     func handleEvent(
-        _ event: ReceiveByServiceEvent
+        _ event: PlayerCommandEvent
     ) -> Any? {
         handleEventCallCount += 1
         return playerService.handleEvent(event)

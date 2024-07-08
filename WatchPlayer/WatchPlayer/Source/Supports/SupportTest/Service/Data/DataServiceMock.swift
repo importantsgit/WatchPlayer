@@ -8,9 +8,12 @@
 import Foundation
 
 final public class DataServiceMock: DataServiceInterface {
+    
     var isShowPermissionView: Bool = true
      
     var isShowOnboardingView: Bool = true
+    
+    var playerSetting: PlayerSetting = .init()
 
     init() {
     }
@@ -25,6 +28,16 @@ final public class DataServiceMock: DataServiceInterface {
     func dismissOnboardingViewForever() {
         dismissOnboardingViewForeverCallCount += 1
         isShowOnboardingView = false
+    }
+    
+    var savePlayerQualityCallCount = 0
+    func savePlayerQuality(_ quality: PlayerQuality) {
+        savePlayerQualityCallCount += 1
+    }
+    
+    var savePlayerSpeedCallCount = 0
+    func savePlayerSpeed(_ speed: PlayerSpeed) {
+        savePlayerSpeedCallCount += 1
     }
 }
 

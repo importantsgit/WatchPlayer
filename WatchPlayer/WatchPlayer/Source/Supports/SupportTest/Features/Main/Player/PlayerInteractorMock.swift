@@ -13,25 +13,34 @@ final class PlayerInteractorMock: PlayerInteractorProtocol {
 
     
     let playerRepository: PlayerRepositoryMock
+    let dataRepository: DataRepositoryMock
     
     init(
-        playerRepository: PlayerRepositoryMock
+        playerRepository: PlayerRepositoryMock,
+        dataRepository: DataRepositoryMock
     ) {
         self.playerRepository = playerRepository
+        self.dataRepository = dataRepository
     }
     
     
     var setCallCount = 0
     func set(
         player: AVPlayer
-    ) -> Observable<(SendFromServiceEvent, Any?)> {
+    ) -> Observable<(PlayBackEvent, Any?)> {
         setCallCount += 1
-        return playerRepository.set(player: player)
+        
+        let setting = dataRepository.getPlayerSetting()
+        
+        return playerRepository.set(
+            player: player,
+            setting: setting
+        )
     }
     
     var handleEventCallCount = 0
     func handleEvent(
-        _ event: ReceiveByServiceEvent
+        _ event: PlayerCommandEvent
     ) -> Any? {
         handleEventCallCount += 1
         return playerRepository.handleEvent(event)

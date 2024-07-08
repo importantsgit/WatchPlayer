@@ -8,7 +8,7 @@
 import Foundation
 
 final public class DataRepositoryMock: DataRepositoryInterface {
-    
+
     let dataService: DataServiceMock
     
     init(
@@ -27,6 +27,22 @@ final public class DataRepositoryMock: DataRepositoryInterface {
     func dismissOnboardingViewForever() {
         dismissOnboardingViewForeverCallCount += 1
         dataService.dismissOnboardingViewForever()
+    }
+    
+    var savePlayerQualityCallCount = 0
+    func savePlayerQuality(_ quality: PlayerQuality) {
+        savePlayerQualityCallCount += 1
+    }
+    
+    var savePlayerSpeedCallCount = 0
+    func savePlayerSpeed(_ speed: PlayerSpeed) {
+        savePlayerSpeedCallCount += 1
+    }
+    
+    var getPlayerSettingCallCount = 0
+    func getPlayerSetting() -> PlayerSetting {
+        getPlayerSettingCallCount += 1
+        return dataService.playerSetting
     }
     
 }

@@ -10,8 +10,8 @@ import AVFoundation
 import RxSwift
 
 final class PlayerServiceMock: PlayerServiceInterface {
-    
-    private let sendEventToView = PublishSubject<(SendFromServiceEvent, Any?)>()
+
+    private let sendEventToView = PublishSubject<(PlayBackEvent, Any?)>()
     private var player: AVPlayer?
     
     private let disposeBag = DisposeBag()
@@ -19,21 +19,29 @@ final class PlayerServiceMock: PlayerServiceInterface {
     
     var setCallCount = 0
     func set(
-        player: AVPlayer
-    ) -> Observable<(SendFromServiceEvent, Any?)> {
+        player: AVPlayer,
+        setting: PlayerSetting
+    ) -> Observable<(PlayBackEvent, Any?)> {
         setCallCount += 1
         return sendEventToView
             .asObservable()
     }
     
-    var handleEventCallCount = 0
+    var PlayerCommandHandleEventCallCount = 0
     func handleEvent(
-        _ event: ReceiveByServiceEvent
+        _ event: PlayerCommandEvent
     ) -> Any? {
-        handleEventCallCount += 1
+        PlayerCommandHandleEventCallCount += 1
         return nil
     }
     
+    var SettingCommandHandleEventCallCount = 0
+    func handleEvent(
+        _ event: SettingCommandEvent
+) -> Any? {
+        SettingCommandHandleEventCallCount += 1
+        return nil
+    }
 }
 
 extension PlayerServiceMock {

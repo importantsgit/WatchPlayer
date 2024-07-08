@@ -110,7 +110,10 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
     ) -> PlayerViewController {
         makePlayerModuleCallCount += 1
         let router = PlayerRouterMock(actions: actions)
-        let interactor = PlayerInteractorMock(playerRepository: makePlayerRepository() as! PlayerRepositoryMock)
+        let interactor = PlayerInteractorMock(
+            playerRepository: makePlayerRepository() as! PlayerRepositoryMock,
+            dataRepository: makeDataRepository() as! DataRepositoryMock
+        )
         let presenter = PlayerPresenterMock(
             router: router,
             interactor: interactor,
@@ -118,16 +121,25 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
         )
         let playerView = PlayerView()
         let controllerView = PlayerControllerView()
+        let audioControllerView = PlayerAudioControllerView()
+        let settingView = PlayerSettingView()
         
         playerView.presenter = presenter
         controllerView.presenter = presenter
+        audioControllerView.presenter = presenter
+        settingView.presenter = presenter
+        
         presenter.playerView = playerView
         presenter.controllerView = controllerView
+        presenter.audioControllerView = audioControllerView
+        presenter.settingView = settingView
         
         return .init(
             presenter: presenter,
             playerView: playerView,
-            controllerView: controllerView
+            controllerView: controllerView,
+            audioControllerView: audioControllerView,
+            settingView: settingView
         )
     }
 }
