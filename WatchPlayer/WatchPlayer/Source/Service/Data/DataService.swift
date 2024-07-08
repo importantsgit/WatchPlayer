@@ -10,9 +10,12 @@ import Foundation
 protocol DataServiceInterface {
     var isShowPermissionView: Bool { get }
     var isShowOnboardingView: Bool { get }
+    var playerSetting: PlayerSetting { get }
     
     func dismissPermissionViewForever()
     func dismissOnboardingViewForever()
+    func savePlayerQuality(_ quality: PlayerQuality)
+    func savePlayerSpeed(_ speed: PlayerSpeed)
 }
 
 final public class DataService: DataServiceInterface, UserDefaultProtocol {
@@ -26,6 +29,7 @@ final public class DataService: DataServiceInterface, UserDefaultProtocol {
     // IntroFlow
     var isShowPermissionView: Bool = true
     var isShowOnboardingView: Bool = true
+    var playerSetting: PlayerSetting = PlayerSetting()
     
     init(
         configuration: Configuration
@@ -41,6 +45,7 @@ final public class DataService: DataServiceInterface, UserDefaultProtocol {
             defaultValue: true
         )
         
+        // TODO: PlayerSetting 가져오기
     }
     
     func dismissPermissionViewForever() {
@@ -57,5 +62,20 @@ final public class DataService: DataServiceInterface, UserDefaultProtocol {
             val: isShowOnboardingView,
             key: userDefaultKey.onboarding.rawValue
         )
+    }
+    
+    func savePlayerQuality(
+        _ quality: PlayerQuality
+    ) {
+        self.playerSetting.quality = quality
+        // TODO: 저장
+        
+    }
+    
+    func savePlayerSpeed(
+        _ speed: PlayerSpeed
+    ) {
+        self.playerSetting.speed = speed
+        // TODO: 저장
     }
 }

@@ -10,6 +10,9 @@ import Foundation
 protocol DataRepositoryInterface {
     func dismissPermissionViewForever()
     func dismissOnboardingViewForever()
+    func savePlayerQuality(_ quality: PlayerQuality)
+    func savePlayerSpeed(_ speed: PlayerSpeed)
+    func getPlayerSetting() -> PlayerSetting
 }
 
 final public class DataRepository: DataRepositoryInterface {
@@ -28,5 +31,21 @@ final public class DataRepository: DataRepositoryInterface {
     
     func dismissOnboardingViewForever() {
         dataService.dismissOnboardingViewForever()
+    }
+    
+    func savePlayerQuality(
+        _ quality: PlayerQuality
+    ) {
+        dataService.savePlayerQuality(quality)
+    }
+    
+    func savePlayerSpeed(
+        _ speed: PlayerSpeed
+    ) {
+        dataService.savePlayerSpeed(speed)
+    }
+    
+    func getPlayerSetting() -> PlayerSetting {
+        dataService.playerSetting
     }
 }
