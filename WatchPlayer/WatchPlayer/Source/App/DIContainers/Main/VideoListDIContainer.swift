@@ -111,7 +111,10 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
         asset: PHAsset
     ) -> PlayerViewController {
         let router = PlayerRouter(actions: actions)
-        let interactor = PlayerInteractor(playerRepository: makePlayerRepository())
+        let interactor = PlayerInteractor(
+            playerRepository: makePlayerRepository(),
+            dataRepository: makeDataRepository()
+        )
         let presenter = PlayerPresenter(
             router: router,
             interactor: interactor,
@@ -119,16 +122,25 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
         )
         let playerView = PlayerView()
         let controllerView = PlayerControllerView()
+        let audioControllerView = PlayerAudioControllerView()
+        let settingView = PlayerSettingView()
         
         playerView.presenter = presenter
         controllerView.presenter = presenter
+        audioControllerView.presenter = presenter
+        settingView.presenter = presenter
+        
         presenter.playerView = playerView
         presenter.controllerView = controllerView
+        presenter.audioControllerView = audioControllerView
+        presenter.settingView = settingView
         
         return .init(
             presenter: presenter,
             playerView: playerView,
-            controllerView: controllerView
+            controllerView: controllerView,
+            audioControllerView: audioControllerView,
+            settingView: settingView
         )
     }
 }
