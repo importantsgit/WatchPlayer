@@ -123,23 +123,27 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
         let controllerView = PlayerControllerView()
         let audioControllerView = PlayerAudioControllerView()
         let settingView = PlayerSettingView()
+        let settingPopup = PlayerSettingPopup()
         
         playerView.presenter = presenter
         controllerView.presenter = presenter
         audioControllerView.presenter = presenter
         settingView.presenter = presenter
+        settingPopup.presenter = presenter
         
         presenter.playerView = playerView
         presenter.controllerView = controllerView
         presenter.audioControllerView = audioControllerView
         presenter.settingView = settingView
+        presenter.settingPopup = settingPopup
         
         return .init(
             presenter: presenter,
             playerView: playerView,
             controllerView: controllerView,
             audioControllerView: audioControllerView,
-            settingView: settingView
+            settingView: settingView,
+            settingPopup: settingPopup
         )
     }
 }

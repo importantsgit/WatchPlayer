@@ -18,13 +18,14 @@ final class PlayerPresenterMock: PlayerPresenterProtocol {
     let asset: PHAsset
     
     var playerTitle = PublishRelay<String>()
-    var didLoad = PublishRelay<Void>()
+    var didLoadPlayer = PublishRelay<Void>()
 
     let hideControllerDelay = PublishSubject<Void>()
     let hideControllerImmediately = PublishSubject<Void>()
     let showController = PublishRelay<Void>()
-    var showAudioController = PublishRelay<Bool>()
-    var showSettingView = PublishRelay<Bool>()
+    let showAudioController = PublishRelay<Bool>()
+    let showSettingView = PublishRelay<Bool>()
+    let showSettingPopup = PublishRelay<Bool>()
     
     let setLayout = PublishRelay<LayoutStyle>()
     
@@ -32,6 +33,7 @@ final class PlayerPresenterMock: PlayerPresenterProtocol {
     weak var controllerView: PlayerControllerViewProtocol?
     weak var audioControllerView: PlayerAudioControllerViewProtocol?
     weak var settingView: PlayerSettingViewProtocol?
+    weak var settingPopup: PlayerSettingPopupProtocol?
     
     init(
         router: PlayerRouterProtocol,
@@ -63,6 +65,8 @@ final class PlayerPresenterMock: PlayerPresenterProtocol {
     var controllerEventRotationButtonTapped = 0
     var controllerEventSettingButtonTapped = 0
     var controllerEventShowAudioButtonTapped = 0
+    var controllerEventRewindButtonTapped = 0
+    var controllerEventForwardButtonTapped = 0
     
     var handleAudioControllerEvent = 0
     var AudioControllerEventBackButtonTapped = 0
@@ -110,6 +114,14 @@ extension PlayerPresenterMock: PlayerControllerProtocol {
             
         case .showAudioButtonTapped:
             controllerEventShowAudioButtonTapped += 1
+            break
+            
+        case .rewindButtonTapped:
+            controllerEventRewindButtonTapped += 1
+            break
+            
+        case .forwardButtonTapped:
+            controllerEventForwardButtonTapped += 1
             break
         }
         return nil

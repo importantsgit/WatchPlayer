@@ -51,7 +51,7 @@ extension PlayerServiceMock {
         // NotificationCenter observer
         NotificationCenter.default.rx.notification(.AVPlayerItemDidPlayToEndTime, object: currentItem)
             .subscribe(onNext: { [weak self] _ in
-                self?.sendEventToView.onNext((.didPlayToEndTime, nil))
+                self?.sendEventToView.onNext((.playerStatus(.ended), nil))
             })
             .disposed(by: disposeBag)
         
