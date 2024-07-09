@@ -13,13 +13,17 @@ struct PlayerSettingViewActions {
 }
 
 final class PlayerSettingHeaderView: UIView {
-    
+    private let style: SettingStyle
     private let titleLabel = UILabel()
     private let closeButton = UIButton()
     private var actions: PlayerSettingViewActions?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(
+        style: SettingStyle
+    ) {
+        self.style = style
+        super.init(frame: .zero)
+        
         setupLayout()
     }
     
@@ -33,12 +37,13 @@ final class PlayerSettingHeaderView: UIView {
 
     func setupLayout() {
         titleLabel.text = "설정"
-        titleLabel.textColor = .white
+        titleLabel.font = .boldSystemFont(ofSize: 17)
+        titleLabel.textColor = style == .view ? .white : .black
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         
         closeButton.configuration = .plain()
-        closeButton.configuration?.image = UIImage(named: "close")?
-            .resized(to: .init(width: 42, height: 42))
+        closeButton.configuration?.image = UIImage(named: style == .view ? "close" : "closeBlack")?
+            .resized(to: .init(width: 36, height: 36))
         closeButton.configuration?.imagePlacement = .all
         
         [titleLabel, closeButton].forEach {

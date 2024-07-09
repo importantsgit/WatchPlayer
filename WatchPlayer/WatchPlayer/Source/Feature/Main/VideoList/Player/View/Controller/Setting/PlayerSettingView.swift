@@ -11,18 +11,18 @@ import RxRelay
 
 enum SettingEvent {
     case closeView
-    case updateSpeed(index: Int)
-    case updateGravity(index: Int)
-    case updateQuality(index: Int)
+    case updateSpeed(indexPath: IndexPath)
+    case updateGravity(indexPath: IndexPath)
+    case updateQuality(indexPath: IndexPath)
 }
 
-enum PlayerSettingViewUIUpdateEvent {
+enum PlayerSettingUIUpdateEvent {
     case reset
-    case updateSettingData(selectedIndexPath: [IndexPath])
+    case updateSettingData(selectedIndexPaths: [IndexPath])
 }
 
 protocol PlayerSettingViewProtocol: AnyObject {
-    func handleEvent(_ event: PlayerSettingViewUIUpdateEvent)
+    func handleEvent(_ event: PlayerSettingUIUpdateEvent)
     
 }
 
@@ -37,7 +37,7 @@ final class PlayerSettingView: UIView {
         "화면 비율": ["원본 비율", "꽉찬 화면"]
     ]
     
-    var selectedIndexPath: [IndexPath] = [
+    var selectedIndexPaths: [IndexPath] = [
         IndexPath(row: 0, section: 0),
         IndexPath(row: 1, section: 0),
         IndexPath(row: 0, section: 0)
@@ -46,7 +46,7 @@ final class PlayerSettingView: UIView {
     var selectedCategory: String?
 
     let tableView = UITableView()
-    let headerView = PlayerSettingHeaderView()
+    let headerView = PlayerSettingHeaderView(style: .view)
     
     let disposeBag = DisposeBag()
     
@@ -68,6 +68,8 @@ final class PlayerSettingView: UIView {
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.isScrollEnabled = false
+        tableView.estimatedRowHeight = 52
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.register(PlayerSettingSectionCell.self, forCellReuseIdentifier: "PlayerSettingSectionCell")
         tableView.register(PlayerSettingDetailCell.self, forCellReuseIdentifier: "PlayerSettingDetailCell")
         
@@ -88,7 +90,7 @@ final class PlayerSettingView: UIView {
     }
     
     func setupLayout() {
-        backgroundColor = UIColor(hex: "000000", alpha: 0.6)
+        backgroundColor = UIColor(hex: "000000", alpha: 0.8)
         
         [headerView, tableView].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -110,22 +112,22 @@ final class PlayerSettingView: UIView {
 }
 
 extension PlayerSettingView: PlayerSettingViewProtocol {
-    func handleEvent(_ event: PlayerSettingViewUIUpdateEvent) {
+    func handleEvent(_ event: PlayerSettingUIUpdateEvent) {
         switch event {
         case .reset:
             selectedCategory = nil
             tableView.reloadData()
             
-        case .updateSettingData(let selectedIndexPath):
-            self.selectedIndexPath = selectedIndexPath
+        case .updateSettingData(let selectedIndexPaths):
+            self.selectedIndexPaths = selectedIndexPaths
             tableView.reloadData()
         }
     }
 }
 
 extension PlayerSettingView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        52.0
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }
 
@@ -143,11 +145,14 @@ extension PlayerSettingView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // 2_depth
         if let selectedCategory = selectedCategory {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerSettingDetailCell", for: indexPath) as? PlayerSettingDetailCell
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: "PlayerSettingDetailCell",
+                for: indexPath
+            ) as? PlayerSettingDetailCell
             else { return .init() }
             
             if let index = categorys.firstIndex(where: { $0 == selectedCategory }),
-               indexPath == selectedIndexPath[index] {
+               indexPath == selectedIndexPaths[index] {
                 cell.setTapped(isChecked: true)
             }
             else {
@@ -155,22 +160,30 @@ extension PlayerSettingView: UITableViewDataSource {
             }
             
             if let data = settingsData[selectedCategory] {
-                cell.setupCell(data[indexPath.row])
+                cell.set(.view)
+                cell.configuration(title: data[indexPath.row])
+                
                 return cell
             }
         }
         
         // 1_depth
         else {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "PlayerSettingSectionCell", for: indexPath) as? PlayerSettingSectionCell
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: "PlayerSettingSectionCell",
+                for: indexPath
+            ) as? PlayerSettingSectionCell
             else { return .init() }
-            let selectedIndexPath = selectedIndexPath[indexPath.row]
+            
+            let selectedIndexPath = selectedIndexPaths[indexPath.row]
             let title = categorys[indexPath.row]
             
-            cell.setupCell(
+            cell.set(.view)
+            cell.configuration(
                 title: title,
                 detail: settingsData[title]![selectedIndexPath.row]
             )
+            
             return cell
         }
         
@@ -186,24 +199,24 @@ extension PlayerSettingView: UITableViewDataSource {
         else if let selectedCategory = selectedCategory,
                 let cell = tableView.cellForRow(at: indexPath) as? PlayerSettingDetailCell {
             if let index = categorys.firstIndex(where: { $0 == selectedCategory }) {
-                let selectedIndexPath = selectedIndexPath[index]
+                let selectedIndexPath = selectedIndexPaths[index]
                 
                 if let previousSelectedCell = tableView.cellForRow(at: selectedIndexPath) as? PlayerSettingDetailCell {
                     previousSelectedCell.setTapped(isChecked: false)
                 }
                 print(indexPath)
-                self.selectedIndexPath[index] = indexPath
+                self.selectedIndexPaths[index] = indexPath
                 cell.setTapped(isChecked: true)
                 
                 switch index {
                 case 0:
-                    presenter?.handleEvent(.updateQuality(index: indexPath.row))
+                    presenter?.handleEvent(.updateQuality(indexPath: indexPath))
                     
                 case 1:
-                    presenter?.handleEvent(.updateSpeed(index: indexPath.row))
+                    presenter?.handleEvent(.updateSpeed(indexPath: indexPath))
                     
                 case 2:
-                    presenter?.handleEvent(.updateGravity(index: indexPath.row))
+                    presenter?.handleEvent(.updateGravity(indexPath: indexPath))
                     
                 default: fatalError()
                 }
