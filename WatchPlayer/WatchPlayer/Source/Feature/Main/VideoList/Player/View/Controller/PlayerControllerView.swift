@@ -21,6 +21,8 @@ enum ControllerEvent {
     case rotationButtonTapped
     case backButtonTapped
     case playButtonTapped
+    case rewindButtonTapped
+    case forwardButtonTapped
 }
 
 // presenter에서 컨트롤러로 전달되는 UIUpdate 이벤트
@@ -58,15 +60,21 @@ final class PlayerControllerView: UIView {
     // MIDDLE
     private let middleControlView = UIStackView()
     private var playButton = UIButton()
+    private var rewindButton = UIButton()
+    private var forwardButton = UIButton()
     
     // BOTTOM
     private let bottomControlView = UIStackView()
     private let seekbarView = UIView()
     private let seekbar = UIView()
+    private let currentSeekbar = UIView()
     private var timeLabel = UILabel()
     private var rotationButton = UIButton()
     
     private var layoutConstraints: [NSLayoutConstraint]?
+    private var currentSeekbarWidthConstraint: NSLayoutConstraint!
+    
+    private var style: LayoutStyle = .portrait
     
     private var disposeBag = DisposeBag()
     
@@ -92,7 +100,7 @@ final class PlayerControllerView: UIView {
     }
     
     private func setupButtons() {
-        [backButton, audioButton, settingButton, playButton, rotationButton].forEach{
+        [backButton, audioButton, settingButton, rewindButton, playButton, forwardButton, rotationButton].forEach{
             $0.configuration = .plain()
             $0.configuration?.imagePlacement = .all
         }
@@ -101,7 +109,7 @@ final class PlayerControllerView: UIView {
             .resized(to: .init(width: 42, height: 42))
         
         playButton.configuration?.image = UIImage(named: "pause")?
-            .resized(to: .init(width: 42, height: 42))
+            .resized(to: .init(width: 54, height: 54))
         
         backButton.rx.tap.bind { [weak self] in
             self?.presenter?.handleEvent(.backButtonTapped)
@@ -125,6 +133,16 @@ final class PlayerControllerView: UIView {
         }
         .disposed(by: disposeBag)
         
+        rewindButton.rx.tap.bind {
+            self.presenter?.handleEvent(.rewindButtonTapped)
+        }
+        .disposed(by: disposeBag)
+        
+        forwardButton.rx.tap.bind {
+            self.presenter?.handleEvent(.forwardButtonTapped)
+        }
+        .disposed(by: disposeBag)
+        
         rotationButton.rx.tap.bind { [weak self] in
             self?.presenter?.handleEvent(.rotationButtonTapped)
         }
@@ -134,16 +152,19 @@ final class PlayerControllerView: UIView {
     private func setupLayout() {
         self.backgroundColor = UIColor(hex: "000000", alpha: 0.4)
         
-        
-        
         [spacer, backButton, titleLabel, audioButton, settingButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             topControlView.addArrangedSubview($0)
         }
         
-        [playButton].forEach {
+        [rewindButton, playButton, forwardButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             middleControlView.addArrangedSubview($0)
+            
+            NSLayoutConstraint.activate([
+                $0.widthAnchor.constraint(equalToConstant: 56),
+                $0.heightAnchor.constraint(equalToConstant: 56)
+            ])
         }
         
         [seekbarView, rotationButton].forEach {
@@ -151,16 +172,21 @@ final class PlayerControllerView: UIView {
             bottomControlView.addArrangedSubview($0)
         }
         
-        seekbar.backgroundColor = .primary
+        seekbar.backgroundColor = .lightGray
+        currentSeekbar.backgroundColor = .primary
         
         timeLabel.textAlignment = .right
         
-        [timeLabel, seekbar].forEach {
+        [timeLabel, seekbar, currentSeekbar].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             seekbarView.addSubview($0)
         }
         
         seekbar.layer.cornerRadius = 2
+        currentSeekbar.layer.cornerRadius = 2
+        
+        currentSeekbarWidthConstraint = currentSeekbar.widthAnchor.constraint(equalToConstant: 0)
+        currentSeekbarWidthConstraint.isActive = true
         
         [topControlView, middleControlView, bottomControlView].forEach{
             $0.axis = .horizontal
@@ -206,6 +232,11 @@ final class PlayerControllerView: UIView {
         rotationButton.configuration?.image = UIImage(named: "expand")?
             .resized(to: .init(width: imageSize, height: imageSize))
         
+        rewindButton.configuration?.image = UIImage(named: "rewind")?
+            .resized(to: .init(width: 40, height: 40))
+        forwardButton.configuration?.image = UIImage(named: "forward")?
+            .resized(to: .init(width: 40, height: 40))
+        
         return [
             topControlView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             topControlView.leftAnchor.constraint(equalTo: leftAnchor, constant: 8),
@@ -228,6 +259,11 @@ final class PlayerControllerView: UIView {
             seekbar.leftAnchor.constraint(equalTo: seekbarView.leftAnchor),
             seekbar.rightAnchor.constraint(equalTo: seekbarView.rightAnchor),
             seekbar.heightAnchor.constraint(equalToConstant: 4),
+            
+            currentSeekbar.topAnchor.constraint(equalTo: seekbar.topAnchor),
+            currentSeekbar.leftAnchor.constraint(equalTo: seekbar.leftAnchor),
+            currentSeekbar.bottomAnchor.constraint(equalTo: seekbar.bottomAnchor),
+            
         ]
     }
     
@@ -244,6 +280,11 @@ final class PlayerControllerView: UIView {
             .resized(to: .init(width: imageSize, height: imageSize))
         rotationButton.configuration?.image = UIImage(named: "shrink")?
             .resized(to: .init(width: imageSize, height: imageSize))
+
+        rewindButton.configuration?.image = UIImage(named: "rewind")?
+            .resized(to: .init(width: 48, height: 48))
+        forwardButton.configuration?.image = UIImage(named: "forward")?
+            .resized(to: .init(width: 48, height: 48))
         
         return [
             topControlView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
@@ -267,35 +308,100 @@ final class PlayerControllerView: UIView {
             seekbar.leftAnchor.constraint(equalTo: seekbarView.leftAnchor),
             seekbar.rightAnchor.constraint(equalTo: seekbarView.rightAnchor),
             seekbar.heightAnchor.constraint(equalToConstant: 4),
+            
+            currentSeekbar.topAnchor.constraint(equalTo: seekbar.topAnchor),
+            currentSeekbar.leftAnchor.constraint(equalTo: seekbar.leftAnchor),
+            currentSeekbar.bottomAnchor.constraint(equalTo: seekbar.bottomAnchor),
+            
+        ]
+    }
+    
+    func setLayoutToFullPortrait(
+    ) -> [NSLayoutConstraint] {
+        let imageSize: CGFloat = 42
+        backButton.isHidden = false
+        titleLabel.isHidden = false
+        spacer.isHidden = true
+        
+        audioButton.configuration?.image = UIImage(named: "audio")?
+            .resized(to: .init(width: imageSize, height: imageSize))
+        settingButton.configuration?.image = UIImage(named: "setting")?
+            .resized(to: .init(width: imageSize, height: imageSize))
+        rotationButton.configuration?.image = UIImage(named: "shrink")?
+            .resized(to: .init(width: imageSize, height: imageSize))
+        
+        rewindButton.configuration?.image = UIImage(named: "rewind")?
+            .resized(to: .init(width: 48, height: 48))
+        forwardButton.configuration?.image = UIImage(named: "forward")?
+            .resized(to: .init(width: 48, height: 48))
+        
+        return [
+            topControlView.topAnchor.constraint(equalTo: topAnchor, constant: 64),
+            topControlView.leftAnchor.constraint(equalTo: leftAnchor, constant: 8),
+            topControlView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8),
+            
+            middleControlView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            middleControlView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            
+            bottomControlView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -64),
+            bottomControlView.leftAnchor.constraint(equalTo: leftAnchor, constant: 8),
+            bottomControlView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8),
+            
+            seekbarView.heightAnchor.constraint(equalToConstant: 42),
+            
+            timeLabel.topAnchor.constraint(equalTo: seekbarView.topAnchor),
+            timeLabel.leftAnchor.constraint(equalTo: seekbarView.leftAnchor),
+            
+            seekbar.topAnchor.constraint(equalTo: timeLabel.bottomAnchor, constant: -2),
+            seekbar.bottomAnchor.constraint(equalTo: seekbarView.bottomAnchor, constant: -8),
+            seekbar.leftAnchor.constraint(equalTo: seekbarView.leftAnchor),
+            seekbar.rightAnchor.constraint(equalTo: seekbarView.rightAnchor),
+            seekbar.heightAnchor.constraint(equalToConstant: 4),
+            
+            currentSeekbar.topAnchor.constraint(equalTo: seekbar.topAnchor),
+            currentSeekbar.leftAnchor.constraint(equalTo: seekbar.leftAnchor),
+            currentSeekbar.bottomAnchor.constraint(equalTo: seekbar.bottomAnchor),
+            
         ]
     }
     
     func setPlayButton(state: PlayerState) {
         let buttonImage: UIImage
+        let size: CGFloat = 54
         switch state {
         case .playing: buttonImage = .pause
-        case .paused: buttonImage = .play
-        case .ended: buttonImage = .rotate
+        case .paused: buttonImage =  .play
+        case .ended: buttonImage =  .rotate
         }
-        
-        playButton.configuration?.image = buttonImage
+
+        playButton.configuration?.image = buttonImage.resized(to: .init(width: size, height: size))
     }
 }
 
 extension PlayerControllerView: PlayerControllerViewProtocol {
+    
     func handleEvent(_ event: PlayerControllerViewUIUpdateEvent) {
         switch event {
         case .updateLayout(let style):
+            self.style = style
             NSLayoutConstraint.deactivate(self.layoutConstraints ?? [])
             
             let newConstraints: [NSLayoutConstraint]
             switch style {
             case .landscape:
                 newConstraints = self.setLayoutToLandscape()
-                [topControlView, middleControlView, bottomControlView].forEach{ $0.spacing = 12 }
+                [topControlView, bottomControlView].forEach{ $0.spacing = 12 }
+                middleControlView.spacing = 24
+                
             case .portrait:
                 newConstraints = self.setLayoutToPortrait()
-                [topControlView, middleControlView, bottomControlView].forEach{ $0.spacing = 4 }
+                [topControlView, bottomControlView].forEach{ $0.spacing = 4 }
+                middleControlView.spacing = 8
+                
+            case .fullPortrait:
+                newConstraints = self.setLayoutToFullPortrait()
+                [topControlView, bottomControlView].forEach{ $0.spacing = 4 }
+                middleControlView.spacing = 16
             }
             
             NSLayoutConstraint.activate(newConstraints)
@@ -303,9 +409,32 @@ extension PlayerControllerView: PlayerControllerViewProtocol {
             
         case .updatePlayButton(let state):
             setPlayButton(state: state)
+            if state == .ended {
+                [rewindButton, forwardButton].forEach { $0.isHidden = true }
+            }
+            else {
+                [rewindButton, forwardButton].forEach { $0.isHidden = false }
+            }
             
         case .updateTime(current: let current, duration: let duration):
             set(times: (current, duration))
+            
+            let durationSeconds = CMTimeGetSeconds(duration)
+            let currentSeconds = CMTimeGetSeconds(current)
+            
+            // NaN 또는 inf가 발생하지 않도록 안전하게 나누기 수행
+            let seekBarWidth = durationSeconds > 0 ? 
+            CGFloat(currentSeconds / durationSeconds) * seekbar.bounds.width :
+            0
+            
+            if seekBarWidth.isFinite {
+                currentSeekbarWidthConstraint?.constant = seekBarWidth
+            }
+            
+            currentSeekbarWidthConstraint?.constant = seekBarWidth
+//            UIView.animate(withDuration: 0.1) {
+//                self.layoutIfNeeded()
+//            }
             
         case .setTitle(let title):
             titleLabel.text = title

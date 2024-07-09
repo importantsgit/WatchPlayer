@@ -83,7 +83,7 @@ final class PlayerAudioControllerView: UIView {
             .resized(to: .init(width: 42, height: 42))
         
         playButton.configuration?.image = UIImage(named: "pause")?
-            .resized(to: .init(width: 42, height: 42))
+            .resized(to: .init(width: 54, height: 54))
         
         backButton.rx.tap.bind { [weak self] in
             self?.presenter?.handleEvent(.backButtonTapped)
@@ -116,6 +116,11 @@ final class PlayerAudioControllerView: UIView {
         [playButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             middleControlView.addArrangedSubview($0)
+            
+            NSLayoutConstraint.activate([
+                $0.widthAnchor.constraint(equalToConstant: 56),
+                $0.heightAnchor.constraint(equalToConstant: 56)
+            ])
         }
         
         [topControlView, middleControlView].forEach {
@@ -201,15 +206,42 @@ final class PlayerAudioControllerView: UIView {
         ]
     }
     
+    func setLayoutToFullPortrait(
+    ) -> [NSLayoutConstraint] {
+        let imageSize: CGFloat = 42
+        backButton.isHidden = false
+        titleLabel.isHidden = false
+        spacer.isHidden = true
+        
+        audioTextLabel.font = .systemFont(ofSize: 17, weight: .medium)
+        
+        audioButton.configuration?.image = UIImage(named: "audio_disable")?
+            .resized(to: .init(width: imageSize, height: imageSize))
+        
+        return [
+            topControlView.topAnchor.constraint(equalTo: topAnchor, constant: 64),
+            topControlView.leftAnchor.constraint(equalTo: leftAnchor, constant: 8),
+            topControlView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8),
+            
+            middleControlView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            middleControlView.centerXAnchor.constraint(equalTo: centerXAnchor),
+        
+            
+            audioTextLabel.centerXAnchor.constraint(equalTo: playButton.centerXAnchor),
+            audioTextLabel.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 10)
+        ]
+    }
+    
     func setPlayButton(state: PlayerState) {
         let buttonImage: UIImage
+        let size: CGFloat = 54
         switch state {
         case .playing: buttonImage = .pause
-        case .paused: buttonImage = .play
-        case .ended: buttonImage = .rotate
+        case .paused: buttonImage =  .play
+        case .ended: buttonImage =  .rotate
         }
-        
-        playButton.configuration?.image = buttonImage
+
+        playButton.configuration?.image = buttonImage.resized(to: .init(width: size, height: size))
     }
 }
 
@@ -225,10 +257,18 @@ extension PlayerAudioControllerView: PlayerAudioControllerViewProtocol {
             switch style {
             case .landscape:
                 newConstraints = self.setLayoutToLandscape()
-                [topControlView, middleControlView].forEach{ $0.spacing = 12 }
+                topControlView.spacing = 12
+                middleControlView.spacing = 24
+                
             case .portrait:
                 newConstraints = self.setLayoutToPortrait()
-                [topControlView, middleControlView].forEach{ $0.spacing = 4 }
+                topControlView.spacing = 4
+                middleControlView.spacing = 8
+                
+            case .fullPortrait:
+                newConstraints = self.setLayoutToFullPortrait()
+                topControlView.spacing = 4
+                middleControlView.spacing = 16
             }
             
             NSLayoutConstraint.activate(newConstraints)
