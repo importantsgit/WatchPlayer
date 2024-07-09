@@ -18,8 +18,7 @@ struct PlayerRouterActions {
 }
 
 final class PlayerRouter: PlayerRouterProtocol {
-    
-    let actions: PlayerRouterActions
+    private let actions: PlayerRouterActions
     
     init(
         actions: PlayerRouterActions
