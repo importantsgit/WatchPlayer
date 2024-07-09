@@ -7,6 +7,7 @@
 
 import Foundation
 import AVFoundation
+import UIKit
 
 enum SeekType {
     case forward(count: Int)
@@ -20,8 +21,21 @@ enum PlayerState {
 }
 
 enum LayoutStyle {
-    case portrait
-    case landscape
+    case portrait       // 세로 (작은)
+    case fullPortrait   // 세로 (큰)
+    case landscape      // 가로 
+    
+    func getOrientation(
+    ) -> UIInterfaceOrientationMask {
+        switch self {
+        case .fullPortrait:
+            return .portrait
+        case .portrait:
+            return .portrait
+        case .landscape:
+            return .landscape
+        }
+    }
 }
 
 enum PlayerGravity {
