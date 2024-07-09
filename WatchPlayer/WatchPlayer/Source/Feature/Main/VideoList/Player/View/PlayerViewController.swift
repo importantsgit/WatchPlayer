@@ -17,6 +17,7 @@ final class PlayerViewController: DefaultViewController {
     private let controllerView: PlayerControllerView
     private let audioControllerView: PlayerAudioControllerView
     private let settingView: PlayerSettingView
+    private let settingPopup: PlayerSettingPopup
     private let activityIndicator: UIActivityIndicatorView? = UIActivityIndicatorView()
     
     let presenter: PlayerPresenterProtocol
@@ -29,13 +30,16 @@ final class PlayerViewController: DefaultViewController {
         playerView: PlayerView,
         controllerView: PlayerControllerView,
         audioControllerView: PlayerAudioControllerView,
-        settingView: PlayerSettingView
+        settingView: PlayerSettingView,
+        settingPopup: PlayerSettingPopup
     ) {
         self.presenter = presenter
         self.playerView = playerView
         self.controllerView = controllerView
         self.audioControllerView = audioControllerView
         self.settingView = settingView
+        self.settingPopup = settingPopup
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -64,6 +68,12 @@ final class PlayerViewController: DefaultViewController {
                 self?.presenter.backButtonTapped()
             })
             .disposed(by: disposeBag)
+        
+        navigationBar.setRightButton(imageName: "delete")
+            .subscribe(onNext: { [weak self] in
+                
+            })
+            .disposed(by: disposeBag)
     }
 }
 
@@ -83,7 +93,7 @@ extension PlayerViewController {
             .disposed(by: disposeBag)
         
         presenter
-            .didLoad
+            .didLoadPlayer
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 self?.activityIndicator?.stopAnimating()
@@ -103,12 +113,14 @@ extension PlayerViewController {
                     newConstraints = self.setLayoutToLandscape()
                 case .portrait:
                     newConstraints = self.setLayoutToPortrait()
+                case .fullPortrait:
+                    newConstraints = self.setLayoutToFullPortrait()
                 }
                 
                 NSLayoutConstraint.activate(newConstraints)
                 self.layoutConstraints = newConstraints
                 
-                UIView.animate(withDuration: 0.3) {
+                UIView.animate(withDuration: 0.1) {
                     self.view.layoutIfNeeded()
                 } completion: { _ in
                     self.playerView.handleEvent(.updateLayout)
@@ -127,6 +139,13 @@ extension PlayerViewController {
             .showSettingView
             .subscribe(onNext: { [weak self] isShow in
                 self?.settingView.isHidden = (isShow == false)
+            })
+            .disposed(by: disposeBag)
+        
+        presenter
+            .showSettingPopup
+            .subscribe(onNext: { [weak self] isShow in
+                self?.settingPopup.isHidden = (isShow == false)
             })
             .disposed(by: disposeBag)
         
@@ -163,8 +182,9 @@ extension PlayerViewController {
         controllerView.isHidden = true
         audioControllerView.isHidden = true
         settingView.isHidden = true
+        settingPopup.isHidden = true
     
-        [playerView, controllerView, audioControllerView, settingView, activityIndicator!, navigationBar].forEach {
+        [playerView, controllerView, audioControllerView, settingView, activityIndicator!, navigationBar, settingPopup].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -206,8 +226,48 @@ extension PlayerViewController {
             audioControllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
             audioControllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             
-            activityIndicator!.centerXAnchor.constraint(equalTo: playerView.centerXAnchor),
-            activityIndicator!.centerYAnchor.constraint(equalTo: playerView.centerYAnchor)
+            activityIndicator!.topAnchor.constraint(equalTo: playerView.topAnchor),
+            activityIndicator!.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            activityIndicator!.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            activityIndicator!.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            
+            settingPopup.topAnchor.constraint(equalTo: view.topAnchor),
+            settingPopup.leftAnchor.constraint(equalTo: view.leftAnchor),
+            settingPopup.rightAnchor.constraint(equalTo: view.rightAnchor),
+            settingPopup.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ]
+        return constraints
+    }
+    
+    private func setLayoutToFullPortrait(
+    ) -> [NSLayoutConstraint] {
+        navigationBar.isHidden = true
+        
+        let constraints = [
+            playerView.topAnchor.constraint(equalTo: view.topAnchor),
+            playerView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            playerView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            playerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            controllerView.topAnchor.constraint(equalTo: playerView.topAnchor),
+            controllerView.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            controllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            controllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            
+            audioControllerView.topAnchor.constraint(equalTo: playerView.topAnchor),
+            audioControllerView.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            audioControllerView.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            audioControllerView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            
+            activityIndicator!.topAnchor.constraint(equalTo: playerView.topAnchor),
+            activityIndicator!.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            activityIndicator!.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            activityIndicator!.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            
+            settingPopup.topAnchor.constraint(equalTo: view.topAnchor),
+            settingPopup.leftAnchor.constraint(equalTo: view.leftAnchor),
+            settingPopup.rightAnchor.constraint(equalTo: view.rightAnchor),
+            settingPopup.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ]
         return constraints
     }
@@ -237,8 +297,10 @@ extension PlayerViewController {
             settingView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             settingView.widthAnchor.constraint(equalToConstant: 334),
             
-            activityIndicator!.centerXAnchor.constraint(equalTo: playerView.centerXAnchor),
-            activityIndicator!.centerYAnchor.constraint(equalTo: playerView.centerYAnchor)
+            activityIndicator!.topAnchor.constraint(equalTo: playerView.topAnchor),
+            activityIndicator!.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            activityIndicator!.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            activityIndicator!.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
         ]
         return constraints
     }
