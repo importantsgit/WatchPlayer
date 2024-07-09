@@ -27,8 +27,8 @@ protocol PlayerServiceInterface {
 
 // MARK: service단에서 감지된 이벤트
 enum PlayBackEvent {
-    case didPlayToEndTime
     case setTimes
+    case playerStatus(PlayerState)
 }
 
 // MARK: Controller를 통해 입력된 이벤트
@@ -51,6 +51,7 @@ final class PlayerService: NSObject, PlayerServiceInterface {
     
     private let sendEventToView = PublishSubject<(PlayBackEvent, Any?)>()
     private var player: AVPlayer?
+    private var currentState: PlayerState = .playing
     
     private let disposeBag = DisposeBag()
     private var periodicTimeObserver: Any?
@@ -70,6 +71,7 @@ final class PlayerService: NSObject, PlayerServiceInterface {
         
         setupObservers(player: self.player)
         play()
+        
         return sendEventToView
             .asObservable()
     }
@@ -98,9 +100,7 @@ final class PlayerService: NSObject, PlayerServiceInterface {
         case .audioButtonTapped(let isUse):
             setCommandCenter(isUse: isUse)
             return isUse ? nil : player
-            
-
-            
+        
         }
         
         return nil
@@ -132,22 +132,22 @@ private extension PlayerService {
         // NotificationCenter observer
         NotificationCenter.default.rx.notification(.AVPlayerItemDidPlayToEndTime, object: currentItem)
             .subscribe(onNext: { [weak self] _ in
-                self?.sendEventToView.onNext((.didPlayToEndTime, nil))
+                self?.sendEventToView.onNext((.playerStatus(.ended), nil))
+                self?.currentState = .ended
             })
             .disposed(by: disposeBag)
         
         player?.rx.observe(\.timeControlStatus)
             .subscribe(onNext: { [weak self] status in
-//                switch status {
-//                case .paused:
-//                    print("status paused")
-//                case .playing:
-//                    print("status playing")
-//                case .waitingToPlayAtSpecifiedRate:
-//                    print("status waitingToPlayAtSpecifiedRate")
-//                @unknown default:
-//                    fatalError()
-//                }
+                switch status {
+                case .playing:
+                    print("status playing")
+                    self?.sendEventToView.onNext((.playerStatus(.playing), nil))
+                case .waitingToPlayAtSpecifiedRate:
+                    print("status waitingToPlayAtSpecifiedRate")
+                default:
+                    break
+                }
             })
             .disposed(by: disposeBag)
         
@@ -194,19 +194,22 @@ private extension PlayerService {
     }
     
     func playButtonTapped() -> PlayerState {
-        switch player?.timeControlStatus {
+        switch currentState {
         case .playing:
-            print("playing")
             pause()
             return .paused
+            
         case .paused:
-            print("pause")
             play()
             return .playing
-        default:
-            print("default")
             
-            return .ended
+        case .ended:
+            player?.seek(to: CMTime.zero, toleranceBefore: .zero, toleranceAfter: .zero) { [weak self] completed in
+                if completed {
+                    self?.play()
+                }
+            }
+            return .playing
         }
     }
     
@@ -215,6 +218,7 @@ private extension PlayerService {
         else { return }
         
         player.play()
+        currentState = .playing
     }
     
     func pause() {
@@ -222,16 +226,39 @@ private extension PlayerService {
         else { return }
         
         player.pause()
+        currentState = .paused
     }
     
     func seekForward(count: Int) {
-        guard let player = player
+        guard let player = player,
+              let currentItem = player.currentItem,
+              let seekableTimeRange = currentItem.seekableTimeRanges.last?.timeRangeValue
         else { return }
+        
+        let skipSecond = Float64(count * 10)
+        
+        let currentTime = player.currentTime()
+        let skipTime = CMTime(seconds: skipSecond, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        
+        let seekTime = CMTimeAdd(currentTime, skipTime)
+        
+        player.seek(to: seekableTimeRange.containsTime(seekTime) ? seekTime : seekableTimeRange.end)
     }
     
     func seekRewind(count: Int) {
-        guard let player = player
+        guard let player = player,
+              let currentItem = player.currentItem,
+              let seekableTimeRange = currentItem.seekableTimeRanges.last?.timeRangeValue
         else { return }
+        
+        let skipSecond = Float64(count * 10)
+        
+        let currentTime = player.currentTime()
+        let skipTime = CMTime(seconds: skipSecond, preferredTimescale: CMTimeScale(NSEC_PER_SEC))
+        
+        let seekTime = CMTimeSubtract(currentTime, skipTime)
+        
+        player.seek(to: seekableTimeRange.containsTime(seekTime) ? seekTime : seekableTimeRange.start)
     }
     
     private func setCommandCenter(isUse: Bool) {
