@@ -10,6 +10,8 @@ import RxRelay
 
 final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedencies {
 
+    
+
     struct Dependencies {
         let translationService: TranslationServiceInterface
         let dataService: DataServiceInterface
@@ -73,85 +75,59 @@ final public class IntroDIContainerMock: IntroDIContainerProtocol, IntroDepedenc
     
     // MARK: - PermissionModule
     
-    var makePermissionInteractorCallCount = 0
-    func makePermissionInteractor(
-    ) -> PermissionInteractorProtocol {
-        makePermissionInteractorCallCount += 1
-        return PermissionInteractor(
+    var makePermissionModuleCallCount = 0
+    func makePermissionModule(
+        navigationController: UINavigationController?,
+        actions: PermissionRouterActions
+    ) -> PermissionViewController {
+        makePermissionModuleCallCount += 1
+        
+        let router = PermissionRouter(
+            navigationController: navigationController,
+            actions: actions
+        )
+        
+        let interactor = PermissionInteractor(
             dataRepository: makeDataRepository(),
             recordRepository: makeRecordRepository()
         )
-    }
-    
-    var makePermissionRouterCallCount = 0
-    func makePermissionRouter(
-        actions: PermissionRouterActions
-    ) -> PermissionRouterProtocol {
-        makePermissionRouterCallCount += 1
-        return PermissionRouter(actions: actions)
-    }
-    
-    var makePermissionPresenterCallCount = 0
-    func makePermissionPresenter(
-        actions: PermissionRouterActions
-    ) -> PermissionPresenterProtocol {
-        makePermissionPresenterCallCount += 1
-        return PermissionPresenter(
-            interator: makePermissionInteractor(),
-            router: makePermissionRouter(actions: actions)
+        
+        let presenter = PermissionPresenter(
+            interactor: interactor,
+            router: router
         )
-    }
-    
-    var makePermissionViewCallCount = 0
-    func makePermissionView(
-        actions: PermissionRouterActions
-    ) -> PermissionViewController {
-        makePermissionViewCallCount += 1
-        return PermissionViewController(
-            presenter: makePermissionPresenter(actions: actions)
-        )
+        
+        let viewController = PermissionViewController(presenter: presenter)
+        
+        return viewController
     }
     
     // MARK: - OnboardingModule
 
-    var makeOnboardingInteractorCallCount = 0
-    func makeOnboardingInteractor(
-    ) -> OnboardingInteractorProtocol {
-        makeOnboardingInteractorCallCount += 1
-        return OnboardingInteractor(
-            dataRepository: makeDataRepository()
-        )
-    }
-    
-    var makeOnboardingRouterCallCount = 0
-    func makeOnboardingRouter(
-        actions: OnboardingRouterActions
-    ) -> OnboardingRouterProtocol {
-        makeOnboardingRouterCallCount += 1
-        return OnboardingRouter(
-            actions: actions
-        )
-    }
-    
-    var makeOnboardingPresenterCallCount = 0
-    func makeOnboardingPresenter(
-        actions: OnboardingRouterActions
-    ) -> OnboardingPresenterProtocol {
-        makeOnboardingPresenterCallCount += 1
-        return OnboardingPresenter(
-            interactor: makeOnboardingInteractor(),
-            router: makeOnboardingRouter(actions: actions)
-        )
-    }
-    
-    var makeOnboardingViewCallCount = 0
-    func makeOnboardingView(
+    var makeOnboardModuleCallCount = 0
+    func makeOnboardModule(
+        navigationController: UINavigationController?,
         actions: OnboardingRouterActions
     ) -> OnboardingViewController {
-        makeOnboardingViewCallCount += 1
-        return OnboardingViewController(
-            presenter: makeOnboardingPresenter(actions: actions)
+        makeOnboardModuleCallCount += 1
+        
+        let router = OnboardingRouter(
+            navigationController: navigationController,
+            actions: actions
         )
+        
+        let interactor = OnboardingInteractor(
+            dataRepository: makeDataRepository()
+        )
+        
+        let presenter = OnboardingPresenter(
+            interactor: interactor,
+            router: router
+        )
+        
+        let viewController = OnboardingViewController(presenter: presenter)
+        
+        return viewController
     }
 }
 

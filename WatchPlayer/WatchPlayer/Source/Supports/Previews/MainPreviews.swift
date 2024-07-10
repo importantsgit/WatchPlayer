@@ -30,6 +30,24 @@ import UIKit
     )
     
     coordinator.start()
+    
+    let popup = PopupRouter.createPopupModule(actions: .init(popupActionEvent: .init()))
+    popup.setupPopup(
+        with: .init(
+            type: .alert(
+                title: "동영상 삭제",
+                message: "메세지입니다메세지입니다메세지입니다메세지입니다.",
+                buttons: [
+                    .init(title: "안녕", style: .normal),
+                    .init(title: "안녕", style: .destructive)
+                ]
+            ),
+            dismmisOnBackgroundTap: true
+        )
+    )
+    
+    navigationController.pushViewController(popup, animated: true)
+    
     return navigationController
 }
 

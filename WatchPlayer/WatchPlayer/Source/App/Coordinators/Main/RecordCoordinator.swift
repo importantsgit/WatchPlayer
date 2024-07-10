@@ -39,7 +39,8 @@ final public class RecordCoordinator: RecordRouterManageable {
     }
     
     func showRecordView() {
-        let recordViewController = dependencies.makeRecordViewController(
+        let recordViewController = dependencies.makeRecordModule(
+            navigationController: navigationController,
             actions: makeRecordRouterActions()
         )
         rootViewController = recordViewController

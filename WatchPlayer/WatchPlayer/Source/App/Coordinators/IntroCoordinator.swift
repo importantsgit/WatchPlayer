@@ -72,7 +72,8 @@ final public class IntroCoordinator: IntroRouterManageable {
     }
     
     func showPermissionView() {
-        let permissionViewController = dependencies.makePermissionView(
+        let permissionViewController = dependencies.makePermissionModule(
+            navigationController: navigationController,
             actions: makePermissionRouterActions()
         )
         
@@ -84,7 +85,8 @@ final public class IntroCoordinator: IntroRouterManageable {
     }
     
     func showOnboardingView() {
-        let OnboardingViewController = dependencies.makeOnboardingView(
+        let OnboardingViewController = dependencies.makeOnboardModule(
+            navigationController: navigationController,
             actions: makeOnboardingRouterActions()
         )
         

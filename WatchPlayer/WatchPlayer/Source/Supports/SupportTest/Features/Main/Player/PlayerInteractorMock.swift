@@ -52,4 +52,9 @@ final class PlayerInteractorMock: PlayerInteractorProtocol {
         handleSettingCommandEventCallCount += 1
         return playerRepository.handleEvent(event)
     }
+    
+    var deleteAssetCallCount = 0
+    func deleteAsset() {
+        deleteAssetCallCount += 1
+    }
 }

@@ -16,11 +16,13 @@ protocol IntroDIContainerProtocol {
 
 protocol IntroDepedencies {
     
-    func makePermissionView (
+    func makePermissionModule(
+        navigationController: UINavigationController?,
         actions: PermissionRouterActions
     ) -> PermissionViewController
     
-    func makeOnboardingView (
+    func makeOnboardModule(
+        navigationController: UINavigationController?,
         actions: OnboardingRouterActions
     ) -> OnboardingViewController
     
@@ -85,68 +87,53 @@ final public class IntroDIContainer: IntroDIContainerProtocol, IntroDepedencies 
     
     // MARK: - PermissionModule
     
-    func makePermissionInteractor(
-    ) -> PermissionInteractorProtocol {
-        PermissionInteractor(
-            dataRepository: makeDataRepository(),
-            recordRepository: makeRecordRepository()
-        )
-    }
-    
-    func makePermissionRouter(
-        actions: PermissionRouterActions
-    ) -> PermissionRouterProtocol {
-        PermissionRouter(actions: actions)
-    }
-    
-    func makePermissionPresenter(
-        actions: PermissionRouterActions
-    ) -> PermissionPresenterProtocol {
-        PermissionPresenter(
-            interator: makePermissionInteractor(),
-            router: makePermissionRouter(actions: actions)
-        )
-    }
-    
-    func makePermissionView(
+    func makePermissionModule(
+        navigationController: UINavigationController?,
         actions: PermissionRouterActions
     ) -> PermissionViewController {
-        PermissionViewController(
-            presenter: makePermissionPresenter(actions: actions)
+        let router = PermissionRouter(
+            navigationController: navigationController,
+            actions: actions
         )
+        
+        let interactor = PermissionInteractor(
+            dataRepository: makeDataRepository(), 
+            recordRepository: makeRecordRepository()
+        )
+        
+        let presenter = PermissionPresenter(
+            interactor: interactor,
+            router: router
+        )
+        
+        let viewContoller = PermissionViewController(presenter: presenter)
+        
+        return viewContoller
     }
+    
     
     // MARK: - OnboardingModule
     
-    func makeOnboardingInteractor(
-    ) -> OnboardingInteractorProtocol {
-        OnboardingInteractor(
-            dataRepository: makeDataRepository()
-        )
-    }
-    
-    func makeOnboardingRouter(
-        actions: OnboardingRouterActions
-    ) -> OnboardingRouterProtocol {
-        OnboardingRouter(
-            actions: actions
-        )
-    }
-    
-    func makeOnboardingPresenter(
-        actions: OnboardingRouterActions
-    ) -> OnboardingPresenterProtocol {
-        OnboardingPresenter(
-            interactor: makeOnboardingInteractor(),
-            router: makeOnboardingRouter(actions: actions)
-        )
-    }
-    
-    func makeOnboardingView(
+    func makeOnboardModule(
+        navigationController: UINavigationController?,
         actions: OnboardingRouterActions
     ) -> OnboardingViewController {
-        OnboardingViewController(
-            presenter: makeOnboardingPresenter(actions: actions)
+        let router = OnboardingRouter(
+            navigationController: navigationController,
+            actions: actions
         )
+        
+        let interactor = OnboardingInteractor(
+            dataRepository: makeDataRepository()
+        )
+        
+        let presenter = OnboardingPresenter(
+            interactor: interactor,
+            router: router
+        )
+        
+        let viewContoller = OnboardingViewController(presenter: presenter)
+        
+        return viewContoller
     }
 }

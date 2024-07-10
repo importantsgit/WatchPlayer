@@ -63,6 +63,7 @@ final public class VideoListCoordinator: VideoListRouterManageable {
     
     func showVideoListView() {
         let videoListViewController = dependencies.makeVideoListModule(
+            navigationController: navigationController,
             actions: makeVideoListRouterActions()
         )
         rootViewController = videoListViewController
@@ -70,6 +71,7 @@ final public class VideoListCoordinator: VideoListRouterManageable {
     
     func showPlayer(asset: PHAsset) {
         let playerViewController = dependencies.makePlayerModule(
+            navigationController: navigationController,
             actions: makePlayerRouterActions(),
             asset: asset
         )

@@ -9,6 +9,8 @@ import Foundation
 import Photos
 
 final class LibraryServiceMock: LibraryServiceInterface {
+
+    
     var fetchVideosCallCount = 0
     func fetchVideos(
     ) async throws -> ([PHAsset], Bool) {
@@ -19,5 +21,14 @@ final class LibraryServiceMock: LibraryServiceInterface {
         }
     }
     
+    var deleteCallCount = 0
+    func delete(asset: PHAsset) async throws {
+        deleteCallCount += 1
+    }
+    
+    var saveAssetCallCount = 0
+    func saveAsset(url: URL) async throws {
+        saveAssetCallCount += 1
+    }
     
 }

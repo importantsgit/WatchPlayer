@@ -43,13 +43,12 @@ enum PlayerCommandEvent {
 enum SettingCommandEvent {
     case updateQuality(PlayerQuality)
     case updateSpeed(PlayerSpeed)
-    case updateGravity(AVLayerVideoGravity)
 }
 
 
 final class PlayerService: NSObject, PlayerServiceInterface {
     
-    private let sendEventToView = PublishSubject<(PlayBackEvent, Any?)>()
+    private var sendEventToView = PublishSubject<(PlayBackEvent, Any?)>()
     private var player: AVPlayer?
     private var currentState: PlayerState = .playing
     
@@ -71,7 +70,7 @@ final class PlayerService: NSObject, PlayerServiceInterface {
         
         setupObservers(player: self.player)
         play()
-        
+                
         return sendEventToView
             .asObservable()
     }
@@ -93,8 +92,7 @@ final class PlayerService: NSObject, PlayerServiceInterface {
             }
             
         case .backButtonTapped:
-            // TODO: 뒤로 가기 버튼 클릭 시 이벤트
-            player?.pause()
+            resetService()
             return nil
             
         case .audioButtonTapped(let isUse):
@@ -104,6 +102,29 @@ final class PlayerService: NSObject, PlayerServiceInterface {
         }
         
         return nil
+    }
+    
+    func resetService() {
+        currentState = .playing
+        
+        if let player = player {
+            player.pause()
+            if let observer = periodicTimeObserver {
+                player.removeTimeObserver(observer)
+            }
+        }
+        
+        player?.replaceCurrentItem(with: nil)
+        periodicTimeObserver = nil
+        player = nil
+        
+        setCommandCenter(isUse: false)
+        
+        let oldSubject = sendEventToView
+        sendEventToView = PublishSubject<(PlayBackEvent, Any?)>()
+        
+        // 이전 subject에 완료 이벤트 전송
+        oldSubject.onCompleted()
     }
     
     @discardableResult
@@ -118,8 +139,6 @@ final class PlayerService: NSObject, PlayerServiceInterface {
         case .updateSpeed(let speed):
             player?.rate = speed.rawValue
             
-        case .updateGravity(let gravity):
-            break
         }
         return nil
     }
@@ -188,8 +207,7 @@ private extension PlayerService {
             forInterval: interval,
             queue: DispatchQueue.main
         ) { [weak self] currentTime in
-            guard let self = self else { return }
-            self.sendEventToView.onNext((.setTimes, (currentTime, player?.currentItem?.duration)))
+            self?.sendEventToView.onNext((.setTimes, (currentTime, player?.currentItem?.duration)))
         }
     }
     

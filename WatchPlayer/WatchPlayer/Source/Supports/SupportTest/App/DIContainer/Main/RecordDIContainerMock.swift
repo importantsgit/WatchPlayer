@@ -8,6 +8,7 @@
 import UIKit
 
 final public class RecordDIContainerMock: RecordDIContainerProtocol, RecordDependencies {
+
     
     struct Dependencies {
         let translationService: TranslationServiceInterface
@@ -63,43 +64,19 @@ final public class RecordDIContainerMock: RecordDIContainerProtocol, RecordDepen
     
     // MARK: - RecordModule
     
-    var makeRecordInteractorCallCount = 0
-    func makeRecordInteractor(
-    ) -> RecordInteractorProtocol {
-        makeRecordInteractorCallCount += 1
-        return RecordInteractor()
-    }
-    
-    var makeRecordRouterCallCount = 0
-    func makeRecordRouter(
-        actions: RecordRouterActions
-    ) -> RecordRouterProtocol {
-        makeRecordRouterCallCount += 1
-        return RecordRouter(
-            actions: actions
-        )
-    }
-    
-    var makeRecordPresenterCallCount = 0
-    func makeRecordPresenter(
-        actions: RecordRouterActions
-    ) -> RecordPresenterProtocol {
-        makeRecordPresenterCallCount += 1
-        return RecordPresenter(
-            router: makeRecordRouter(actions: actions),
-            interactor: makeRecordInteractor()
-        )
-    }
-    
-    var makeRecordViewControllerCallCount = 0
-    func makeRecordViewController(
+    var makeRecordModuleCallCount = 0
+    func makeRecordModule(
+        navigationController: UINavigationController?,
         actions: RecordRouterActions
     ) -> RecordViewController {
-        makeRecordViewControllerCallCount += 1
-        return .init(
-            presenter: makeRecordPresenter(
-                actions: actions
-            )
-        )
+        makeRecordModuleCallCount += 1
+        
+        let router = RecordRouter(navigationController: navigationController, actions: actions)
+        let interactor = RecordInteractor()
+        let presenter = RecordPresenter(router: router, interactor: interactor)
+        let viewController = RecordViewController(presenter: presenter)
+        
+        return viewController
     }
+
 }

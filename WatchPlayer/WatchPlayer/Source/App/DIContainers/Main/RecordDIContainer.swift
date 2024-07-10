@@ -14,7 +14,8 @@ protocol RecordDIContainerProtocol {
 }
 
 protocol RecordDependencies {
-    func makeRecordViewController(
+    func makeRecordModule(
+        navigationController: UINavigationController?,
         actions: RecordRouterActions
     ) -> RecordViewController
 }
@@ -70,35 +71,25 @@ final public class RecordDIContainer: RecordDIContainerProtocol, RecordDependenc
     
     // MARK: - RecordModule
     
-    func makeRecordInteractor(
-    ) -> RecordInteractorProtocol {
-        RecordInteractor()
-    }
-    
-    func makeRecordRouter(
-        actions: RecordRouterActions
-    ) -> RecordRouterProtocol {
-        RecordRouter(
-            actions: actions
-        )
-    }
-    
-    func makeRecordPresenter(
-        actions: RecordRouterActions
-    ) -> RecordPresenterProtocol {
-        RecordPresenter(
-            router: makeRecordRouter(actions: actions),
-            interactor: makeRecordInteractor()
-        )
-    }
-    
-    func makeRecordViewController(
+    func makeRecordModule(
+        navigationController: UINavigationController?,
         actions: RecordRouterActions
     ) -> RecordViewController {
-        .init(
-            presenter: makeRecordPresenter(
-                actions: actions
-            )
+        let router = RecordRouter(
+            navigationController: navigationController,
+            actions: actions
         )
+        
+        let interactor = RecordInteractor()
+        
+        let presenter = RecordPresenter(
+            router: router,
+            interactor: interactor
+        )
+        
+        let viewController = RecordViewController(presenter: presenter)
+        
+        return viewController
     }
+
 }

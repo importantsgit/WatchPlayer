@@ -9,7 +9,7 @@ import UIKit
 import Photos
 
 final public class VideoListDIContainerMock: VideoListDIContainerProtocol, VideoListDependencies {
-
+    
     struct Dependencies {
         let translationService: TranslationServiceMock
         let dataService: DataServiceMock
@@ -88,10 +88,14 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
     
     var makeVideoListModuleCallCount = 0
     func makeVideoListModule(
+        navigationController: UINavigationController?,
         actions: VideoListRouterActions
     ) -> VideoListViewController {
         makeVideoListModuleCallCount += 1
-        let router = VideoListRouter(actions: actions)
+        let router = VideoListRouter(
+            navigationController: navigationController,
+            actions: actions
+        )
         let interactor = VideoListInteractorMock(libraryRepository: makeLibraryRepository() as! LibraryRepositoryMock)
         let presenter = VideoListPresenter(
             router: router,
@@ -105,11 +109,15 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
     
     var makePlayerModuleCallCount = 0
     func makePlayerModule(
+        navigationController: UINavigationController?,
         actions: PlayerRouterActions,
         asset: PHAsset
     ) -> PlayerViewController {
         makePlayerModuleCallCount += 1
-        let router = PlayerRouterMock(actions: actions)
+        let router = PlayerRouterMock(
+            navigationController: navigationController,
+            actions: actions
+        )
         let interactor = PlayerInteractorMock(
             playerRepository: makePlayerRepository() as! PlayerRepositoryMock,
             dataRepository: makeDataRepository() as! DataRepositoryMock

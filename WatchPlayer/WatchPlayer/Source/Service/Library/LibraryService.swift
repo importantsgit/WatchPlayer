@@ -11,6 +11,14 @@ import Photos
 protocol LibraryServiceInterface {
     func fetchVideos(
     ) async throws -> ([PHAsset], Bool)
+    
+    func delete(
+        asset: PHAsset
+    ) async throws
+    
+    func saveAsset(
+        url: URL
+    ) async throws
 }
 
 final public class LibraryService: LibraryServiceInterface {
@@ -61,4 +69,27 @@ final public class LibraryService: LibraryServiceInterface {
             return continuation.resume(returning: (videos, isLastPage))
         }
     }
+    
+    func delete(
+        asset: PHAsset
+    ) async throws {
+        guard PHPhotoLibrary.authorizationStatus(for: .readWrite) == .authorized
+        else { throw DataLibraryError.notAuthorized }
+            
+        try await PHPhotoLibrary.shared().performChanges {
+            PHAssetChangeRequest.deleteAssets([asset] as NSFastEnumeration)
+        }
+    }
+    
+    func saveAsset(
+        url: URL
+    ) async throws {
+        guard PHPhotoLibrary.authorizationStatus(for: .readWrite) == .authorized
+        else { throw DataLibraryError.notAuthorized }
+        
+        try await PHPhotoLibrary.shared().performChanges {
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: url)
+        }
+    }
+    
 }

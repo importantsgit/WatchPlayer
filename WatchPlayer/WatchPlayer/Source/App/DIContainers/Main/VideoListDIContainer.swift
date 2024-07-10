@@ -16,10 +16,12 @@ protocol VideoListDIContainerProtocol {
 
 protocol VideoListDependencies {
     func makeVideoListModule(
+        navigationController: UINavigationController?,
         actions: VideoListRouterActions
     ) -> VideoListViewController
     
     func makePlayerModule(
+        navigationController: UINavigationController?,
         actions: PlayerRouterActions,
         asset: PHAsset
     ) -> PlayerViewController
@@ -92,10 +94,19 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
     // MARK: - VideoListModule
     
     func makeVideoListModule(
+        navigationController: UINavigationController?,
         actions: VideoListRouterActions
     ) -> VideoListViewController {
-        let router = VideoListRouter(actions: actions)
-        let interactor = VideoListInteractor(libraryRepository: makeLibraryRepository())
+        
+        let router = VideoListRouter(
+            navigationController: navigationController,
+            actions: actions
+        )
+        
+        let interactor = VideoListInteractor(
+            libraryRepository: makeLibraryRepository()
+        )
+        
         let presenter = VideoListPresenter(
             router: router,
             interactor: interactor
@@ -107,19 +118,28 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
     // MARK: - PlayerModule
     
     func makePlayerModule(
+        navigationController: UINavigationController?,
         actions: PlayerRouterActions,
         asset: PHAsset
     ) -> PlayerViewController {
-        let router = PlayerRouter(actions: actions)
+        
+        let router = PlayerRouter(
+            navigationController: navigationController,
+            actions: actions
+        )
+        
         let interactor = PlayerInteractor(
+            libraryRepository: makeLibraryRepository(),
             playerRepository: makePlayerRepository(),
             dataRepository: makeDataRepository()
         )
+        
         let presenter = PlayerPresenter(
             router: router,
             interactor: interactor,
             asset: asset
         )
+        
         let playerView = PlayerView()
         let controllerView = PlayerControllerView()
         let audioControllerView = PlayerAudioControllerView()

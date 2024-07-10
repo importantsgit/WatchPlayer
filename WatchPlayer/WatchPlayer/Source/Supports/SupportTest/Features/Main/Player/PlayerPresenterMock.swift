@@ -55,6 +55,12 @@ final class PlayerPresenterMock: PlayerPresenterProtocol {
         backButtonTappedCallCount += 1
     }
     
+    var deleteButtonTappedCallCount = 0
+    func deleteButtonTapped() {
+        deleteButtonTappedCallCount += 1
+    }
+    
+    
     var handlePlayerEvent = 0
     var playerEventPlayerTapped = 0
     
