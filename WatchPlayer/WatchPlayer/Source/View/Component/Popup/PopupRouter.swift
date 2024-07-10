@@ -9,45 +9,48 @@ import Foundation
 import RxSwift
 import RxRelay
 
+
 struct PopupRouterActions {
-    let confirmButtonTapped: PublishRelay<Void>
-    let cancelButtonTapped: PublishRelay<Void>
+    let popupActionEvent: PublishRelay<PopupAction>
 }
 
 
 protocol PopupRouterProtocol {
-    func confirmButtonTapped()
-    func cancelButtonTapped()
+    func setupBinding()
+    var popupActions: PublishRelay<PopupAction> { get }
 }
 
 final class PopupRouter: PopupRouterProtocol {
     
+    private var disposeBag = DisposeBag()
+    
+    let popupActions = PublishRelay<PopupAction>()
     let actions: PopupRouterActions
     
     init(
         actions: PopupRouterActions
     ){
         self.actions = actions
+        setupBinding()
+    }
+    
+    func setupBinding(){
+        popupActions
+            .debug("PopupRouter")
+            .bind(to: actions.popupActionEvent)
+            .disposed(by: disposeBag)
     }
     
     static func createPopupModule(
         actions: PopupRouterActions
-    ) -> UIViewController {
+    ) -> PopupViewControllerProtocol {
         let router = PopupRouter(actions: actions)
         let presenter = PopupPresenter(router: router)
-        let viewController = PopupViewController()
+        let viewController = PopupViewController(presenter: presenter)
         
-        viewController.presenter = presenter
         presenter.view = viewController
         
         return viewController
     }
-    
-    func confirmButtonTapped() {
-        actions.confirmButtonTapped.accept(())
-    }
-    
-    func cancelButtonTapped() {
-        actions.cancelButtonTapped.accept(())
-    }
+
 }
