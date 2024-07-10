@@ -20,6 +20,7 @@
 		7B7A410D2C32601400CF278B /* RecordRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A410C2C32601400CF278B /* RecordRepositoryMock.swift */; };
 		7B7A41102C32752400CF278B /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A410F2C32752400CF278B /* NavigationBar.swift */; };
 		7B7A41132C32755B00CF278B /* NavigationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A41122C32755B00CF278B /* NavigationType.swift */; };
+		7B8472D12C3E1448007C10A5 /* DefaultRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8472D02C3E1448007C10A5 /* DefaultRouter.swift */; };
 		7B8878A12C36640600389A91 /* PlayerServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8878A02C36640600389A91 /* PlayerServiceMock.swift */; };
 		7B8878A32C36642300389A91 /* PlayerRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8878A22C36642300389A91 /* PlayerRepositoryMock.swift */; };
 		7B8878A52C3667A300389A91 /* PlayerControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8878A42C3667A300389A91 /* PlayerControllerView.swift */; };
@@ -110,7 +111,7 @@
 		7BD60C482C3CCBD60045B85E /* PlayerSettingPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD60C472C3CCBD60045B85E /* PlayerSettingPopup.swift */; };
 		7BD60C4B2C3CCC1C0045B85E /* PlayerSettingDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD60C4A2C3CCC1C0045B85E /* PlayerSettingDefine.swift */; };
 		7BD60C4D2C3CFC620045B85E /* PopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD60C4C2C3CFC620045B85E /* PopupViewController.swift */; };
-		7BD60C512C3CFD8B0045B85E /* PopupFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD60C502C3CFD8B0045B85E /* PopupFactory.swift */; };
+		7BD60C512C3CFD8B0045B85E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD60C502C3CFD8B0045B85E /* PopupView.swift */; };
 		7BD60C532C3D0EE70045B85E /* PopupRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD60C522C3D0EE70045B85E /* PopupRouter.swift */; };
 		7BD60C552C3D0EEE0045B85E /* PopupPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BD60C542C3D0EEE0045B85E /* PopupPresenter.swift */; };
 		7BDC70112C37E7CE00614BB9 /* PlayerAudioControllerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BDC70102C37E7CE00614BB9 /* PlayerAudioControllerView.swift */; };
@@ -177,6 +178,7 @@
 		7B7A410C2C32601400CF278B /* RecordRepositoryMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRepositoryMock.swift; sourceTree = "<group>"; };
 		7B7A410F2C32752400CF278B /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		7B7A41122C32755B00CF278B /* NavigationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationType.swift; sourceTree = "<group>"; };
+		7B8472D02C3E1448007C10A5 /* DefaultRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRouter.swift; sourceTree = "<group>"; };
 		7B8878A02C36640600389A91 /* PlayerServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerServiceMock.swift; sourceTree = "<group>"; };
 		7B8878A22C36642300389A91 /* PlayerRepositoryMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRepositoryMock.swift; sourceTree = "<group>"; };
 		7B8878A42C3667A300389A91 /* PlayerControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerControllerView.swift; sourceTree = "<group>"; };
@@ -271,7 +273,7 @@
 		7BD60C472C3CCBD60045B85E /* PlayerSettingPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSettingPopup.swift; sourceTree = "<group>"; };
 		7BD60C4A2C3CCC1C0045B85E /* PlayerSettingDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSettingDefine.swift; sourceTree = "<group>"; };
 		7BD60C4C2C3CFC620045B85E /* PopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupViewController.swift; sourceTree = "<group>"; };
-		7BD60C502C3CFD8B0045B85E /* PopupFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupFactory.swift; sourceTree = "<group>"; };
+		7BD60C502C3CFD8B0045B85E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
 		7BD60C522C3D0EE70045B85E /* PopupRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupRouter.swift; sourceTree = "<group>"; };
 		7BD60C542C3D0EEE0045B85E /* PopupPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupPresenter.swift; sourceTree = "<group>"; };
 		7BDC70102C37E7CE00614BB9 /* PlayerAudioControllerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerAudioControllerView.swift; sourceTree = "<group>"; };
@@ -415,6 +417,15 @@
 			path = NavigationBar;
 			sourceTree = "<group>";
 		};
+		7B8472D82C3E5585007C10A5 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7BAFABB12C2D1FE90052F14F /* Component */,
+				7B97B2802C2BF0160036F0AE /* Module */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		7B88789F2C3663F900389A91 /* Player */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,14 +515,14 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		7B97B2802C2BF0160036F0AE /* Feature */ = {
+		7B97B2802C2BF0160036F0AE /* Module */ = {
 			isa = PBXGroup;
 			children = (
 				7BAFABB42C2D22000052F14F /* Common */,
 				A5A19B5F2C2C6E18007C1538 /* Intro */,
 				7B97B2A82C2BFD290036F0AE /* Main */,
 			);
-			path = Feature;
+			path = Module;
 			sourceTree = "<group>";
 		};
 		7B97B2852C2BF44C0036F0AE /* SupportTest */ = {
@@ -529,8 +540,7 @@
 			children = (
 				7BAFABA42C2CFDF40052F14F /* Const.swift */,
 				7B97B27D2C2BEA9D0036F0AE /* App */,
-				7BAFABB12C2D1FE90052F14F /* Component */,
-				7B97B2802C2BF0160036F0AE /* Feature */,
+				7B8472D82C3E5585007C10A5 /* View */,
 				7B97B28A2C2BF5140036F0AE /* Service */,
 				7BAFABAC2C2D18150052F14F /* Supports */,
 			);
@@ -640,8 +650,8 @@
 		7B97B2A82C2BFD290036F0AE /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				7B97B2AA2C2BFDC20036F0AE /* Record */,
 				7B97B2A92C2BFDB90036F0AE /* VideoList */,
+				7B97B2AA2C2BFDC20036F0AE /* Record */,
 				7B97B2AB2C2BFDD00036F0AE /* Setting */,
 			);
 			path = Main;
@@ -802,6 +812,7 @@
 			isa = PBXGroup;
 			children = (
 				7BAFABB52C2D221A0052F14F /* DefaultViewController.swift */,
+				7B8472D02C3E1448007C10A5 /* DefaultRouter.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1025,7 +1036,7 @@
 		7BD60C4F2C3CFD7C0045B85E /* Popup */ = {
 			isa = PBXGroup;
 			children = (
-				7BD60C502C3CFD8B0045B85E /* PopupFactory.swift */,
+				7BD60C502C3CFD8B0045B85E /* PopupView.swift */,
 				7BD60C4C2C3CFC620045B85E /* PopupViewController.swift */,
 				7BD60C522C3D0EE70045B85E /* PopupRouter.swift */,
 				7BD60C542C3D0EEE0045B85E /* PopupPresenter.swift */,
@@ -1529,12 +1540,13 @@
 				7B7A41102C32752400CF278B /* NavigationBar.swift in Sources */,
 				7B97B2B62C2C04F60036F0AE /* SettingViewController.swift in Sources */,
 				7B97B2B82C2C05000036F0AE /* VideoListViewController.swift in Sources */,
+				7B8472D12C3E1448007C10A5 /* DefaultRouter.swift in Sources */,
 				A5A19B722C2C70FE007C1538 /* CoordinatorProtocol.swift in Sources */,
 				7BD60C532C3D0EE70045B85E /* PopupRouter.swift in Sources */,
 				A5A19B762C2C764E007C1538 /* IntroDIContainerMock.swift in Sources */,
 				7B97B2502C2BE73D0036F0AE /* SceneDelegate.swift in Sources */,
 				7B8A13D82C33965E00E6E2D1 /* OnboardingRouterMock.swift in Sources */,
-				7BD60C512C3CFD8B0045B85E /* PopupFactory.swift in Sources */,
+				7BD60C512C3CFD8B0045B85E /* PopupView.swift in Sources */,
 				7B99925E2C34EEE000B56DEB /* LibraryError.swift in Sources */,
 				7B7A410B2C32600A00CF278B /* RecordServiceMock.swift in Sources */,
 				7B97B2A32C2BFAA40036F0AE /* DataRepositoryMock.swift in Sources */,
