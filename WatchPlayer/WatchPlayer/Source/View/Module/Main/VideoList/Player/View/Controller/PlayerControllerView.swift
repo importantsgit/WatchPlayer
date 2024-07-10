@@ -78,23 +78,52 @@ final class PlayerControllerView: UIView {
     
     private var disposeBag = DisposeBag()
     
+    private var time: CGFloat = 0.0
+    
     init() {
         super.init(frame: .zero)
         
         setupTappedGesture()
         setupButtons()
         setupLayout()
+        
+        // 가로 <> 세로 회전 시, seekbar의 frame이 바뀌기 때문에 frame > bind
+        bindSeekBar()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    private func updateSeekbarWidth() {
+        let seekBarWidth = time * seekbar.bounds.width
+        if seekBarWidth.isFinite {
+            currentSeekbarWidthConstraint.constant = seekBarWidth
+        }
+    }
+    
+    deinit{
+        print("PlayerControllerView deinit")
+    }
+}
+
+extension PlayerControllerView {
+    
     private func setupTappedGesture() {
         self.rx.tapGesture()
             .when(.recognized)
             .subscribe(onNext: { [weak self] _ in
                 self?.presenter?.handleEvent(.controllerTapped)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    private func bindSeekBar() {
+        seekbar.rx.bounds
+            .map { $0.width }
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] width in
+                self?.updateSeekbarWidth()
             })
             .disposed(by: disposeBag)
     }
@@ -111,42 +140,56 @@ final class PlayerControllerView: UIView {
         playButton.configuration?.image = UIImage(named: "pause")?
             .resized(to: .init(width: 54, height: 54))
         
-        backButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleEvent(.backButtonTapped)
-        }
-        .disposed(by: disposeBag)
-
-        audioButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleEvent(.showAudioButtonTapped)
-        }
-        .disposed(by: disposeBag)
+        backButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind { [weak self] in
+                self?.presenter?.handleEvent(.backButtonTapped)
+            }
+            .disposed(by: disposeBag)
         
-        settingButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleEvent(.settingButtonTapped)
-        }
-        .disposed(by: disposeBag)
+        audioButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind { [weak self] in
+                self?.presenter?.handleEvent(.showAudioButtonTapped)
+            }
+            .disposed(by: disposeBag)
         
-        playButton.rx.tap.bind { [weak self] in
-            guard let state = self?.presenter?.handleEvent(.playButtonTapped) as? PlayerState
-            else { return }
-            self?.setPlayButton(state: state)
-        }
-        .disposed(by: disposeBag)
+        settingButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind { [weak self] in
+                self?.presenter?.handleEvent(.settingButtonTapped)
+            }
+            .disposed(by: disposeBag)
         
-        rewindButton.rx.tap.bind {
-            self.presenter?.handleEvent(.rewindButtonTapped)
-        }
-        .disposed(by: disposeBag)
+        playButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind { [weak self] in
+                guard let state = self?.presenter?.handleEvent(.playButtonTapped) as? PlayerState
+                else { return }
+                self?.setPlayButton(state: state)
+            }
+            .disposed(by: disposeBag)
         
-        forwardButton.rx.tap.bind {
-            self.presenter?.handleEvent(.forwardButtonTapped)
-        }
-        .disposed(by: disposeBag)
+        rewindButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind { [weak self] in
+                self?.presenter?.handleEvent(.rewindButtonTapped)
+            }
+            .disposed(by: disposeBag)
         
-        rotationButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleEvent(.rotationButtonTapped)
-        }
-        .disposed(by: disposeBag)
+        forwardButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind { [weak self] in
+                self?.presenter?.handleEvent(.forwardButtonTapped)
+            }
+            .disposed(by: disposeBag)
+        
+        rotationButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind { [weak self] in
+                self?.presenter?.handleEvent(.rotationButtonTapped)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func setupLayout() {
@@ -206,7 +249,7 @@ final class PlayerControllerView: UIView {
         }
         
         layoutConstraints = setInitialLayout()
-         NSLayoutConstraint.activate(layoutConstraints!)
+        NSLayoutConstraint.activate(layoutConstraints!)
     }
     
     private func setInitialLayout(
@@ -280,7 +323,7 @@ final class PlayerControllerView: UIView {
             .resized(to: .init(width: imageSize, height: imageSize))
         rotationButton.configuration?.image = UIImage(named: "shrink")?
             .resized(to: .init(width: imageSize, height: imageSize))
-
+        
         rewindButton.configuration?.image = UIImage(named: "rewind")?
             .resized(to: .init(width: 48, height: 48))
         forwardButton.configuration?.image = UIImage(named: "forward")?
@@ -373,7 +416,7 @@ final class PlayerControllerView: UIView {
         case .paused: buttonImage =  .play
         case .ended: buttonImage =  .rotate
         }
-
+        
         playButton.configuration?.image = buttonImage.resized(to: .init(width: size, height: size))
     }
 }
@@ -403,7 +446,7 @@ extension PlayerControllerView: PlayerControllerViewProtocol {
                 [topControlView, bottomControlView].forEach{ $0.spacing = 4 }
                 middleControlView.spacing = 16
             }
-            
+        
             NSLayoutConstraint.activate(newConstraints)
             self.layoutConstraints = newConstraints
             
@@ -423,24 +466,17 @@ extension PlayerControllerView: PlayerControllerViewProtocol {
             let currentSeconds = CMTimeGetSeconds(current)
             
             // NaN 또는 inf가 발생하지 않도록 안전하게 나누기 수행
-            let seekBarWidth = durationSeconds > 0 ? 
-            CGFloat(currentSeconds / durationSeconds) * seekbar.bounds.width :
+            time = durationSeconds > 0 ?
+            CGFloat(currentSeconds / durationSeconds) :
             0
             
-            if seekBarWidth.isFinite {
-                currentSeekbarWidthConstraint?.constant = seekBarWidth
-            }
-            
-            currentSeekbarWidthConstraint?.constant = seekBarWidth
-//            UIView.animate(withDuration: 0.1) {
-//                self.layoutIfNeeded()
-//            }
+            updateSeekbarWidth()
             
         case .setTitle(let title):
             titleLabel.text = title
         }
     }
-        
+    
     func set(
         times: (current: CMTime, duration: CMTime)
     ) {
@@ -458,5 +494,13 @@ extension PlayerControllerView: PlayerControllerViewProtocol {
                 lineHeight: 14
             )
             .buildNSAttributedString()
+    }
+}
+
+
+fileprivate extension Reactive where Base: UIView {
+    var bounds: Observable<CGRect> {
+        return self.observe(CGRect.self, #keyPath(UIView.bounds))
+            .compactMap { $0 }
     }
 }
