@@ -24,4 +24,11 @@ final class LibraryRepositoryMock: LibraryRepositoryInterface {
         fetchVideosCallCount += 1
         return try await libraryService.fetchVideos()
     }
+    
+    var fetchAVPlayerItemCallCount = 0
+    func fetchAVPlayerItem(_ asset: PHAsset) async throws -> AVPlayerItem {
+        fetchAVPlayerItemCallCount += 1
+        return try await libraryService.fetchAVPlayerItem(asset)
+    }
+    
 }

@@ -10,7 +10,6 @@ import Photos
 
 final class LibraryServiceMock: LibraryServiceInterface {
 
-    
     var fetchVideosCallCount = 0
     func fetchVideos(
     ) async throws -> ([PHAsset], Bool) {
@@ -29,6 +28,12 @@ final class LibraryServiceMock: LibraryServiceInterface {
     var saveAssetCallCount = 0
     func saveAsset(url: URL) async throws {
         saveAssetCallCount += 1
+    }
+    
+    var fetchAVPlayerItemCallCount = 0
+    func fetchAVPlayerItem(_ asset: PHAsset) async throws -> AVPlayerItem {
+        fetchAVPlayerItemCallCount += 1
+        return .init(url: URL(string: "")!)
     }
     
 }

@@ -33,7 +33,7 @@ final class PlayerPresenterMock: PlayerPresenterProtocol {
     weak var controllerView: PlayerControllerViewProtocol?
     weak var audioControllerView: PlayerAudioControllerViewProtocol?
     weak var settingView: PlayerSettingViewProtocol?
-    weak var settingPopup: PlayerSettingPopupProtocol?
+    weak var settingPopup: PlayerSettingViewProtocol?
     
     init(
         router: PlayerRouterProtocol,

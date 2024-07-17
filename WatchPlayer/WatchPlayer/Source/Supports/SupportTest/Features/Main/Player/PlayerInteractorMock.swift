@@ -8,16 +8,20 @@
 import Foundation
 import AVFoundation
 import RxSwift
+import Photos
 
 final class PlayerInteractorMock: PlayerInteractorProtocol {
 
+    let libraryRepository: LibraryRepositoryMock
     let playerRepository: PlayerRepositoryMock
     let dataRepository: DataRepositoryMock
     
     init(
+        libraryRepository: LibraryRepositoryMock,
         playerRepository: PlayerRepositoryMock,
         dataRepository: DataRepositoryMock
     ) {
+        self.libraryRepository = libraryRepository
         self.playerRepository = playerRepository
         self.dataRepository = dataRepository
     }
@@ -57,4 +61,11 @@ final class PlayerInteractorMock: PlayerInteractorProtocol {
     func deleteAsset() {
         deleteAssetCallCount += 1
     }
+    
+    var fetchAVPlayerItemCallCount = 0
+    func fetchAVPlayerItem(_ asset: PHAsset) async throws -> AVPlayerItem {
+        fetchAVPlayerItemCallCount += 1
+        return try await libraryRepository.fetchAVPlayerItem(asset)
+    }
+    
 }

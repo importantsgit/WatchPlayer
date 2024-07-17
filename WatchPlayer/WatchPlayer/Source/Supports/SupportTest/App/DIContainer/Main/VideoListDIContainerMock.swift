@@ -119,6 +119,7 @@ final public class VideoListDIContainerMock: VideoListDIContainerProtocol, Video
             actions: actions
         )
         let interactor = PlayerInteractorMock(
+            libraryRepository: makeLibraryRepository() as! LibraryRepositoryMock,
             playerRepository: makePlayerRepository() as! PlayerRepositoryMock,
             dataRepository: makeDataRepository() as! DataRepositoryMock
         )
