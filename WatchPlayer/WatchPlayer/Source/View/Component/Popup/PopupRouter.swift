@@ -14,7 +14,6 @@ struct PopupRouterActions {
     let popupActionEvent: PublishRelay<PopupAction>
 }
 
-
 protocol PopupRouterProtocol {
     func setupBinding()
     var popupActions: PublishRelay<PopupAction> { get }
@@ -34,13 +33,6 @@ final class PopupRouter: PopupRouterProtocol {
         setupBinding()
     }
     
-    func setupBinding(){
-        popupActions
-            .debug("PopupRouter")
-            .bind(to: actions.popupActionEvent)
-            .disposed(by: disposeBag)
-    }
-    
     static func createPopupModule(
         actions: PopupRouterActions
     ) -> PopupViewControllerProtocol {
@@ -51,6 +43,13 @@ final class PopupRouter: PopupRouterProtocol {
         presenter.view = viewController
         
         return viewController
+    }
+    
+    func setupBinding(){
+        popupActions
+            .debug("PopupRouter")
+            .bind(to: actions.popupActionEvent)
+            .disposed(by: disposeBag)
     }
 
 }

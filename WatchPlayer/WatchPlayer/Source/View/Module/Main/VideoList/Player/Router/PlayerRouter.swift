@@ -8,6 +8,7 @@
 import UIKit
 import RxSwift
 import RxRelay
+import Photos
 
 
 protocol PlayerRouterProtocol {

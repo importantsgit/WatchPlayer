@@ -155,7 +155,7 @@ private extension PlayerService {
                 self?.currentState = .ended
             })
             .disposed(by: disposeBag)
-        
+    
         player?.rx.observe(\.timeControlStatus)
             .subscribe(onNext: { [weak self] status in
                 switch status {
