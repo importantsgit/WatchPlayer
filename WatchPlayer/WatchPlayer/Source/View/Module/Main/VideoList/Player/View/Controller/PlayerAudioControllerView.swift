@@ -25,10 +25,13 @@ enum PlayerAudioControllerViewUIUpdateEvent {
 }
 
 protocol PlayerAudioControllerViewProtocol: AnyObject {
+    var events: Observable<AudioControllerEvent> { get }
     func handleEvent(_ event: PlayerAudioControllerViewUIUpdateEvent)
 }
 
 final class PlayerAudioControllerView: UIView {
+    private let eventSubject = PublishSubject<AudioControllerEvent>()
+    var events: Observable<AudioControllerEvent> { eventSubject.asObservable() }
     
     weak var presenter: PlayerAudioControllerProtocol?
     
@@ -91,17 +94,21 @@ extension PlayerAudioControllerView {
         playButton.configuration?.image = UIImage(named: "pause")?
             .resized(to: .init(width: 54, height: 54))
         
-        backButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleEvent(.backButtonTapped)
-        }
-        .disposed(by: disposeBag)
+        backButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .map { AudioControllerEvent.backButtonTapped }
+            .bind (to: eventSubject)
+            .disposed(by: disposeBag)
         
-        audioButton.rx.tap.bind { [weak self] in
-            self?.presenter?.handleEvent(.dismissAudioButtonTapped)
-        }
-        .disposed(by: disposeBag)
+        audioButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .map { AudioControllerEvent.dismissAudioButtonTapped }
+            .bind (to: eventSubject)
+            .disposed(by: disposeBag)
         
-        playButton.rx.tap.bind { [weak self] in
+        playButton.rx.tap
+            .throttle(.seconds(1), scheduler: MainScheduler.instance)
+            .bind { [weak self] in
             guard let state = self?.presenter?.handleEvent(.playButtonTapped) as? PlayerState
             else { return }
             self?.setPlayButton(state: state)

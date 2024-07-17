@@ -119,7 +119,7 @@ extension PlayerControllerView {
     }
     
     private func bindSeekBar() {
-        seekbar.rx.bounds
+        seekbar.rx.observe(\.bounds)
             .map { $0.width }
             .distinctUntilChanged()
             .subscribe(onNext: { [weak self] width in
@@ -423,6 +423,7 @@ extension PlayerControllerView {
 
 extension PlayerControllerView: PlayerControllerViewProtocol {
     
+        
     func handleEvent(_ event: PlayerControllerViewUIUpdateEvent) {
         switch event {
         case .updateLayout(let style):
@@ -494,13 +495,5 @@ extension PlayerControllerView: PlayerControllerViewProtocol {
                 lineHeight: 14
             )
             .buildNSAttributedString()
-    }
-}
-
-
-fileprivate extension Reactive where Base: UIView {
-    var bounds: Observable<CGRect> {
-        return self.observe(CGRect.self, #keyPath(UIView.bounds))
-            .compactMap { $0 }
     }
 }

@@ -9,10 +9,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-protocol PlayerSettingPopupProtocol: AnyObject {
-    func handleEvent(_ event: PlayerSettingUIUpdateEvent)
-    
-}
+
 
 final class PlayerSettingPopup: UIView {
     weak var presenter: PlayerSettingProtocol?
@@ -145,7 +142,7 @@ extension PlayerSettingPopup {
     }
 }
 
-extension PlayerSettingPopup: PlayerSettingPopupProtocol {
+extension PlayerSettingPopup: PlayerSettingViewProtocol {
     func handleEvent(_ event: PlayerSettingUIUpdateEvent) {
         switch event {
         case .reset:
