@@ -8,17 +8,26 @@
 import Foundation
 import AVFoundation
 import RxSwift
+import Photos
 
 protocol PlayerInteractorProtocol {
     func set(
         player: AVPlayer
     ) -> Observable<(PlayBackEvent, Any?)>
     
-    @discardableResult
-    func handleEvent(_ event: PlayerCommandEvent) -> Any?
+    func fetchAVPlayerItem(
+        _ asset: PHAsset
+    ) async throws -> AVPlayerItem
     
     @discardableResult
-    func handleEvent(_ event: SettingCommandEvent) -> Any?
+    func handleEvent(
+        _ event: PlayerCommandEvent
+    ) -> Any?
+    
+    @discardableResult
+    func handleEvent(
+        _ event: SettingCommandEvent
+    ) -> Any?
     
     func deleteAsset()
 }
@@ -37,6 +46,12 @@ final class PlayerInteractor: PlayerInteractorProtocol {
         self.libraryRepository = libraryRepository
         self.playerRepository = playerRepository
         self.dataRepository = dataRepository
+    }
+    
+    func fetchAVPlayerItem(
+        _ asset: PHAsset
+    ) async throws -> AVPlayerItem {
+        try await libraryRepository.fetchAVPlayerItem(asset)
     }
     
     func set(

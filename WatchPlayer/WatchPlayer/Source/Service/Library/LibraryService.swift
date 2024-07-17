@@ -19,6 +19,10 @@ protocol LibraryServiceInterface {
     func saveAsset(
         url: URL
     ) async throws
+    
+    func fetchAVPlayerItem(
+        _ asset: PHAsset
+    ) async throws -> AVPlayerItem
 }
 
 final public class LibraryService: LibraryServiceInterface {
@@ -89,6 +93,35 @@ final public class LibraryService: LibraryServiceInterface {
         
         try await PHPhotoLibrary.shared().performChanges {
             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: url)
+        }
+    }
+    
+    func fetchAVPlayerItem(
+        _ asset: PHAsset
+    ) async throws -> AVPlayerItem {
+        return try await withCheckedThrowingContinuation { continuation in
+            let options = PHVideoRequestOptions()
+            options.version = .current
+            options.deliveryMode = .automatic
+            
+            // MARK: - 클라우드에서 받는 경우도 있기에 true로 해야 item != nil
+            options.isNetworkAccessAllowed = true
+            
+            PHImageManager.default().requestPlayerItem(
+                forVideo: asset,
+                options: options
+            ) { item, info in
+                if let error = info?["PHImageErrorKey"] as? Error {
+                    continuation.resume(throwing: error)
+                }
+                guard let item = item
+                        // FIXME: 에러 처리
+                else {
+                    continuation.resume(throwing: AssetError.invaild)
+                    return
+                }
+                continuation.resume(returning: item)
+            }
         }
     }
     

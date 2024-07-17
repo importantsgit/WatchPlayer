@@ -11,6 +11,10 @@ import Photos
 protocol LibraryRepositoryInterface {
     func fetchVideos(
     ) async throws -> ([PHAsset], Bool)
+    
+    func fetchAVPlayerItem(
+        _ asset: PHAsset
+    ) async throws -> AVPlayerItem
 }
 
 final public class LibraryRepository: LibraryRepositoryInterface {
@@ -26,5 +30,11 @@ final public class LibraryRepository: LibraryRepositoryInterface {
     func fetchVideos(
     ) async throws -> ([PHAsset], Bool) {
         try await libraryService.fetchVideos()
+    }
+    
+    func fetchAVPlayerItem(
+        _ asset: PHAsset
+    ) async throws -> AVPlayerItem {
+        try await libraryService.fetchAVPlayerItem(asset)
     }
 }
