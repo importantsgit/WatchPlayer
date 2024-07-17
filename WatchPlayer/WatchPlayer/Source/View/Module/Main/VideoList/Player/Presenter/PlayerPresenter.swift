@@ -30,27 +30,17 @@ protocol PlayerSettingProtocol: AnyObject {
     func handleEvent(_ event: SettingEvent) -> Any?
 }
 
-protocol PlayerPresenterProtocolInput {
+protocol PlayerPresenterInputProtocol {
     func viewDidLoad()
     func backButtonTapped()
     func deleteButtonTapped()
 }
 
-protocol PlayerPresenterProtocolOutput {
-    var playerTitle: PublishRelay<String> { get }
-    var didLoadPlayer: PublishRelay<Void> { get }
+protocol PlayerPresenterOutputProtocol {
 
-    var hideControllerDelay: PublishSubject<Void> { get }
-    var hideControllerImmediately: PublishSubject<Void> { get }
-    var showController: PublishRelay<Void> { get }
-    var showAudioController: PublishRelay<Bool> { get }
-    var showSettingView: PublishRelay<Bool> { get }
-    var showSettingPopup: PublishRelay<Bool> { get }
-    
-    var setLayout: PublishRelay<LayoutStyle> { get }
 }
 
-typealias PlayerPresenterProtocol = PlayerPresenterProtocolInput & PlayerPresenterProtocolOutput
+typealias PlayerPresenterProtocol = PlayerPresenterInputProtocol & PlayerPresenterOutputProtocol
 
 final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
     
@@ -59,28 +49,13 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
     let asset: PHAsset
     
     // MARK: - PlayerView, Controller Binding with Handler
+    weak var playerViewController: PlayerViewControllerProtocol?
     weak var playerView: PlayerViewProtocol?
     weak var controllerView: PlayerControllerViewProtocol?
     weak var audioControllerView: PlayerAudioControllerViewProtocol?
     weak var settingView: PlayerSettingViewProtocol?
-    weak var settingPopup: PlayerSettingPopupProtocol?
+    weak var settingPopup: PlayerSettingViewProtocol?
     
-    // MARK: - PlayerViewController Binding with RxSwift
-    let playerTitle = PublishRelay<String>()
-    
-    let didLoadPlayer = PublishRelay<Void>()
-    
-    // 컨트롤러 노출 여부
-    let hideControllerDelay = PublishSubject<Void>()
-    let hideControllerImmediately = PublishSubject<Void>()
-    let showController = PublishRelay<Void>()
-    
-    let showSettingView = PublishRelay<Bool>()
-    let showSettingPopup = PublishRelay<Bool>()
-    let showAudioController = PublishRelay<Bool>()
-    
-    //레이아웃 관련
-    let setLayout = PublishRelay<LayoutStyle>()
     private var currentLayoutStyle: LayoutStyle = .portrait
     
     // 세팅뷰가 노출된 상태에서 플레이어를 터치 시의 분기 처리 위함
@@ -123,16 +98,19 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
         let gravity = PlayerGravity.getValueFromIndex(selectedIndexPaths[2].row)
         playerView?.handleEvent(.updateGravity(gravity: gravity))
         
+        let title = asset.creationDate?.getDateString() ?? Date.getCurrentDateString()
+        playerViewController?.handle(event: .setTitle(title: title))
+        controllerView?.handleEvent(.setTitle(title: title))
+        audioControllerView?.handleEvent(.setTitle(title: title))
         
         Task {
             do {
-                playerTitle.accept(asset.creationDate?.getDateString() ?? Date.getCurrentDateString())
-                let item = try await requestAVPlayerItem(asset)
+                let item = try await interactor.fetchAVPlayerItem(asset)
             
                 let player = AVPlayer(playerItem: item)
                 let playerLayer = AVPlayerLayer(player: player)
                 playerView?.handleEvent(.set(playerLayer: playerLayer))
-                didLoadPlayer.accept(())
+                playerViewController?.handle(event: .didLoadPlayer)
                 
                 let getServiceEvent = interactor.set(player: player)
                 getServiceEvent
@@ -155,37 +133,6 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
             }
             catch {
                 print(error)
-            }
-        }
-    
-    }
-        
-    private func requestAVPlayerItem(
-        _ asset: PHAsset
-    ) async throws -> AVPlayerItem {
-        
-        return try await withCheckedThrowingContinuation { continuation in
-            let options = PHVideoRequestOptions()
-            options.version = .current
-            options.deliveryMode = .automatic
-            
-            // MARK: - 클라우드에서 받는 경우도 있기에 true로 해야 item != nil
-            options.isNetworkAccessAllowed = true
-            
-            PHImageManager.default().requestPlayerItem(
-                forVideo: asset,
-                options: options
-            ) { item, info in
-                if let error = info?["PHImageErrorKey"] as? Error {
-                    continuation.resume(throwing: error)
-                }
-                guard let item = item
-                        // FIXME: 에러 처리
-                else {
-                    continuation.resume(throwing: AssetError.invaild)
-                    return
-                }
-                continuation.resume(returning: item)
             }
         }
     }
@@ -218,8 +165,8 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
     }
     
     private func showControllerView() {
-        showController.accept(())
-        hideControllerDelay.onNext(())
+        playerViewController?.handle(event: .updateControllerVisibility(isVisible: .show))
+        playerViewController?.handle(event: .updateControllerVisibility(isVisible: .hideDelay))
     }
     
     // View is Updated based on Orientation
@@ -237,7 +184,7 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
             AppDelegate.orientationLock = currentLayoutStyle.getOrientation()
         }
         
-        setLayout.accept(currentLayoutStyle)
+        playerViewController?.handle(event: .updateLayout(style: currentLayoutStyle))
         controllerView?.handleEvent(.updateLayout(style: currentLayoutStyle))
         audioControllerView?.handleEvent(.updateLayout(style: currentLayoutStyle))
     }
@@ -250,7 +197,7 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
         currentLayoutStyle = .landscape
         
         AppDelegate.orientationLock = currentLayoutStyle.getOrientation()
-        setLayout.accept(currentLayoutStyle)
+        playerViewController?.handle(event: .updateLayout(style: currentLayoutStyle))
         controllerView?.handleEvent(.updateLayout(style: currentLayoutStyle))
         audioControllerView?.handleEvent(.updateLayout(style: currentLayoutStyle))
     }
@@ -262,7 +209,7 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
         
         currentLayoutStyle = .fullPortrait
 
-        setLayout.accept(currentLayoutStyle)
+        playerViewController?.handle(event: .updateLayout(style: currentLayoutStyle))
         controllerView?.handleEvent(.updateLayout(style: currentLayoutStyle))
         audioControllerView?.handleEvent(.updateLayout(style: currentLayoutStyle))
     }
@@ -279,12 +226,10 @@ extension PlayerPresenter: PlayerProtocol {
                 
                 isShowSettingView = false
                 
-                if currentLayoutStyle == .landscape {
-                    showSettingView.accept(isShowSettingView)
-                }
-                else {
-                    showSettingPopup.accept(isShowSettingView)
-                }
+                playerViewController?.handle(event: currentLayoutStyle == .landscape ?
+                    .updateSettingViewVisibility(isVisible: isShowSettingView) :
+                    .updateSettingPopupVisibility(isVisible: isShowSettingView)
+                )
                 
                 settingView?.handleEvent(.reset)
             }
@@ -306,40 +251,38 @@ extension PlayerPresenter: PlayerControllerProtocol {
         switch event {
         case .controllerTapped:
             print("controllerTapped")
-            hideControllerImmediately.onNext(())
+            playerViewController?.handle(event: .updateControllerVisibility(isVisible: .hideImmediately))
             
         case .backButtonTapped:
             updateToPortrait()
             
         case .playButtonTapped:
-            hideControllerDelay.onNext(())
+            playerViewController?.handle(event: .updateControllerVisibility(isVisible: .hideDelay))
             return interactor.handleEvent(.playButtonTapped)
             
         case .rewindButtonTapped:
+            playerViewController?.handle(event: .updateControllerVisibility(isVisible: .hideDelay))
             interactor.handleEvent(.seek(.rewind(count: 1)))
-            hideControllerDelay.onNext(())
             
         case .forwardButtonTapped:
+            playerViewController?.handle(event: .updateControllerVisibility(isVisible: .hideDelay))
             interactor.handleEvent(.seek(.forward(count: 1)))
-            hideControllerDelay.onNext(())
             
         case .showAudioButtonTapped:
             interactor.handleEvent(.audioButtonTapped(isUse: true))
             playerView?.handleEvent(.update(player: nil))
-            showAudioController.accept(true)
-            hideControllerImmediately.onNext(())
+            playerViewController?.handle(event: .updateAudioControllerVisibility(isVisible: true))
+            playerViewController?.handle(event: .updateControllerVisibility(isVisible: .hideImmediately))
             
         case .settingButtonTapped:
             isShowSettingView = true
             
-            if currentLayoutStyle == .landscape {
-                showSettingView.accept(isShowSettingView)
-            }
-            else {
-                showSettingPopup.accept(isShowSettingView)
-            }
+            playerViewController?.handle(event: currentLayoutStyle == .landscape ?
+                .updateSettingViewVisibility(isVisible: isShowSettingView) :
+                .updateSettingPopupVisibility(isVisible: isShowSettingView)
+            )
             
-            hideControllerImmediately.onNext(())
+            playerViewController?.handle(event: .updateControllerVisibility(isVisible: .hideImmediately))
             
         case .rotationButtonTapped:
             if asset.pixelWidth < asset.pixelHeight {
@@ -367,7 +310,7 @@ extension PlayerPresenter: PlayerAudioControllerProtocol {
                 fatalError()
             }
             playerView?.handleEvent(.update(player: player))
-            showAudioController.accept(false)
+            playerViewController?.handle(event: .updateAudioControllerVisibility(isVisible: false))
             showControllerView()
             
         case .backButtonTapped:
@@ -461,12 +404,10 @@ extension PlayerPresenter: PlayerSettingProtocol {
         case .closeView:
             isShowSettingView = false
             
-            if currentLayoutStyle == .landscape {
-                showSettingView.accept(isShowSettingView)
-            }
-            else {
-                showSettingPopup.accept(isShowSettingView)
-            }
+            playerViewController?.handle(event: currentLayoutStyle == .landscape ?
+                .updateSettingViewVisibility(isVisible: isShowSettingView) :
+                .updateSettingPopupVisibility(isVisible: isShowSettingView)
+            )
             
         }
         return nil

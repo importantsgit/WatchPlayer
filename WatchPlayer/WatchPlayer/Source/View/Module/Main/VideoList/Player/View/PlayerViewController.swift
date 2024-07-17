@@ -11,6 +11,26 @@ import RxSwift
 import RxRelay
 import Photos
 
+enum PlayerControllerVisibility {
+    case show
+    case hideDelay
+    case hideImmediately
+}
+
+enum PlayerViewControllerUIUpdateEvent {
+    case didLoadPlayer
+    case setTitle(title: String)
+    case updateLayout(style: LayoutStyle)
+    case updateAudioControllerVisibility(isVisible: Bool)
+    case updateSettingViewVisibility(isVisible: Bool)
+    case updateSettingPopupVisibility(isVisible: Bool)
+    case updateControllerVisibility(isVisible: PlayerControllerVisibility)
+    
+}
+protocol PlayerViewControllerProtocol: AnyObject {
+    func handle(event: PlayerViewControllerUIUpdateEvent)
+}
+
 final class PlayerViewController: DefaultViewController {
     
     // MARK: - Properties
@@ -24,7 +44,9 @@ final class PlayerViewController: DefaultViewController {
     private let audioControllerView: PlayerAudioControllerView
     private let settingView: PlayerSettingView
     private let settingPopup: PlayerSettingPopup
-    private let activityIndicator: UIActivityIndicatorView? = UIActivityIndicatorView()
+    private var activityIndicator = UIActivityIndicatorView()
+    
+    private let hideControllerDelay = PublishRelay<Void>()
     
     init(
         presenter: PlayerPresenterProtocol,
@@ -54,8 +76,15 @@ final class PlayerViewController: DefaultViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        bind(with: presenter)
+        setPlayerViewLayout()
         presenter.viewDidLoad()
+        
+        hideControllerDelay
+            .debounce(.seconds(3), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.controllerView.isHidden = true
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupNavigationBar() {
@@ -81,107 +110,12 @@ final class PlayerViewController: DefaultViewController {
 }
 
 extension PlayerViewController {
-    func bind(
-        with presenter: PlayerPresenterProtocol
-    ) {
-        presenter
-            .playerTitle
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] title in
-                self?.setPlayerViewLayout()
-                self?.navigationBar.setTitle(title)
-                self?.controllerView.handleEvent(.setTitle(title: title))
-                self?.audioControllerView.handleEvent(.setTitle(title: title))
-            })
-            .disposed(by: disposeBag)
-        
-        presenter
-            .didLoadPlayer
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
-                self?.activityIndicator?.stopAnimating()
-            })
-            .disposed(by: disposeBag)
-        
-        presenter
-            .setLayout
-            .subscribe(onNext: { [weak self] style in
-                guard let self = self else { return }
-                self.view.setNeedsUpdateConstraints()
-                NSLayoutConstraint.deactivate(self.layoutConstraints ?? [])
-                
-                let newConstraints: [NSLayoutConstraint]
-                switch style {
-                case .landscape:
-                    newConstraints = self.setLayoutToLandscape()
-                case .portrait:
-                    newConstraints = self.setLayoutToPortrait()
-                case .fullPortrait:
-                    newConstraints = self.setLayoutToFullPortrait()
-                }
-                
-                NSLayoutConstraint.activate(newConstraints)
-                self.layoutConstraints = newConstraints
-                
-                UIView.animate(withDuration: 0.1) {
-                    self.view.layoutIfNeeded()
-                } completion: { _ in
-                    self.playerView.handleEvent(.updateLayout)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        presenter
-            .showAudioController
-            .subscribe(onNext: { [weak self] isShow in
-                self?.audioControllerView.isHidden = (isShow == false)
-            })
-            .disposed(by: disposeBag)
-        
-        presenter
-            .showSettingView
-            .subscribe(onNext: { [weak self] isShow in
-                self?.settingView.isHidden = (isShow == false)
-            })
-            .disposed(by: disposeBag)
-        
-        presenter
-            .showSettingPopup
-            .subscribe(onNext: { [weak self] isShow in
-                self?.settingPopup.isHidden = (isShow == false)
-            })
-            .disposed(by: disposeBag)
-        
-        presenter
-            .showController
-            .subscribe(onNext: { [weak self] in
-                self?.controllerView.isHidden = false
-            })
-            .disposed(by: disposeBag)
-        
-        let hideController = Observable.merge(
-            presenter.hideControllerDelay.debounce(.seconds(3), scheduler: MainScheduler.instance),
-            presenter.hideControllerImmediately
-        )
-        
-        hideController
-            .subscribe(onNext: { [weak self] in
-                self?.controllerView.isHidden = true
-            })
-            .disposed(by: disposeBag)
-    }
-    
-}
 
-extension PlayerViewController {
-
-    
     private func setPlayerViewLayout() {
         
-        activityIndicator?.hidesWhenStopped = true
-        activityIndicator?.color = .white
-        activityIndicator?.style = .large
-        activityIndicator?.startAnimating()
+        activityIndicator.color = .white
+        activityIndicator.style = .large
+        activityIndicator.startAnimating()
         playerView.backgroundColor = .black
         
         controllerView.isHidden = true
@@ -189,7 +123,7 @@ extension PlayerViewController {
         settingView.isHidden = true
         settingPopup.isHidden = true
     
-        [playerView, controllerView, audioControllerView, settingView, activityIndicator!, navigationBar, settingPopup].forEach {
+        [playerView, controllerView, audioControllerView, settingView, activityIndicator, navigationBar, settingPopup].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
         }
@@ -236,10 +170,10 @@ extension PlayerViewController {
             settingView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             settingView.widthAnchor.constraint(equalToConstant: 334),
             
-            activityIndicator!.topAnchor.constraint(equalTo: playerView.topAnchor),
-            activityIndicator!.leftAnchor.constraint(equalTo: playerView.leftAnchor),
-            activityIndicator!.rightAnchor.constraint(equalTo: playerView.rightAnchor),
-            activityIndicator!.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            activityIndicator.topAnchor.constraint(equalTo: playerView.topAnchor),
+            activityIndicator.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            activityIndicator.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            activityIndicator.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             
             settingPopup.topAnchor.constraint(equalTo: view.topAnchor),
             settingPopup.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -274,10 +208,10 @@ extension PlayerViewController {
             settingView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             settingView.widthAnchor.constraint(equalToConstant: 334),
             
-            activityIndicator!.topAnchor.constraint(equalTo: playerView.topAnchor),
-            activityIndicator!.leftAnchor.constraint(equalTo: playerView.leftAnchor),
-            activityIndicator!.rightAnchor.constraint(equalTo: playerView.rightAnchor),
-            activityIndicator!.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            activityIndicator.topAnchor.constraint(equalTo: playerView.topAnchor),
+            activityIndicator.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            activityIndicator.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            activityIndicator.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             
             settingPopup.topAnchor.constraint(equalTo: view.topAnchor),
             settingPopup.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -313,10 +247,10 @@ extension PlayerViewController {
             settingView.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             settingView.widthAnchor.constraint(equalToConstant: 334),
             
-            activityIndicator!.topAnchor.constraint(equalTo: playerView.topAnchor),
-            activityIndicator!.leftAnchor.constraint(equalTo: playerView.leftAnchor),
-            activityIndicator!.rightAnchor.constraint(equalTo: playerView.rightAnchor),
-            activityIndicator!.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
+            activityIndicator.topAnchor.constraint(equalTo: playerView.topAnchor),
+            activityIndicator.leftAnchor.constraint(equalTo: playerView.leftAnchor),
+            activityIndicator.rightAnchor.constraint(equalTo: playerView.rightAnchor),
+            activityIndicator.bottomAnchor.constraint(equalTo: playerView.bottomAnchor),
             
             settingPopup.topAnchor.constraint(equalTo: view.topAnchor),
             settingPopup.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -327,4 +261,64 @@ extension PlayerViewController {
     }
     
 
+}
+
+extension PlayerViewController: PlayerViewControllerProtocol {
+    
+    @MainActor
+    func handle(event: PlayerViewControllerUIUpdateEvent) {
+        switch event {
+        case .didLoadPlayer:
+            activityIndicator.stopAnimating()
+            
+        case .setTitle(let title):
+            navigationBar.setTitle(title)
+
+        case .updateLayout(let style):
+            view.setNeedsUpdateConstraints()
+            NSLayoutConstraint.deactivate(layoutConstraints ?? [])
+            
+            let newConstraints: [NSLayoutConstraint]
+            switch style {
+            case .landscape:
+                newConstraints = setLayoutToLandscape()
+            case .portrait:
+                newConstraints = setLayoutToPortrait()
+            case .fullPortrait:
+                newConstraints = setLayoutToFullPortrait()
+            }
+            
+            NSLayoutConstraint.activate(newConstraints)
+            layoutConstraints = newConstraints
+            
+            UIView.animate(withDuration: 0.1) {
+                self.view.layoutIfNeeded()
+            } completion: { _ in
+                self.playerView.handleEvent(.updateLayout)
+            }
+            
+        case .updateAudioControllerVisibility(let isVisible):
+            audioControllerView.isHidden = (isVisible == false)
+            
+        case .updateSettingViewVisibility(let isVisible):
+            settingView.isHidden = (isVisible == false)
+            
+        case .updateSettingPopupVisibility(let isVisible):
+            settingPopup.isHidden = (isVisible == false)
+            
+        case .updateControllerVisibility(let isVisible):
+            switch isVisible {
+            case .show:
+                controllerView.isHidden = false
+                
+            case .hideImmediately:
+                controllerView.isHidden = true
+                
+            case .hideDelay:
+                hideControllerDelay.accept(())
+            }
+        }
+    }
+    
+    
 }

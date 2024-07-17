@@ -158,7 +158,7 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
         presenter.settingView = settingView
         presenter.settingPopup = settingPopup
         
-        return .init(
+        let playerViewController = PlayerViewController(
             presenter: presenter,
             playerView: playerView,
             controllerView: controllerView,
@@ -166,6 +166,10 @@ final public class VideoListDIContainer: VideoListDIContainerProtocol, VideoList
             settingView: settingView,
             settingPopup: settingPopup
         )
+        
+        presenter.playerViewController = playerViewController
+        
+        return playerViewController
     }
 }
 
