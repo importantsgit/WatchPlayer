@@ -103,17 +103,23 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
         controllerView?.handleEvent(.setTitle(title: title))
         audioControllerView?.handleEvent(.setTitle(title: title))
         
+        
         Task {
             do {
                 let item = try await interactor.fetchAVPlayerItem(asset)
             
                 let player = AVPlayer(playerItem: item)
                 let playerLayer = AVPlayerLayer(player: player)
-                playerView?.handleEvent(.set(playerLayer: playerLayer))
-                playerViewController?.handle(event: .didLoadPlayer)
+                
+                // 이 Task는 Main 스레드에서 실행되지 않기 때문에 UIUpdate를 하기 위해 MainActor.run를 적용시켜야 한다
+                await MainActor.run {
+                    playerView?.handleEvent(.set(playerLayer: playerLayer))
+                    playerViewController?.handle(event: .didLoadPlayer)
+                }
                 
                 let getServiceEvent = interactor.set(player: player)
                 getServiceEvent
+                    .subscribe(on: MainScheduler.instance)
                     .subscribe(onNext: { [weak self] (event, param) in
                         switch event {
                         case .playerStatus(let status):

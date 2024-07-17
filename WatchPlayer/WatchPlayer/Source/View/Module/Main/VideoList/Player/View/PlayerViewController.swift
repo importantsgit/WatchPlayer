@@ -113,6 +113,7 @@ extension PlayerViewController {
 
     private func setPlayerViewLayout() {
         
+        activityIndicator.hidesWhenStopped = true
         activityIndicator.color = .white
         activityIndicator.style = .large
         activityIndicator.startAnimating()
@@ -265,10 +266,10 @@ extension PlayerViewController {
 
 extension PlayerViewController: PlayerViewControllerProtocol {
     
-    @MainActor
     func handle(event: PlayerViewControllerUIUpdateEvent) {
         switch event {
         case .didLoadPlayer:
+            
             activityIndicator.stopAnimating()
             
         case .setTitle(let title):
