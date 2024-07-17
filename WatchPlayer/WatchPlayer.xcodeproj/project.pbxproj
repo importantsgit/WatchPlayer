@@ -80,7 +80,6 @@
 		7BAFABAB2C2D149B0052F14F /* PermissionModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABAA2C2D149B0052F14F /* PermissionModuleTests.swift */; };
 		7BAFABAE2C2D19570052F14F /* AttributedStringBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABAD2C2D19570052F14F /* AttributedStringBuilder.swift */; };
 		7BAFABB02C2D1F270052F14F /* Extension+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABAF2C2D1F270052F14F /* Extension+UIColor.swift */; };
-		7BAFABB32C2D20720052F14F /* FillButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABB22C2D20720052F14F /* FillButton.swift */; };
 		7BAFABB62C2D221A0052F14F /* DefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABB52C2D221A0052F14F /* DefaultViewController.swift */; };
 		7BAFABB92C2D24940052F14F /* IntroPreviews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BAFABB82C2D24940052F14F /* IntroPreviews.swift */; };
 		7BCD7FC92C33D0CE009158D5 /* Extension+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BCD7FC82C33D0CE009158D5 /* Extension+UIView.swift */; };
@@ -243,7 +242,6 @@
 		7BAFABAA2C2D149B0052F14F /* PermissionModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionModuleTests.swift; sourceTree = "<group>"; };
 		7BAFABAD2C2D19570052F14F /* AttributedStringBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStringBuilder.swift; sourceTree = "<group>"; };
 		7BAFABAF2C2D1F270052F14F /* Extension+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIColor.swift"; sourceTree = "<group>"; };
-		7BAFABB22C2D20720052F14F /* FillButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillButton.swift; sourceTree = "<group>"; };
 		7BAFABB52C2D221A0052F14F /* DefaultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultViewController.swift; sourceTree = "<group>"; };
 		7BAFABB82C2D24940052F14F /* IntroPreviews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPreviews.swift; sourceTree = "<group>"; };
 		7BCD7FC82C33D0CE009158D5 /* Extension+UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIView.swift"; sourceTree = "<group>"; };
@@ -420,13 +418,13 @@
 			path = NavigationBar;
 			sourceTree = "<group>";
 		};
-		7B8472D82C3E5585007C10A5 /* View */ = {
+		7B8472D82C3E5585007C10A5 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				7BAFABB12C2D1FE90052F14F /* Component */,
-				7B97B2802C2BF0160036F0AE /* Module */,
+				7BAFABB12C2D1FE90052F14F /* Components */,
+				7B97B2802C2BF0160036F0AE /* Features */,
 			);
-			path = View;
+			path = Modules;
 			sourceTree = "<group>";
 		};
 		7B88789F2C3663F900389A91 /* Player */ = {
@@ -518,14 +516,14 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		7B97B2802C2BF0160036F0AE /* Module */ = {
+		7B97B2802C2BF0160036F0AE /* Features */ = {
 			isa = PBXGroup;
 			children = (
 				7BAFABB42C2D22000052F14F /* Common */,
 				A5A19B5F2C2C6E18007C1538 /* Intro */,
 				7B97B2A82C2BFD290036F0AE /* Main */,
 			);
-			path = Module;
+			path = Features;
 			sourceTree = "<group>";
 		};
 		7B97B2852C2BF44C0036F0AE /* SupportTest */ = {
@@ -543,7 +541,7 @@
 			children = (
 				7BAFABA42C2CFDF40052F14F /* Const.swift */,
 				7B97B27D2C2BEA9D0036F0AE /* App */,
-				7B8472D82C3E5585007C10A5 /* View */,
+				7B8472D82C3E5585007C10A5 /* Modules */,
 				7B97B28A2C2BF5140036F0AE /* Service */,
 				7BAFABAC2C2D18150052F14F /* Supports */,
 			);
@@ -801,14 +799,13 @@
 			path = Supports;
 			sourceTree = "<group>";
 		};
-		7BAFABB12C2D1FE90052F14F /* Component */ = {
+		7BAFABB12C2D1FE90052F14F /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				7BAFABB22C2D20720052F14F /* FillButton.swift */,
-				7BD60C4F2C3CFD7C0045B85E /* Popup */,
 				7B7A41112C32754E00CF278B /* NavigationBar */,
+				7BD60C4F2C3CFD7C0045B85E /* Popup */,
 			);
-			path = Component;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		7BAFABB42C2D22000052F14F /* Common */ = {
@@ -1460,7 +1457,6 @@
 				7B8A13E12C33A17B00E6E2D1 /* OnboardingInteractorMock.swift in Sources */,
 				7BAFABAE2C2D19570052F14F /* AttributedStringBuilder.swift in Sources */,
 				7B8A13DF2C33A10C00E6E2D1 /* OnboardingInteractor.swift in Sources */,
-				7BAFABB32C2D20720052F14F /* FillButton.swift in Sources */,
 				A53DE0E52C2DCDE6006DF09F /* PermissionPresenterMock.swift in Sources */,
 				7BD60C552C3D0EEE0045B85E /* PopupPresenter.swift in Sources */,
 				A5EDCE542C359A30000C99AA /* PlayerView.swift in Sources */,
