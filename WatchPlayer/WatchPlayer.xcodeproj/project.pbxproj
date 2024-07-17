@@ -30,6 +30,7 @@
 		7B8A13DC2C339D6F00E6E2D1 /* OnboardingModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8A13DB2C339D6F00E6E2D1 /* OnboardingModuleTests.swift */; };
 		7B8A13DF2C33A10C00E6E2D1 /* OnboardingInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8A13DE2C33A10C00E6E2D1 /* OnboardingInteractor.swift */; };
 		7B8A13E12C33A17B00E6E2D1 /* OnboardingInteractorMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8A13E02C33A17B00E6E2D1 /* OnboardingInteractorMock.swift */; };
+		7B8B9A8A2C40FEA0008923E6 /* Extension+AVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8B9A892C40FEA0008923E6 /* Extension+AVPlayer.swift */; };
 		7B97B24E2C2BE73D0036F0AE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B24D2C2BE73D0036F0AE /* AppDelegate.swift */; };
 		7B97B2502C2BE73D0036F0AE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B24F2C2BE73D0036F0AE /* SceneDelegate.swift */; };
 		7B97B2522C2BE73D0036F0AE /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B97B2512C2BE73D0036F0AE /* OnboardingViewController.swift */; };
@@ -188,6 +189,7 @@
 		7B8A13DB2C339D6F00E6E2D1 /* OnboardingModuleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModuleTests.swift; sourceTree = "<group>"; };
 		7B8A13DE2C33A10C00E6E2D1 /* OnboardingInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInteractor.swift; sourceTree = "<group>"; };
 		7B8A13E02C33A17B00E6E2D1 /* OnboardingInteractorMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingInteractorMock.swift; sourceTree = "<group>"; };
+		7B8B9A892C40FEA0008923E6 /* Extension+AVPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+AVPlayer.swift"; sourceTree = "<group>"; };
 		7B97B24A2C2BE73D0036F0AE /* WatchPlayer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchPlayer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B97B24D2C2BE73D0036F0AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7B97B24F2C2BE73D0036F0AE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -379,6 +381,7 @@
 				7B99925A2C34E51300B56DEB /* Extension+UIImage.swift */,
 				7B986CC82C37C0750089FB8B /* Extension+CMTime.swift */,
 				7B63CE312C3B950D00EC344B /* Extension+Date.swift */,
+				7B8B9A892C40FEA0008923E6 /* Extension+AVPlayer.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1541,6 +1544,7 @@
 				7B97B2B62C2C04F60036F0AE /* SettingViewController.swift in Sources */,
 				7B97B2B82C2C05000036F0AE /* VideoListViewController.swift in Sources */,
 				7B8472D12C3E1448007C10A5 /* DefaultRouter.swift in Sources */,
+				7B8B9A8A2C40FEA0008923E6 /* Extension+AVPlayer.swift in Sources */,
 				A5A19B722C2C70FE007C1538 /* CoordinatorProtocol.swift in Sources */,
 				7BD60C532C3D0EE70045B85E /* PopupRouter.swift in Sources */,
 				A5A19B762C2C764E007C1538 /* IntroDIContainerMock.swift in Sources */,
@@ -1734,6 +1738,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T7JJUZE2YE;
@@ -1759,6 +1764,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jh.cudo.watch.WatchPlayer;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1772,6 +1778,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = T7JJUZE2YE;
@@ -1797,6 +1804,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.jh.cudo.watch.WatchPlayer;
 				PRODUCT_MODULE_NAME = "$(PRODUCT_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
