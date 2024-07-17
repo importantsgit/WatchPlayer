@@ -25,13 +25,10 @@ enum PlayerAudioControllerViewUIUpdateEvent {
 }
 
 protocol PlayerAudioControllerViewProtocol: AnyObject {
-    var events: Observable<AudioControllerEvent> { get }
     func handleEvent(_ event: PlayerAudioControllerViewUIUpdateEvent)
 }
 
 final class PlayerAudioControllerView: UIView {
-    private let eventSubject = PublishSubject<AudioControllerEvent>()
-    var events: Observable<AudioControllerEvent> { eventSubject.asObservable() }
     
     weak var presenter: PlayerAudioControllerProtocol?
     
@@ -96,24 +93,26 @@ extension PlayerAudioControllerView {
         
         backButton.rx.tap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .map { AudioControllerEvent.backButtonTapped }
-            .bind (to: eventSubject)
+            .bind{ [weak self] in
+                self?.presenter?.handleEvent(.backButtonTapped)
+            }
             .disposed(by: disposeBag)
         
         audioButton.rx.tap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .map { AudioControllerEvent.dismissAudioButtonTapped }
-            .bind (to: eventSubject)
+            .bind{ [weak self] in
+                self?.presenter?.handleEvent(.dismissAudioButtonTapped)
+            }
             .disposed(by: disposeBag)
         
         playButton.rx.tap
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .bind { [weak self] in
-            guard let state = self?.presenter?.handleEvent(.playButtonTapped) as? PlayerState
-            else { return }
-            self?.setPlayButton(state: state)
-        }
-        .disposed(by: disposeBag)
+                guard let state = self?.presenter?.handleEvent(.playButtonTapped) as? PlayerState
+                else { return }
+                self?.setPlayButton(state: state)
+            }
+            .disposed(by: disposeBag)
     }
     
     private func setupLayout() {
@@ -156,7 +155,7 @@ extension PlayerAudioControllerView {
         }
         
         layoutConstraints = setInitialLayout()
-         NSLayoutConstraint.activate(layoutConstraints!)
+        NSLayoutConstraint.activate(layoutConstraints!)
     }
     
     private func setInitialLayout(
@@ -212,7 +211,7 @@ extension PlayerAudioControllerView {
             
             middleControlView.centerYAnchor.constraint(equalTo: centerYAnchor),
             middleControlView.centerXAnchor.constraint(equalTo: centerXAnchor),
-        
+            
             
             audioTextLabel.centerXAnchor.constraint(equalTo: playButton.centerXAnchor),
             audioTextLabel.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 10)
@@ -238,7 +237,7 @@ extension PlayerAudioControllerView {
             
             middleControlView.centerYAnchor.constraint(equalTo: centerYAnchor),
             middleControlView.centerXAnchor.constraint(equalTo: centerXAnchor),
-        
+            
             
             audioTextLabel.centerXAnchor.constraint(equalTo: playButton.centerXAnchor),
             audioTextLabel.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 10)
@@ -253,7 +252,7 @@ extension PlayerAudioControllerView {
         case .paused: buttonImage =  .play
         case .ended: buttonImage =  .rotate
         }
-
+        
         playButton.configuration?.image = buttonImage.resized(to: .init(width: size, height: size))
     }
 }
@@ -262,6 +261,7 @@ extension PlayerAudioControllerView {
 extension PlayerAudioControllerView: PlayerAudioControllerViewProtocol {
     
     func handleEvent(_ event: PlayerAudioControllerViewUIUpdateEvent) {
+        
         switch event {
         case .updateLayout(let style):
             NSLayoutConstraint.deactivate(self.layoutConstraints ?? [])
