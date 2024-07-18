@@ -61,6 +61,9 @@ final class PlayerAudioControllerView: UIView {
     
     private var layoutConstraints: [NSLayoutConstraint]?
     
+    private var style: LayoutStyle = .portrait
+    private var playButtonState: PlayerState = .paused
+    
     private var disposeBag = DisposeBag()
     
     init() {
@@ -188,7 +191,7 @@ extension PlayerAudioControllerView {
             middleControlView.centerXAnchor.constraint(equalTo: centerXAnchor),
             
             audioTextLabel.centerXAnchor.constraint(equalTo: playButton.centerXAnchor),
-            audioTextLabel.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: -4)
+            audioTextLabel.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: 4)
         ]
     }
     
@@ -245,8 +248,18 @@ extension PlayerAudioControllerView {
     }
     
     func setPlayButton(state: PlayerState) {
+        playButtonState = state
+        
         let buttonImage: UIImage
-        let size: CGFloat = 54
+        let size: CGFloat
+        
+        switch style {
+        case .fullPortrait, .landscape:
+            size = 54
+        case .portrait:
+            size = 42
+        }
+        
         switch state {
         case .playing: buttonImage = .pause
         case .paused: buttonImage =  .play
@@ -257,13 +270,14 @@ extension PlayerAudioControllerView {
     }
 }
 
-
 extension PlayerAudioControllerView: PlayerAudioControllerViewProtocol {
     
     func handleEvent(_ event: PlayerAudioControllerViewUIUpdateEvent) {
         
         switch event {
         case .updateLayout(let style):
+            self.style = style
+            setPlayButton(state: playButtonState)
             NSLayoutConstraint.deactivate(self.layoutConstraints ?? [])
             
             let newConstraints: [NSLayoutConstraint]
