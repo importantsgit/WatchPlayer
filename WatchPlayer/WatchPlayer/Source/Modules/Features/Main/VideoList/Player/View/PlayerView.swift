@@ -23,6 +23,7 @@ enum PlayerViewUIUpdateEvent {
     case update(player: AVPlayer?)
     case updateGravity(gravity: PlayerGravity)
     case updateLayout
+    case updatePipMode(isVisible: Bool)
 }
 
 protocol PlayerViewProtocol: AnyObject {
@@ -84,6 +85,7 @@ extension PlayerView: PlayerViewProtocol {
                 
                 self.playerLayer = playerLayer
                 layer.addSublayer(self.playerLayer!)
+                setupPictureInPicture()
                 self.setNeedsLayout()
             }
 
@@ -96,21 +98,27 @@ extension PlayerView: PlayerViewProtocol {
         case .updateLayout:
             // TODO: 뷰 업데이트가 필요하면 작성
             break
+            
+        case .updatePipMode(let isVisible):
+            print("isPictureInPicturePossible: \(pipController?.isPictureInPicturePossible)")
+            
+            isVisible ?
+            pipController?.startPictureInPicture() :
+            pipController?.stopPictureInPicture()
+            
         }
     }
     
-    func setPip(isUse: Bool) {
-        if  isUse &&
-                pipController == nil &&
-                AVPictureInPictureController.isPictureInPictureSupported() {
-            pipController = AVPictureInPictureController(playerLayer: self.playerLayer!)
-            pipController?.requiresLinearPlayback = true
-            pipController?.canStartPictureInPictureAutomaticallyFromInline = true
+    func setupPictureInPicture() {
+        guard AVPictureInPictureController.isPictureInPictureSupported() else {
+            print("PiP is not supported on this device")
+            return
         }
-        else {
-            pipController = nil
-        }
+        player?.allowsExternalPlayback = true
+        pipController?.requiresLinearPlayback = true
+        pipController?.canStartPictureInPictureAutomaticallyFromInline = true
+        
+        pipController = AVPictureInPictureController(playerLayer: playerLayer!)
     }
-    
 
 }
