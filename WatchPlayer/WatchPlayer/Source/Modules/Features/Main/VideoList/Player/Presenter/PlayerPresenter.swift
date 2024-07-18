@@ -10,6 +10,12 @@ import RxRelay
 import RxSwift
 import Photos
 
+enum PlayerViewControllerEvent {
+    case viewDidLoad
+    case backButtonTapped
+    case deleteButtonTapped
+}
+
 protocol PlayerProtocol: AnyObject {
     @discardableResult
     func handleEvent(_ event: PlayerEvent) -> Any?
@@ -57,6 +63,7 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
     weak var settingPopup: PlayerSettingViewProtocol?
     
     private var currentLayoutStyle: LayoutStyle = .portrait
+    private var isAudioMode = false
     
     // 세팅뷰가 노출된 상태에서 플레이어를 터치 시의 분기 처리 위함
     private var isShowSettingView = false
@@ -141,6 +148,32 @@ final class PlayerPresenter: NSObject, PlayerPresenterProtocol {
                 print(error)
             }
         }
+        
+        NotificationCenter.default.rx.notification(UIApplication.didBecomeActiveNotification)
+            .subscribe(onNext: { [weak self] _ in
+                self?.didBecomeActivce()
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(UIApplication.willResignActiveNotification)
+            .subscribe(onNext: { [weak self] _ in
+                // 약한 참조 시, 메모리에서 self가 해제되어 참조 못하는 상황 발생
+                print("willResignActiveNotification")
+                self?.didEnterBackground()
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func didBecomeActivce() {
+        isAudioMode ?
+        interactor.handleEvent(.enterForeground) :
+        playerView?.handleEvent(.updatePipMode(isVisible: false))
+    }
+    
+    func didEnterBackground() {
+        isAudioMode ?
+        interactor.handleEvent(.enterBackground) :
+        playerView?.handleEvent(.updatePipMode(isVisible: true))
     }
     
     func backButtonTapped() {
@@ -275,9 +308,10 @@ extension PlayerPresenter: PlayerControllerProtocol {
             interactor.handleEvent(.seek(.forward(count: 1)))
             
         case .showAudioButtonTapped:
-            interactor.handleEvent(.audioButtonTapped(isUse: true))
+            isAudioMode = true
+            interactor.handleEvent(.audioButtonTapped(isUse: isAudioMode))
             playerView?.handleEvent(.update(player: nil))
-            playerViewController?.handle(event: .updateAudioControllerVisibility(isVisible: true))
+            playerViewController?.handle(event: .updateAudioControllerVisibility(isVisible: isAudioMode))
             playerViewController?.handle(event: .updateControllerVisibility(isVisible: .hideImmediately))
             
         case .settingButtonTapped:
@@ -311,12 +345,13 @@ extension PlayerPresenter: PlayerAudioControllerProtocol {
     func handleEvent(_ event: AudioControllerEvent) -> Any? {
         switch event {
         case .dismissAudioButtonTapped:
-            guard let player = interactor.handleEvent(.audioButtonTapped(isUse: false)) as? AVPlayer
+            isAudioMode = false
+            guard let player = interactor.handleEvent(.audioButtonTapped(isUse: isAudioMode)) as? AVPlayer
             else {
                 fatalError()
             }
             playerView?.handleEvent(.update(player: player))
-            playerViewController?.handle(event: .updateAudioControllerVisibility(isVisible: false))
+            playerViewController?.handle(event: .updateAudioControllerVisibility(isVisible: isAudioMode))
             showControllerView()
             
         case .backButtonTapped:
