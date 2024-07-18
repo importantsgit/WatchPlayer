@@ -9,6 +9,32 @@ import Foundation
 import AVFoundation
 import UIKit
 
+enum PlayerStatus {
+    case ready
+    case loading
+    case paused
+    case playing
+    case failed
+}
+
+enum Command {
+    case play
+    case pause
+    case stop
+    case seek(seconds: Int, shouldPlay: Bool)
+    case skip(seconds: Int)
+}
+
+enum PlayBack {
+    case playerStatus(PlayerState)
+}
+
+public enum RepeatMode: Equatable {
+    case none
+    case one
+
+}
+
 enum SeekType {
     case forward(count: Int)
     case rewind(count: Int)
@@ -117,4 +143,10 @@ enum PlayerQuality {
 struct PlayerSetting {
     var speed: PlayerSpeed?
     var quality: PlayerQuality?
+}
+
+
+enum PlayerServiceError: Error {
+    case weakError
+    case commandError
 }
