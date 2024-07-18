@@ -31,7 +31,6 @@ final public class MainDIContainer: MainDIContainerProtocol, MainDependencies {
         let dataService: DataServiceInterface
         let recordService: RecordServiceInterface
         let libraryService: LibraryServiceInterface
-        let playerService: PlayerServiceInterface
     }
     
     let dependencies: Dependencies
@@ -58,8 +57,7 @@ final public class MainDIContainer: MainDIContainerProtocol, MainDependencies {
                 translationService: dependencies.translationService,
                 dataService: dependencies.dataService,
                 recordService: dependencies.recordService,
-                libraryService: dependencies.libraryService,
-                playerService: dependencies.playerService
+                libraryService: dependencies.libraryService
             )
         )
     }
