@@ -19,8 +19,7 @@ import UIKit
             translationService: TranslationService(configuration: .init()),
             dataService: DataService(configuration: .init()),
             recordService: RecordService(configuration: .init()),
-            libraryService: LibraryService(configuration: .init(fetchLimit: 20)),
-            playerService: PlayerService()
+            libraryService: LibraryService(configuration: .init(fetchLimit: 20))
         )
     )
 
