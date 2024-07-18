@@ -20,6 +20,9 @@
 		7B7A410D2C32601400CF278B /* RecordRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A410C2C32601400CF278B /* RecordRepositoryMock.swift */; };
 		7B7A41102C32752400CF278B /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A410F2C32752400CF278B /* NavigationBar.swift */; };
 		7B7A41132C32755B00CF278B /* NavigationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7A41122C32755B00CF278B /* NavigationType.swift */; };
+		7B7C0FAE2C48D1EC00F8FB48 /* PlayerService+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7C0FAD2C48D1EC00F8FB48 /* PlayerService+Rx.swift */; };
+		7B7C0FB22C48E9F500F8FB48 /* AVPlayer+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7C0FB12C48E9F500F8FB48 /* AVPlayer+Rx.swift */; };
+		7B7C0FB42C49032300F8FB48 /* RxPlayerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B7C0FB32C49032300F8FB48 /* RxPlayerService.swift */; };
 		7B8472D12C3E1448007C10A5 /* DefaultRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8472D02C3E1448007C10A5 /* DefaultRouter.swift */; };
 		7B8878A12C36640600389A91 /* PlayerServiceMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8878A02C36640600389A91 /* PlayerServiceMock.swift */; };
 		7B8878A32C36642300389A91 /* PlayerRepositoryMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B8878A22C36642300389A91 /* PlayerRepositoryMock.swift */; };
@@ -178,6 +181,9 @@
 		7B7A410C2C32601400CF278B /* RecordRepositoryMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordRepositoryMock.swift; sourceTree = "<group>"; };
 		7B7A410F2C32752400CF278B /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
 		7B7A41122C32755B00CF278B /* NavigationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationType.swift; sourceTree = "<group>"; };
+		7B7C0FAD2C48D1EC00F8FB48 /* PlayerService+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PlayerService+Rx.swift"; sourceTree = "<group>"; };
+		7B7C0FB12C48E9F500F8FB48 /* AVPlayer+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Rx.swift"; sourceTree = "<group>"; };
+		7B7C0FB32C49032300F8FB48 /* RxPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxPlayerService.swift; sourceTree = "<group>"; };
 		7B8472D02C3E1448007C10A5 /* DefaultRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRouter.swift; sourceTree = "<group>"; };
 		7B8878A02C36640600389A91 /* PlayerServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerServiceMock.swift; sourceTree = "<group>"; };
 		7B8878A22C36642300389A91 /* PlayerRepositoryMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRepositoryMock.swift; sourceTree = "<group>"; };
@@ -416,6 +422,16 @@
 				7B7A41122C32755B00CF278B /* NavigationType.swift */,
 			);
 			path = NavigationBar;
+			sourceTree = "<group>";
+		};
+		7B7C0FB52C4904D800F8FB48 /* Rx */ = {
+			isa = PBXGroup;
+			children = (
+				7B7C0FAD2C48D1EC00F8FB48 /* PlayerService+Rx.swift */,
+				7B7C0FB12C48E9F500F8FB48 /* AVPlayer+Rx.swift */,
+				7B7C0FB32C49032300F8FB48 /* RxPlayerService.swift */,
+			);
+			path = Rx;
 			sourceTree = "<group>";
 		};
 		7B8472D82C3E5585007C10A5 /* Modules */ = {
@@ -762,6 +778,7 @@
 				7BA487112C3622E500A01F2F /* PlayerService.swift */,
 				7BA487152C36259700A01F2F /* PlayerRepository.swift */,
 				7B986CC02C37A3C80089FB8B /* PlayerDefine.swift */,
+				7B7C0FB52C4904D800F8FB48 /* Rx */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -1448,6 +1465,7 @@
 				7B97B2822C2BF1380036F0AE /* RootCoordinator.swift in Sources */,
 				7BD60C4D2C3CFC620045B85E /* PopupViewController.swift in Sources */,
 				7B8A13D62C33965400E6E2D1 /* OnboardingPresenterMock.swift in Sources */,
+				7B7C0FB42C49032300F8FB48 /* RxPlayerService.swift in Sources */,
 				7B7A41132C32755B00CF278B /* NavigationType.swift in Sources */,
 				A53DE0E72C2DCE08006DF09F /* PermissionRouterMock.swift in Sources */,
 				7BCD7FF12C33F4CA009158D5 /* VideoListDIContainerMock.swift in Sources */,
@@ -1462,6 +1480,7 @@
 				A5EDCE542C359A30000C99AA /* PlayerView.swift in Sources */,
 				7B9992562C34D87300B56DEB /* LibraryServiceMock.swift in Sources */,
 				7BCD7FCE2C33E4EA009158D5 /* VideoListDIContainer.swift in Sources */,
+				7B7C0FAE2C48D1EC00F8FB48 /* PlayerService+Rx.swift in Sources */,
 				7BCD7FFC2C33FA55009158D5 /* VideoListInteractorMock.swift in Sources */,
 				A53DE0DD2C2DC1FF006DF09F /* RecordRepository.swift in Sources */,
 				7BCD7FD52C33E7C8009158D5 /* VideoListInteractor.swift in Sources */,
@@ -1535,6 +1554,7 @@
 				7BCD7FE12C33F1B8009158D5 /* RecordCoordinator.swift in Sources */,
 				7B986CC92C37C0750089FB8B /* Extension+CMTime.swift in Sources */,
 				7BCD7FD92C33E7DC009158D5 /* VideoListRouter.swift in Sources */,
+				7B7C0FB22C48E9F500F8FB48 /* AVPlayer+Rx.swift in Sources */,
 				7B97B2D22C2C14F00036F0AE /* OnboardingPresenter.swift in Sources */,
 				7B7A41102C32752400CF278B /* NavigationBar.swift in Sources */,
 				7B97B2B62C2C04F60036F0AE /* SettingViewController.swift in Sources */,
