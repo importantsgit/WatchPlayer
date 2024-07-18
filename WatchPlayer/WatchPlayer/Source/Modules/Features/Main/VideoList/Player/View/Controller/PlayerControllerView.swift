@@ -75,6 +75,7 @@ final class PlayerControllerView: UIView {
     private var currentSeekbarWidthConstraint: NSLayoutConstraint!
     
     private var style: LayoutStyle = .portrait
+    private var playButtonState: PlayerState = .paused
     
     private var disposeBag = DisposeBag()
     
@@ -409,8 +410,18 @@ extension PlayerControllerView {
     }
     
     func setPlayButton(state: PlayerState) {
+        playButtonState = state
+        
         let buttonImage: UIImage
-        let size: CGFloat = 54
+        let size: CGFloat
+        
+        switch style {
+        case .fullPortrait, .landscape:
+            size = 54
+        case .portrait:
+            size = 42
+        }
+        
         switch state {
         case .playing: buttonImage = .pause
         case .paused: buttonImage =  .play
@@ -423,11 +434,11 @@ extension PlayerControllerView {
 
 extension PlayerControllerView: PlayerControllerViewProtocol {
     
-        
     func handleEvent(_ event: PlayerControllerViewUIUpdateEvent) {
         switch event {
         case .updateLayout(let style):
             self.style = style
+            setPlayButton(state: playButtonState)
             NSLayoutConstraint.deactivate(self.layoutConstraints ?? [])
             
             let newConstraints: [NSLayoutConstraint]
