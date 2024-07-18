@@ -8,10 +8,11 @@
 import Foundation
 import AVFoundation
 import RxSwift
+import RxCocoa
 import RxRelay
 import MediaPlayer
+import AVKit
 
-// MARK: 컨트롤러의 많은 기능으로 인해 무수한 func을 정의해야 함
 protocol PlayerServiceInterface {
     func set(
         player: AVPlayer,
@@ -31,6 +32,8 @@ enum PlayBackEvent {
     case playerStatus(PlayerState)
 }
 
+
+
 // MARK: Controller를 통해 입력된 이벤트
 enum PlayerCommandEvent {
     case seek(SeekType)
@@ -38,6 +41,9 @@ enum PlayerCommandEvent {
     case playButtonTapped
     case backButtonTapped
     case audioButtonTapped(isUse: Bool)
+    
+    case enterForeground
+    case enterBackground
 }
 
 enum SettingCommandEvent {
@@ -50,10 +56,12 @@ final class PlayerService: NSObject, PlayerServiceInterface {
     
     private var sendEventToView = PublishSubject<(PlayBackEvent, Any?)>()
     private var player: AVPlayer?
+    private var isAudioMode: Bool = false
     private var currentState: PlayerState = .playing
     
     private let disposeBag = DisposeBag()
     private var periodicTimeObserver: Any?
+
     
     func set(
         player: AVPlayer,
@@ -69,6 +77,7 @@ final class PlayerService: NSObject, PlayerServiceInterface {
         }
         
         setupObservers(player: self.player)
+        
         play()
                 
         return sendEventToView
@@ -96,9 +105,19 @@ final class PlayerService: NSObject, PlayerServiceInterface {
             return nil
             
         case .audioButtonTapped(let isUse):
-            setCommandCenter(isUse: isUse)
+            isAudioMode = isUse
             return isUse ? nil : player
-        
+            
+        case .enterForeground:
+            if isAudioMode == true {
+                setCommandCenter(isUse: false)
+            }
+            
+            
+        case .enterBackground:
+            if isAudioMode == true {
+                setCommandCenter(isUse: true)
+            }
         }
         
         return nil
@@ -142,9 +161,16 @@ final class PlayerService: NSObject, PlayerServiceInterface {
         }
         return nil
     }
+    
+    deinit {
+        periodicTimeObserver = nil
+        setCommandCenter(isUse: false)
+        print("PlayerService deinit")
+    }
 }
 
 private extension PlayerService {
+    
     func setupObservers(player: AVPlayer?) {
         guard let currentItem = player?.currentItem else { return }
         
@@ -155,6 +181,12 @@ private extension PlayerService {
                 self?.currentState = .ended
             })
             .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx.notification(AVAudioSession.interruptionNotification)
+            .subscribe(onNext: { [weak self] notification in
+                self?.handleAudioInterruption(notification)
+            })
+            .disposed(by: disposeBag)
     
         player?.rx.observe(\.timeControlStatus)
             .subscribe(onNext: { [weak self] status in
@@ -162,6 +194,14 @@ private extension PlayerService {
                 case .playing:
                     print("status playing")
                     self?.sendEventToView.onNext((.playerStatus(.playing), nil))
+                    self?.currentState = .playing
+                    
+                case .paused:
+                    if self?.currentState == .playing {
+                        self?.sendEventToView.onNext((.playerStatus(.paused), nil))
+                        self?.currentState = .paused
+                    }
+                    
                 case .waitingToPlayAtSpecifiedRate:
                     print("status waitingToPlayAtSpecifiedRate")
                 default:
@@ -208,6 +248,30 @@ private extension PlayerService {
             queue: DispatchQueue.main
         ) { [weak self] currentTime in
             self?.sendEventToView.onNext((.setTimes, (currentTime, player?.currentItem?.duration)))
+        }
+    }
+    
+    func handleAudioInterruption(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+              let type = AVAudioSession.InterruptionType(rawValue: typeValue)
+        else { return }
+        
+        switch type {
+        case .began:
+            pause()
+            sendEventToView.onNext((.playerStatus(.paused), nil))
+        case .ended:
+            guard let optionValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt
+            else { return }
+            
+            let options = AVAudioSession.InterruptionOptions(rawValue: optionValue)
+            if options.contains(.shouldResume) {
+                play()
+                sendEventToView.onNext((.playerStatus(.playing), nil))
+            }
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -279,7 +343,7 @@ private extension PlayerService {
         player.seek(to: seekableTimeRange.containsTime(seekTime) ? seekTime : seekableTimeRange.start)
     }
     
-    private func setCommandCenter(isUse: Bool) {
+    func setCommandCenter(isUse: Bool) {
         let commandCenter = MPRemoteCommandCenter.shared()
         let nowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
         
@@ -319,5 +383,7 @@ private extension PlayerService {
         return .success
     }
     
+
+
 }
 
